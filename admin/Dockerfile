@@ -1,6 +1,6 @@
 FROM node:14-alpine AS builder
 
-WORKDIR /client
+WORKDIR /admin
 
 COPY ./package.json ./
 
@@ -14,11 +14,15 @@ ARG WALLET
 
 ARG BLOCKCHAIN
 
+ARG STORAGE_TOKEN
+
 ENV REACT_APP_NODE_ENV=$NODE_ENV
 
 ENV REACT_APP_WALLET=$WALLET
 
 ENV REACT_APP_BLOCKCHAIN=$BLOCKCHAIN
+
+ENV REACT_APP_STORAGE_TOKEN=$STORAGE_TOKEN
 
 RUN npm run build
 
@@ -31,9 +35,8 @@ RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`u
     chmod +x envsubst && \
     mv envsubst /usr/local/bin
 
-COPY /ssl/cryptodonutz.xyz /etc/ssl/cryptodonutz.xyz
 COPY ./nginx.config /etc/nginx/nginx.template
 
 CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
 
-COPY --from=builder /client/build /usr/share/nginx/html
+COPY --from=builder /admin/build /usr/share/nginx/html

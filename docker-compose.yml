@@ -9,7 +9,8 @@ services:
         - NODE_ENV=production
         - WALLET=tronlink
         - BLOCKCHAIN=tron
-        - REACT_APP_STORAGE_TOKEN=token
+        - STORAGE_TOKEN=token
+
     ports:
       - "8092:80"
 

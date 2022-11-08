@@ -13,6 +13,7 @@
 *.zip
 *.dump
 *.sql
+*.conf
 *~
 
 # OS or Editor folders
