@@ -1,0 +1,44 @@
+@use '../../../../commonStyles/variables'
+
+.widget-ratingTips
+    .widget__item
+        &_row
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            height: 100%
+
+        .name,
+        .sum,
+        .tips,
+        .review
+            color: variables.$white-color
+            font-family: variables.$inter-font
+            font-style: normal
+
+        .name,
+        .sum,
+        .tips
+            font-size: 20px
+            line-height: 25px
+            font-weight: 700
+
+        .review
+            font-size: 25px
+            line-height: 30px
+            font-weight: 400
+
+            svg
+                color: variables.$yellow-color
+
+    @media (max-width: 576px)
+        .widget__item
+            .name,
+            .sum,
+            .tips
+                font-size: 17px
+                line-height: 22px
+
+            .review
+                font-size: 22px
+                line-height: 25px

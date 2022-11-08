@@ -1,0 +1,52 @@
+@use '../../../../commonStyles/_variables'
+
+.block-filters
+    padding-bottom: 20px
+
+    .timePeriod-select
+        width: 200px
+
+        .ant-select,
+        .ant-select:not(.ant-select-customize-input)
+            .ant-select-selector
+                background-color: variables.$yellow-color
+                border: 1px solid variables.$yellow-color
+                padding: 5px 35px 5px 20px
+
+            .ant-select-arrow
+                color: variables.$black-color
+
+            input
+                color: variables.$black-color
+
+        .ant-select-selection-item,
+        .ant-select-multiple .ant-select-selection-item,
+        .ant-select-selection-placeholder
+            color: variables.$black-color
+
+        .ant-select-single.ant-select-open
+            .ant-select-selection-item
+                color: variables.$black-color
+
+    @media (max-width: 576px)
+        .timePeriod-select
+            .ant-select,
+            .ant-select:not(.ant-select-customize-input)
+                .ant-select-selector
+                    padding: 5px 35px 5px 15px
+                    font-size: 16px
+
+                .ant-select-arrow
+                    font-size: 16px
+
+                input
+                    font-size: 16px
+
+            .ant-select-selection-item,
+            .ant-select-multiple .ant-select-selection-item,
+            .ant-select-selection-placeholder
+                font-size: 16px
+
+            .ant-select-single.ant-select-open
+                .ant-select-selection-item
+                    font-size: 16px

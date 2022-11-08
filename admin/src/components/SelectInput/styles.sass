@@ -1,0 +1,81 @@
+@use '../../commonStyles/variables'
+
+.selectInput
+    width: 100%
+
+    &__label_wrapper
+        display: flex
+        align-items: center
+
+    &__label
+        font-family: variables.$jakarta-font
+        font-style: normal
+        font-weight: 400
+        font-size: 20px
+        line-height: 25px
+        color: variables.$white-color
+
+    &__description
+        margin-top: 10px
+        margin-bottom: 0
+        font-family: variables.$jakarta-font
+        font-style: normal
+        font-weight: 400
+        font-size: 17px
+        line-height: 22px
+        color: variables.$grey-color
+
+    .ant-select,
+    .ant-select:not(.ant-select-customize-input)
+        width: 100%
+
+        &:focus-visible
+            outline: none
+
+        .ant-select-selector
+            width: 100%
+            height: auto
+            background-color: variables.$grey-color
+            border: 1px solid variables.$grey-color
+            border-radius: 10px
+            padding: 20px 24px
+
+        .ant-select-arrow
+            color: variables.$white-color
+            padding-right: 20px
+
+        input
+            color: variables.$white-color
+
+    .ant-select-disabled.ant-select:not(.ant-select-customize-input) 
+        .ant-select-selector
+            width: 100%
+            height: auto
+            background-color: variables.$grey-color
+            border: 1px solid variables.$grey-color
+            border-radius: 10px
+            padding: 20px 24px
+
+    .ant-select:not(.ant-select-disabled):hover
+        .ant-select-selector
+            border-color: variables.$white-color !important
+
+    .ant-select-selection-item,
+    .ant-select-multiple .ant-select-selection-item,
+    .ant-select-selection-placeholder
+        font-family: variables.$jakarta-font
+        font-style: normal
+        font-weight: 600
+        font-size: 20px
+        line-height: 25px
+        color: variables.$white-color
+        background: none
+        border: none
+        padding: 0
+
+        .ant-select-selection-item-remove
+            display: none
+
+    .ant-select-single.ant-select-open
+        .ant-select-selection-item
+            color: variables.$white-color

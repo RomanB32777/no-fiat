@@ -1,0 +1,24 @@
+@use '../././../../../commonStyles/variables'
+
+.employees-item
+    max-width: 350px
+    background: variables.$grey-color
+    border-radius: 10px
+    padding: 18px 22px
+
+    .title
+        font-family: variables.$inter-font
+        font-size: 25px
+        line-height: 30px
+        font-weight: 400
+        color: variables.$white-color
+
+    .btns
+        height: 100%
+        display: flex
+
+        .item
+            cursor: pointer
+
+    @media (max-width: 576px)
+        max-width: none

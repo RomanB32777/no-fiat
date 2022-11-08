@@ -1,0 +1,64 @@
+@use '../../commonStyles/variables'
+
+.datesPicker
+    width: 100%
+
+    &__label_wrapper
+        display: flex
+        align-items: center
+
+    &__label
+        color: variables.$grey-light-color
+        font-family: variables.$inter-font
+        font-style: normal
+        font-weight: 700
+        font-size: 17px
+        line-height: 20px
+
+    .ant-picker
+        padding: 0
+        background: none
+
+        .ant-picker-input
+            & > input
+                padding: 5px 10px
+                background: variables.$grey-background-color
+                font-family: variables.$inter-font
+                font-style: normal
+                font-weight: 600
+                font-size: 17px
+                line-height: 20px
+                color: variables.$grey-light-color
+                text-align: center
+                border: 1px solid variables.$grey-light-color
+                border-radius: 30px
+
+        .ant-picker-range-separator
+            background: variables.$grey-light-color
+            border: 0.5px solid variables.$grey-light-color
+
+            .ant-picker-separator
+                display: none
+
+        .ant-picker-active-bar
+            display: none
+            // bottom: 0
+            // height: 100%
+            // width: 173px !important
+            // margin-left: 0
+            // background: none
+            // border: 2px solid variables.$yellow-color
+            // border-radius: 30px
+            // transition: none
+
+        .ant-picker-suffix
+            display: none
+
+        .ant-picker-clear
+            color: variables.$grey-light-color
+            background: none
+
+    @media (max-width: 576px)
+        &__label
+            font-size: 12px
+            line-height: 27px

@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  tron:
+    build: 
+      context: ./admin
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - WALLET=tronlink
+        - BLOCKCHAIN=tron
+        - REACT_APP_STORAGE_TOKEN=token
+    ports:
+      - "8092:80"
+
+  landing:
+    build: 
+      context: ./landing
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    ports:
+      - "8090:80"

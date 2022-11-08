@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "admin": "npm start --prefix admin",
+    "admin:tron": "REACT_APP_WALLET=tronlink REACT_APP_BLOCKCHAIN=tron npm start --prefix admin",
+    "landing": "npm start --prefix landing",
+    "admin:install": "npm install --prefix admin",
+    "admin:build": "npm  run build --prefix admin",
+    "landing:install": "npm install --prefix landing",
+    "landing:build": "npm  run build --prefix landing",
+    "install": "concurrently \"npm run admin:install\" \"npm run landing:install\"",
+    "dev": "concurrently \"npm run admin:tron\" \"npm run landing\"",
+    "dockerUp": "docker-compose up -d --build",
+    "dockerStop": "docker-compose stop",
+    "dockerDown": "docker-compose down",
+    "dockerRmiDangling": "docker rmi $(docker images -f dangling=true -q)",
+    "dockerClear": "docker system prune -a -f"
+  },
+  "author": "Roman <r.bogdanovskiy@onpoint.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.2.2"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,27 @@
+@use '../././../commonStyles/variables'
+
+.settings-page
+    .btn-bottom
+        margin-top: 25px
+
+    .form-element
+        .walletIcon
+            padding: 21.3px 15px
+
+        &__action
+            font-family: variables.$jakarta-font
+            font-size: 20px
+            line-height: 25px
+            color: variables.$grey-light-color
+            transition: .4s
+
+            span
+                cursor: pointer
+
+            &.active
+                color: variables.$yellow-color
+
+            @media (max-width: 768px)
+                // margin-top: 35px
+                font-size: 18px
+                line-height: 22px

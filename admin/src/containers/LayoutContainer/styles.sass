@@ -1,0 +1,50 @@
+@use '../../commonStyles/_variables'
+
+.main-container
+    margin-top: 68px
+    padding: 0 50px 34px
+    color: variables.$white-color
+
+.sidebar
+    &-content
+        height: 85%
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+    &-email
+        display: flex
+        align-items: center
+        padding-left: 24px
+
+        a, svg
+            transition: .3s
+            color: variables.$grey-color
+        a
+            font-weight: 400
+            font-family: variables.$inter-font
+            font-size: 14px
+            margin-left: 5px
+
+        &:hover
+            a, svg
+                color: variables.$white-color
+
+@media (max-width: 992px)
+    .sidebar-overlay
+        position: absolute
+        height: 100%
+        left: 0
+        top: 0
+        bottom: 0
+        right: 0
+        z-index: 99
+        background: variables.$black-color
+        opacity: .5
+
+    .main-container
+        margin-top: 90px
+
+@media (max-width: 768px)
+    .main-container
+        padding: 0 25px 34px

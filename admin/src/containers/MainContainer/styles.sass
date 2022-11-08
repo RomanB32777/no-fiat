@@ -1,0 +1,70 @@
+@use '../././../commonStyles/variables'
+
+.dashboard-page
+    .title
+        margin-bottom: 35px
+
+    @media (max-width: 576px)
+        .title
+            margin-bottom: 20px
+
+.widget
+    background: variables.$grey-background-color
+    border-radius: variables.$border-radius
+    min-height: 100px
+
+    &.widget-stat
+        margin-bottom: 16px
+
+    &_header
+        display: flex
+        justify-content: space-between
+        align-items: center
+        font-family: variables.$inter-font
+        color: variables.$white-color
+
+        &__title
+            font-weight: 400
+            font-size: 20px
+
+    &__items
+        margin-top: 20px
+
+    &__item
+        display: flex
+        flex-direction: column
+        background: variables.$grey-color
+        border-radius: 20px
+        padding: 15px 20px
+
+        &_name,
+        &_sum
+            font-family: variables.$inter-font
+            font-style: normal
+
+        &_name
+            font-size: 17px
+            line-height: 22px
+            font-weight: 600
+            color: variables.$white-color
+
+        &_sum
+            font-size: 15px
+            line-height: 20px
+            font-weight: 400
+            color: variables.$grey-color
+            margin-top: 5px
+
+// @media (min-width: 768px)
+//     .widget
+//         padding: 20px 29px 25px 25px
+
+@media (min-width: 576px)
+    .widget__item
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        padding: 22px 24px 22px 14px
+
+        &_sum
+            margin-top: 0px
