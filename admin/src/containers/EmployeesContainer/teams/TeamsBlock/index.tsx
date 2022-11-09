@@ -100,13 +100,15 @@ const TeamsBlock = () => {
       const isExistTeamInOrg = organization.teams.some(
         (t) => t.name === team.name
       );
-      if (!editedTeam && isExistTeamInOrg)
-        addNotification({
+      if (!editedTeam && isExistTeamInOrg) {
+        setLoadingTeam(false);
+        return addNotification({
           type: "warning",
           title: "Is exists",
           message:
             "A team with the same name already exists in the organization",
         });
+      }
 
       if (editedTeam) {
         let updatedTeamInfo;
@@ -156,9 +158,8 @@ const TeamsBlock = () => {
         }
         if (updatedTeamInfo) {
           console.log(updatedTeamInfo);
-          setLoadingTeam(false);
           dispatch(getOrganization());
-          return addSuccessNotification({
+          addSuccessNotification({
             message: "Team successfully modified",
           });
           // closeModal();
@@ -169,7 +170,6 @@ const TeamsBlock = () => {
           const newTeam = await currentWalletConf.addTeamToOrg(team);
           if (newTeam) {
             console.log(team, newTeam);
-            setLoadingTeam(false);
             dispatch(getOrganization());
             closeModal();
             addSuccessNotification({

@@ -88,9 +88,9 @@ const EmployeesBlock = () => {
   };
 
   const sendData = async (field?: keyof IEmployeeBase) => {
-    setLoadingEmployee(true);
     const isValidate = isValidateFilled(Object.values(employeesForm));
     if (isValidate) {
+      setLoadingEmployee(true);
       const isExistEmployeeInOrg = allTipReceivers.some(
         (employeeAddress) =>
           employeeAddress === employeesForm.address ||
@@ -101,13 +101,15 @@ const EmployeesBlock = () => {
             })
       );
 
-      if (!editedEmployee && isExistEmployeeInOrg) 
-        addNotification({
+      if (!editedEmployee && isExistEmployeeInOrg) {
+        setLoadingEmployee(false);
+        return addNotification({
           type: "warning",
           title: "Is exists",
           message:
             "Tip Receiver with this address has already been added to the organization",
         });
+      }
 
       if (field && field === "name") {
         const editedEmployeeInfo = await currentWalletConf.getEmployeeBase(
@@ -120,7 +122,7 @@ const EmployeesBlock = () => {
           if (employeeInfo) {
             dispatch(getOrganization());
             closeModal();
-            return employeeInfo;
+            // return employeeInfo;
           }
         } else {
           addNotification({
@@ -138,7 +140,7 @@ const EmployeesBlock = () => {
           if (employeeInfo) {
             dispatch(getOrganization());
             closeModal();
-            return employeeInfo;
+            // return employeeInfo;
           }
         } else {
           addNotification({
@@ -156,7 +158,7 @@ const EmployeesBlock = () => {
           if (employeeInfo) {
             dispatch(getOrganization());
             closeModal();
-            return employeeInfo;
+            // return employeeInfo;
           }
         } else {
           addNotification({
@@ -165,13 +167,13 @@ const EmployeesBlock = () => {
           });
         }
       }
+      setLoadingEmployee(false);
     } else {
       addNotification({
         type: "warning",
         title: "Not all fields are filled",
       });
     }
-    setLoadingEmployee(false);
   };
 
   useEffect(() => {
