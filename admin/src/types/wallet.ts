@@ -31,13 +31,6 @@ export interface IFormatAddressStr {
   format: string;
 }
 
-// old
-export interface IBalanceObj {
-  walletData: any;
-  setBalance?: (amount: number) => void;
-}
-//
-
 export interface IBlockchain {
   address: string;
   name: string;
@@ -76,6 +69,7 @@ export interface IWalletMethods {
   getWalletUserData: () => Promise<IWalletInitData>;
   checkIfOwner: () => Promise<boolean>;
   checkIfTipReciever: () => Promise<ITipRecieverObj | boolean>;
+  getBalance: () => Promise<number>;
 
   // organization
   addOrganization: (
@@ -113,9 +107,6 @@ export interface IWalletMethods {
   sendTips: (forSendTipsObj: ITipsObj) => Promise<any>;
   withdrawTeams: () => Promise<any>;
   withdrawTipsByEmployee: () => Promise<any>;
-
-  // old
-  getBalance: (objForBalance: IBalanceObj) => Promise<number>;
 }
 
 export interface IWalletConf extends IWalletState, IWalletMethods {}

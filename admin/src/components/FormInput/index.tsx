@@ -84,6 +84,7 @@ const FormInput = ({
               onWheel={(e) => e.currentTarget.blur()}
               onChange={(e) => onChange && onChange(e)}
               value={value}
+              bordered={false}
             />
             {addonAfter && (
               <div className="formInput__input_addonAfter">{addonAfter}</div>

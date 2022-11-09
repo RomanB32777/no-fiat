@@ -4,10 +4,13 @@ import {
   getTronContractData,
   getTronUserWallet,
   formatNumber,
-  getTronBalance,
   formatTronAddressStr,
 } from "./contractMethods";
-import { checkIsOwner, checkIsTipReciever } from "./userMethods";
+import {
+  checkIsOwner,
+  checkIsTipReciever,
+  getTronBalance,
+} from "./userMethods";
 import {
   addTronOrganization,
   showTronOrganization,
@@ -44,7 +47,9 @@ export const tronlinkMethods: IWalletMethods = {
   getBlockchainContractData() {
     return getTronContractData();
   },
-  getBalance: (objForBalance) => getTronBalance({ ...objForBalance }),
+  getBalance() {
+    return getTronBalance(this);
+  },
 
   // user
   checkIfOwner() {

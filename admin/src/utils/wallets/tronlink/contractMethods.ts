@@ -1,5 +1,4 @@
 import {
-  IBalanceObj,
   IWalletInitData,
   IWalletMethods,
   IFormatAddressStr,
@@ -60,29 +59,11 @@ export const getTronContractData = async () => {
   }
 };
 
-export const getTronBalance = async ({
-  walletData,
-  setBalance,
-}: IBalanceObj) => {
-  const tronWeb = (window as any).tronWeb;
-  const tronBalance = await tronWeb.trx.getBalance(walletData.address);
-  if (tronBalance) {
-    const formatTronBalance = tronWeb.fromSun(tronBalance);
-    setBalance &&
-      formatTronBalance &&
-      setBalance(parseFloat(formatTronBalance));
-    return parseFloat(formatTronBalance);
-  }
-  return 0;
-};
-
 export const formatNumber = (from: any) =>
   Number((window as any).tronWeb.fromSun(from));
 
-export const formatTronAddressStr = ({
-  address,
-  format,
-}: IFormatAddressStr) => (window as any).tronWeb.address[format](address);
+export const formatTronAddressStr = ({ address, format }: IFormatAddressStr) =>
+  (window as any).tronWeb.address[format](address);
 
 // export const fromHexToBase58 = (hexStr: string) =>
 //   (window as any).tronWeb.address.fromHex(hexStr);

@@ -98,7 +98,6 @@ const UploadImage = ({
                     formats?.map((f) => `image/${f.toLowerCase()}`).join(",") ||
                     "image/jpeg,image/jpg,image/png"
                   }
-                  // disabled={disabled || false}
                 />
                 <div
                   className="file-input__row__back"

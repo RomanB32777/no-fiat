@@ -101,12 +101,12 @@ const EmployeesBlock = () => {
             })
       );
 
-      if (!editedEmployee && isExistEmployeeInOrg)
-        return addNotification({
+      if (!editedEmployee && isExistEmployeeInOrg) 
+        addNotification({
           type: "warning",
           title: "Is exists",
           message:
-            "An employee with this address is already a member of the organization",
+            "Tip Receiver with this address has already been added to the organization",
         });
 
       if (field && field === "name") {
@@ -123,7 +123,7 @@ const EmployeesBlock = () => {
             return employeeInfo;
           }
         } else {
-          return addNotification({
+          addNotification({
             type: "warning",
             title: "Employee name has not changed",
           });
@@ -141,7 +141,7 @@ const EmployeesBlock = () => {
             return employeeInfo;
           }
         } else {
-          return addNotification({
+          addNotification({
             type: "warning",
             title: "An error occurred while loading the image",
           });
@@ -159,14 +159,14 @@ const EmployeesBlock = () => {
             return employeeInfo;
           }
         } else {
-          return addNotification({
+          addNotification({
             type: "warning",
             title: "An error occurred while loading the image",
           });
         }
       }
     } else {
-      return addNotification({
+      addNotification({
         type: "warning",
         title: "Not all fields are filled",
       });

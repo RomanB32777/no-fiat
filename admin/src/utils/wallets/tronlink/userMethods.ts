@@ -27,3 +27,14 @@ export const checkIsTipReciever = async (methods: IWalletMethods) => {
     return false;
   }
 };
+
+export const getTronBalance = async (methods: IWalletMethods) => {
+  const tronWeb = (window as any).tronWeb;
+  const userWalletData = await methods.getWalletUserData();
+  const tronBalance = await tronWeb.trx.getBalance(userWalletData.userAddress);
+  if (tronBalance) {
+    const formatTronBalance = tronWeb.fromSun(tronBalance);
+    return parseFloat(formatTronBalance);
+  }
+  return 0;
+};

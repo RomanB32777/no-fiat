@@ -61,13 +61,24 @@ const SendTipsContainer = () => {
 
     if (isValidate) {
       setLoadingSent(true);
-      const tipsInfo = await currentWalletConf.sendTips(tipsForm);
-      if (tipsInfo) {
-        addSuccessNotification({ message: "Tip sent successfully" });
-        setTipsForm(initTipsForm);
+      // await wallet.getBalance({
+      //   walletData,
+      //   setBalance,
+      // });
+      const balance = await currentWalletConf.getBalance();
+      if (balance >= Number(amount)) {
+        const tipsInfo = await currentWalletConf.sendTips(tipsForm);
+        if (tipsInfo) {
+          addSuccessNotification({ message: "Tip sent successfully" });
+          setTipsForm(initTipsForm);
+        } else {
+          addErrorNotification({
+            message: "Something went wrong while sending the tip",
+          });
+        }
       } else {
         addErrorNotification({
-          message: "Something went wrong while sending the tip",
+          message: "Not enough balance",
         });
       }
       setLoadingSent(false);

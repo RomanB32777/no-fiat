@@ -101,7 +101,7 @@ const TeamsBlock = () => {
         (t) => t.name === team.name
       );
       if (!editedTeam && isExistTeamInOrg)
-        return addNotification({
+        addNotification({
           type: "warning",
           title: "Is exists",
           message:
@@ -125,7 +125,7 @@ const TeamsBlock = () => {
                 team.percentageToPay
               );
             } else {
-              return addNotification({
+              addNotification({
                 type: "warning",
                 title:
                   "In order to complete this action you need to withdraw your pending balance! You can do that in Tips section.",
@@ -149,7 +149,7 @@ const TeamsBlock = () => {
             break;
 
           default:
-            return addNotification({
+            addNotification({
               type: "warning",
               title: "Team has not been changed",
             });
@@ -158,23 +158,34 @@ const TeamsBlock = () => {
           console.log(updatedTeamInfo);
           setLoadingTeam(false);
           dispatch(getOrganization());
-          addSuccessNotification({ message: "Team successfully modified" });
+          return addSuccessNotification({
+            message: "Team successfully modified",
+          });
           // closeModal();
-          return updatedTeamInfo;
         }
       } else {
-        const newTeam = await currentWalletConf.addTeamToOrg(team);
-        if (newTeam) {
-          console.log(team, newTeam);
-          setLoadingTeam(false);
-          dispatch(getOrganization());
-          addSuccessNotification({ message: "Team added successfully" });
-          closeModal();
-          return newTeam;
+        const findSimilarTeam = teams.some((t) => t.name === team.name);
+        if (!findSimilarTeam) {
+          const newTeam = await currentWalletConf.addTeamToOrg(team);
+          if (newTeam) {
+            console.log(team, newTeam);
+            setLoadingTeam(false);
+            dispatch(getOrganization());
+            closeModal();
+            addSuccessNotification({
+              message: "Team added successfully",
+            });
+          }
+        } else {
+          addNotification({
+            type: "warning",
+            title: "Team with such name has already been created",
+          });
         }
       }
+      setLoadingTeam(false);
     } else {
-      addNotification({
+      return addNotification({
         type: "warning",
         title: "Not all fields are filled",
       });
