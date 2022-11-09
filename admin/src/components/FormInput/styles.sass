@@ -8,9 +8,9 @@
         align-items: center
 
     &__label
-        font-family: variables.$jakarta-font
+        font-family: variables.$gilroy-font
         font-style: normal
-        font-weight: 400
+        font-weight: 500
         font-size: 25px
         line-height: 30px
         color: variables.$white-color
@@ -23,7 +23,7 @@
         &_addonBefore
             background: variables.$grey-color
             border: 1px solid variables.$grey-color
-            font-family: variables.$jakarta-font
+            font-family: variables.$gilroy-font
             color: variables.$white-color
             height: 100%
 
@@ -42,14 +42,16 @@
     &__description
         margin-top: 10px
         margin-bottom: 0
-        font-family: variables.$jakarta-font
+        font-family: variables.$gilroy-font
         font-style: normal
-        font-weight: 400
+        font-weight: 500
         font-size: 17px
         line-height: 22px
         color: variables.$grey-color
 
-    input, textarea
+    input, 
+    textarea,
+    .ant-input[disabled]
         width: 100%
         background: variables.$grey-color
         outline: none
@@ -57,7 +59,7 @@
         font-size: 20px
         border-radius: 10px
         border: 1px solid variables.$grey-color
-        font-family: variables.$jakarta-font
+        font-family: variables.$gilroy-font
         color: variables.$white-color
         font-weight: 600
         box-sizing: border-box
@@ -76,7 +78,7 @@
             padding-right: 0 // 12px
 
         &::placeholder
-            font-weight: 400
+            font-weight: 500
             color: variables.$white-color // grey-light
 
     input[type='number']

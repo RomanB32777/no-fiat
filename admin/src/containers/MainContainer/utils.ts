@@ -1,5 +1,11 @@
 import moment from "moment";
-import { IFiltersDates } from "../../types";
+import { IEmployeeBase, IFiltersDates } from "../../types";
+
+export interface IRatingTipsItem extends IEmployeeBase {
+  review: number;
+  sum: number;
+  amountTips: number;
+}
 
 export const filterTips = ({
   arr,

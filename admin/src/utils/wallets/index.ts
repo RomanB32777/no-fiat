@@ -1,4 +1,3 @@
-import { Web3Storage } from "web3.storage";
 import axios from "axios";
 import { tronlinkMethods } from "./tronlink";
 
@@ -13,10 +12,6 @@ const getUsdKoef = async (
   setUsdtKoef && data[blockchain] && setUsdtKoef(+data[blockchain].usd);
   if (data[blockchain]) return +data[blockchain].usd;
   return 0;
-};
-
-export const makeStorageClient = () => {
-  return new Web3Storage({ token: process.env.REACT_APP_STORAGE_TOKEN || "" });
 };
 
 export { tronlinkMethods, getUsdKoef };

@@ -10,6 +10,8 @@ import "./styles.sass";
 const EmployeesModal = ({
   isOpen,
   isEdit,
+  loading,
+  isNewPhotoValue,
   employeesForm,
   setEmployeesForm,
   setPhotoValue,
@@ -18,18 +20,24 @@ const EmployeesModal = ({
 }: {
   isOpen: boolean;
   isEdit: boolean;
+  loading: boolean;
+  isNewPhotoValue: boolean;
   employeesForm: IEmployeeBase;
   setEmployeesForm: (employee: IEmployeeBase) => void;
   setPhotoValue: (photoValue: FileList) => void;
   closeModal: () => void;
-  sendData: () => Promise<any>;
+  sendData: (field?: keyof IEmployeeBase) => Promise<any>;
 }) => {
   const { address, name, photoLink } = employeesForm;
 
   const isChangedPhoto = useMemo(
-    () => isEdit && photoLink.length, // && photoLink !== oldPhoto ??
-    [isEdit, photoLink]
+    () => isEdit && isNewPhotoValue,
+    [isEdit, isNewPhotoValue]
   );
+
+  const editPhoto = async () => await sendData("photoLink");
+  const editName = async () => await sendData("name");
+  const createEmployee = async () => await sendData();
 
   return (
     <ModalComponent
@@ -41,7 +49,7 @@ const EmployeesModal = ({
     >
       <div className="employee-modal">
         <Row gutter={[0, 36]} className="form">
-          <Col span={isChangedPhoto ? 6 : 24}>
+          <Col xs={14} sm={8} md={isChangedPhoto ? 6 : 24}>
             <div className="form-element">
               <UploadImage
                 label="Photo"
@@ -52,14 +60,18 @@ const EmployeesModal = ({
                   setPhotoValue(file);
                   setEmployeesForm({ ...employeesForm, photoLink: preview });
                 }}
+                disabled={loading}
+                loading={loading}
                 labelCol={24}
                 InputCol={24}
               />
             </div>
           </Col>
-          {isChangedPhoto && (
+          {Boolean(isChangedPhoto) && (
             <Col
-              span={6}
+              xs={8}
+              sm={10}
+              md={6}
               offset={1}
               style={{ display: "flex", alignItems: "end" }}
             >
@@ -67,8 +79,9 @@ const EmployeesModal = ({
                 <BaseButton
                   title="Change"
                   padding="10px 20px"
-                  onClick={sendData}
+                  onClick={editPhoto}
                   fontSize="18px"
+                  disabled={loading}
                 />
               </div>
             </Col>
@@ -79,8 +92,8 @@ const EmployeesModal = ({
                 label="Name"
                 placeholder="Name of employee"
                 value={name}
-                onChange={(value) =>
-                  setEmployeesForm({ ...employeesForm, name: value })
+                onChange={({ target }) =>
+                  setEmployeesForm({ ...employeesForm, name: target.value })
                 }
                 labelCol={24}
                 InputCol={24}
@@ -89,12 +102,14 @@ const EmployeesModal = ({
                   isEdit ? (
                     <BaseButton
                       title="Change"
-                      onClick={sendData}
+                      onClick={editName}
                       padding="16.5px 6px"
                       fontSize="20px"
+                      disabled={loading}
                     />
                   ) : null
                 }
+                disabled={loading}
               />
             </div>
           </Col>
@@ -104,8 +119,8 @@ const EmployeesModal = ({
                 label="Address"
                 placeholder="Address of empoyee"
                 value={address}
-                onChange={(value) =>
-                  setEmployeesForm({ ...employeesForm, address: value })
+                onChange={({ target }) =>
+                  setEmployeesForm({ ...employeesForm, address: target.value })
                 }
                 labelCol={24}
                 InputCol={24}
@@ -120,8 +135,9 @@ const EmployeesModal = ({
             <BaseButton
               title="Create"
               padding="10px 35px"
-              onClick={sendData}
+              onClick={createEmployee}
               fontSize="18px"
+              disabled={loading}
             />
           </div>
         )}

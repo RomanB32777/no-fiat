@@ -1,8 +1,23 @@
 @use 'variables'
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap')
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap')
-@import url('https://db.onlinewebfonts.com/c/c45fb6b1e381cbb5383b8a03a6f496a7?family=Bangla+Sangam+MN')
+@font-face
+  font-family: 'Gilroy'
+  font-style: normal
+  font-weight: 500
+  src: local('Gilroy Medium'), local('Gilroy-Medium'), url('../fonts/Gilroy-Medium.woff2') format('woff2'), url('../fonts/Gilroy-Medium.woff') format('woff'), url('../fonts/Gilroy-Medium.ttf') format('truetype')
+
+
+@font-face
+  font-family: 'Gilroy'
+  font-style: normal
+  font-weight: 600
+  src: local('Gilroy Semibold'), local('Gilroy-Semibold'), url('../fonts/Gilroy-Semibold.woff2') format('woff2'), url('../fonts/Gilroy-Semibold.woff') format('woff'), url('../fonts/Gilroy-Semibold.ttf') format('truetype')
+
+@font-face
+  font-family: 'Gilroy'
+  font-style: normal
+  font-weight: 700
+  src: local('Gilroy Heavy'), local('Gilroy-Heavy'), url('../fonts/Gilroy-Heavy.woff2') format('woff2'), url('../fonts/Gilroy-Heavy.woff') format('woff'), url('../fonts/Gilroy-Heavy.ttf') format('truetype')
 
 html
   box-sizing: border-box
@@ -65,7 +80,7 @@ body
   border-left: 8px solid #0c078c !important
 
 .rnc__notification-content
-  font-family: variables.$jakarta-font, sans-serif
+  font-family: variables.$gilroy-font, sans-serif
 
 .ant-layout-sider,
 .ant-menu.ant-menu-dark,
@@ -95,8 +110,8 @@ body
 
 .ant-menu-dark .ant-menu-item
   background-color: transparent
-  font-family: variables.$bangla-sangam
-  font-weight: 400
+  font-family: variables.$gilroy-font
+  font-weight: 500
   font-size: 20px
   color: variables.$white-color
 
@@ -128,18 +143,10 @@ body
 .ant-layout-sider-zero-width-trigger
   background: none
 
-.empty-el
-  margin: 10px auto
-
-  .ant-empty-description
-    color: variables.$white-color
-    font-family: variables.$bangla-sangam
-    font-weight: 400
-
 .ant-empty-normal
   color: variables.$white-color
-  font-family: variables.$bangla-sangam
-  font-weight: 400
+  font-family: variables.$gilroy-font
+  font-weight: 500
   
 .ant-slider:hover .ant-slider-track,
 .ant-slider-track
@@ -167,7 +174,7 @@ body
   .ant-steps-item
     .ant-steps-item-title
       color: variables.$white-color !important
-      font-family: variables.$inter-font !important
+      font-family: variables.$gilroy-font !important
       font-size: 20px !important
 
 .ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot
@@ -192,9 +199,9 @@ body
 .form
   &-element
     &__label
-      font-family: variables.$jakarta-font
+      font-family: variables.$gilroy-font
       font-style: normal
-      font-weight: 400
+      font-weight: 500
       font-size: 20px
       line-height: 25px
       color: variables.$white-color
@@ -218,7 +225,7 @@ body
   border-bottom: 1px solid variables.$grey-background-color
 
 .section-title
-  font-family: variables.$inter-font
+  font-family: variables.$gilroy-font
   font-size: 25px
   line-height: 30px
   font-weight: 700

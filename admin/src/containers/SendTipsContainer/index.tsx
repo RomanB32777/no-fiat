@@ -9,13 +9,15 @@ import Loader from "../../components/Loader";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getOrganization } from "../../store/types/Organization";
+import { currentBlockchainConf, currentWalletConf } from "../../consts";
 import {
   addErrorNotification,
+  addNotification,
   addSuccessNotification,
+  isValidateFilled,
   shortStr,
 } from "../../utils";
 import { IEmployeeBase, ITipsObj } from "../../types";
-import { currentBlockchainConf, currentWalletConf } from "../../consts";
 import "./styles.sass";
 
 const SelectDropdown = (menu: React.ReactElement) => {
@@ -55,12 +57,11 @@ const SendTipsContainer = () => {
   const [loadingSent, setLoadingSent] = useState<boolean>(false);
 
   const sendTips = async () => {
-    if (owner) {
+    const isValidate = isValidateFilled(Object.values(tipsForm));
+
+    if (isValidate) {
       setLoadingSent(true);
-      const tipsInfo = await currentWalletConf.sendTips({
-        ...tipsForm,
-        ownerAddress: owner,
-      });
+      const tipsInfo = await currentWalletConf.sendTips(tipsForm);
       if (tipsInfo) {
         addSuccessNotification({ message: "Tip sent successfully" });
         setTipsForm(initTipsForm);
@@ -70,14 +71,21 @@ const SendTipsContainer = () => {
         });
       }
       setLoadingSent(false);
+    } else {
+      addNotification({
+        type: "warning",
+        title: "Not all fields are filled",
+      });
     }
   };
 
   useEffect(() => {
-    owner &&
+    if (owner) {
+      setTipsForm({ ...tipsForm, ownerAddress: owner });
       setTimeout(() => {
         dispatch(getOrganization(owner));
       }, 500);
+    }
   }, [owner]);
 
   useEffect(() => {
@@ -110,7 +118,9 @@ const SendTipsContainer = () => {
 
   return (
     <div className="sentTips-page">
-      <div className="title">Send tips to employee of Two Bakers in crypto</div>
+      <div className="title">
+        Send tips to employee of {organization.organizationName} in crypto
+      </div>
       <div className="form">
         <Row gutter={[0, 36]} className="form">
           <Col span={24}>
@@ -118,16 +128,7 @@ const SendTipsContainer = () => {
               <SelectInput
                 placeholder="Select employee"
                 value={employeeAddress}
-                list={[
-                  {
-                    key: "e.address",
-                    value: "e.name ",
-                  },
-                  {
-                    key: "e.address",
-                    value: "e.name ",
-                  },
-                ]}
+                list={employeesListSelect}
                 onChange={(selected) =>
                   setTipsForm({
                     ...tipsForm,
@@ -150,13 +151,14 @@ const SendTipsContainer = () => {
                 minNumber={minReview}
                 maxNumber={maxReview}
                 placeholder={`Assess service from ${minReview} to ${maxReview}`}
-                onChange={(value) =>
+                onChange={({ target }) =>
                   setTipsForm((prev) => ({
                     ...tipsForm,
                     review:
-                      value.length && (+value > maxReview || +value < minReview)
+                      target.value.length &&
+                      (+target.value > maxReview || +target.value < minReview)
                         ? prev.review
-                        : value,
+                        : target.value,
                   }))
                 }
                 disabled={loadingSent}
@@ -168,10 +170,10 @@ const SendTipsContainer = () => {
             <div className="form-element">
               <FormInput
                 value={amount}
-                onChange={(amount) => {
+                onChange={({ target }) => {
                   setTipsForm({
                     ...tipsForm,
-                    amount: +amount < 0 ? "0" : amount,
+                    amount: +target.value < 0 ? "0" : target.value,
                   });
                 }}
                 addonAfter={

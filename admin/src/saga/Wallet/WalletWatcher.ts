@@ -8,18 +8,13 @@ import { GET_WALLET } from "../../store/types/Wallet";
 import { userRoles } from "../../types";
 
 export const asyncGetWallet = async () => {
-  const walletData = await currentWalletConf.getWalletUserData();
-  
-  if (walletData.userAddress) {
+  const { userAddress } = await currentWalletConf.getWalletUserData();
+
+  if (userAddress) {
     const isOwner = await currentWalletConf.checkIfOwner();
-    console.log(isOwner);
-    
     if (isOwner) return "owner";
     else {
-      
       const tipRecieverData = await currentWalletConf.checkIfTipReciever();
-      console.log(tipRecieverData);
-
       if (tipRecieverData) return "employee";
     }
   } else return null;
@@ -31,8 +26,11 @@ function* WalletWorker(): any {
   const user: userRoles | null = yield call(asyncGetWallet);
   if (user) {
     yield put(login(user));
-    if (user === "employee") yield put(getEmployee());
-    yield put(getOrganization());
+    if (user === "employee") {
+      yield put(getEmployee());
+    } else {
+      yield put(getOrganization());
+    }
   }
   yield put(setLoading(false));
 }

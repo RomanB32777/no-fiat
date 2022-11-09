@@ -48,7 +48,9 @@ const OwnerRegistrationBlock = () => {
         <FormInput
           value={name}
           placeholder="Name of organization"
-          onChange={(value) => setFormData({ ...formData, name: value })}
+          onChange={({ target }) =>
+            setFormData({ ...formData, name: target.value })
+          }
         />
       </div>
       <div className="input">

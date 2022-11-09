@@ -42,13 +42,18 @@ export const showTronOrganization = async (
       ] = organizationInfo;
 
       return {
-        organizationAddress,
+        organizationAddress: methods.formatAddressStr({
+          address: organizationAddress,
+          format: "fromHex",
+        }),
         initialized,
         teamsPart,
         organizationName,
         teamsAmountToWithdraw: methods.formatNumber(teamsAmountToWithdraw),
         teams,
-        allTipReceivers,
+        allTipReceivers: allTipReceivers.map((e: string) =>
+          methods.formatAddressStr({ address: e, format: "fromHex" })
+        ),
       };
     }
     return initOrganization;

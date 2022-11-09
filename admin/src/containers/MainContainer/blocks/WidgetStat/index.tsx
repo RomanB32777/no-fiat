@@ -5,7 +5,7 @@ import type { ChartData } from "chart.js";
 import moment from "moment";
 import { periodItemsTypes } from "../../../../utils/dateMethods/types";
 import { IEmployee, IFiltersDates } from "../../../../types";
-import { dateFormat, options } from "./graphData";
+import { dateFormat, enumerateBetweenDates, options } from "./graphData";
 import "./styles.sass";
 
 Chart.register(...registerables);
@@ -49,7 +49,7 @@ const WidgetStat = ({
           )
           .flat()
           .filter(
-            ({ date }) => date > filteredDates.start && date < filteredDates.end
+            ({ date }) => date > filteredDates.start && date < filteredDates.end // moment().range(startDate, endDate);
           )
           .sort((a, b) => a.date - b.date)
           .map((t) => ({
@@ -57,12 +57,18 @@ const WidgetStat = ({
             date: moment(t.date).format(dateFormat[time_period]),
           }));
 
+        const initGroupDates = enumerateBetweenDates({
+          startDate: filteredDates.start,
+          endDate: filteredDates.end,
+          timePeriod: time_period,
+        }).reduce((acc, i) => ({ ...acc, [i]: 0 }), {});
+
         const groupTips = tips.reduce(
           (acc, t) => ({
             ...acc,
             [t.date]: acc[t.date] ? acc[t.date] + t.sum_usd : t.sum_usd,
           }),
-          {} as { [key: string]: number }
+          initGroupDates as { [key: string]: number }
         );
 
         const labels = Object.keys(groupTips).map((date: string) => date);
@@ -76,7 +82,7 @@ const WidgetStat = ({
           datasets: [
             {
               ...dataChart.datasets[0],
-              data,
+              data: data,
             },
           ],
         });

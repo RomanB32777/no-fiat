@@ -26,8 +26,14 @@ const TeamModal = ({
   const [form] = Form.useForm<ITeam>();
   const [editedField, setEditedField] = useState<teamFields | null>(null);
 
-  const onFinish = async (values: ITeam) =>
-    await sendData({ team: values, field: editedField });
+  const onFinish = async (values: ITeam) => {
+    console.log(values);
+
+    await sendData({
+      team: { ...values, percentageToPay: Number(values.percentageToPay) },
+      field: editedField,
+    });
+  };
 
   const btnSubmit = (field?: teamFields) => {
     field && setEditedField(field);

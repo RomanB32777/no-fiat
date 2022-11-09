@@ -1,5 +1,9 @@
 import { ChartOptions } from "chart.js";
-import { periodItemsTypes } from "../../../../utils/dateMethods/types";
+import moment from "moment";
+import {
+  IFilterPeriodItems,
+  periodItemsTypes,
+} from "../../../../utils/dateMethods/types";
 
 export const options: ChartOptions<"line"> = {
   scales: {
@@ -40,9 +44,41 @@ export const options: ChartOptions<"line"> = {
   },
 };
 
-export const dateFormat: { [key in periodItemsTypes]: string } = {
+type periodFormatTypes = "HH:mm" | "DD/MM" | "DD/MM/YYYY" | "MMMM";
+
+export const dateFormat: IFilterPeriodItems<periodFormatTypes> = {
   "0_day": "HH:mm",
-  "7_day": "dddd",
+  "7_day": "DD/MM",
   "30_day": "DD/MM/YYYY",
   "1_year": "MMMM",
+};
+
+type periodEnumerateTypes = "hours" | "days" | "months";
+
+export const periodTypes: IFilterPeriodItems<periodEnumerateTypes> = {
+  "0_day": "hours",
+  "7_day": "days",
+  "30_day": "days",
+  "1_year": "months",
+};
+interface IEnumerateDates {
+  startDate: number;
+  endDate: number;
+  timePeriod: periodItemsTypes;
+}
+
+export const enumerateBetweenDates = ({
+  startDate,
+  endDate,
+  timePeriod,
+}: IEnumerateDates) => {
+  let dates = [];
+  for (
+    let m = moment(startDate).add(1, periodTypes[timePeriod]);
+    m.isBefore(endDate);
+    m.add(1, periodTypes[timePeriod])
+  ) {
+    dates.push(m.format(dateFormat[timePeriod]));
+  }
+  return dates;
 };

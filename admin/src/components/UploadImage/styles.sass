@@ -8,18 +8,18 @@
 
     &__title
         margin-bottom: 20px
-        font-family: variables.$jakarta-font
+        font-family: variables.$gilroy-font
         font-style: normal
-        font-weight: 400
+        font-weight: 500
         font-size: 25px
         line-height: 30px
         color: variables.$white-color
 
     &__formats
         max-width: 170px
-        font-family: variables.$jakarta-font
+        font-family: variables.$gilroy-font
         font-style: normal
-        font-weight: 400
+        font-weight: 500
         font-size: 14px
         line-height: 20px
         color: variables.$grey-color
@@ -56,11 +56,15 @@
             justify-content: center
             align-items: center
             overflow: hidden
+            position: relative
             
             img
                 object-fit: cover
                 width: 100%
                 height: 100%
+
+            .loader-img
+                position: absolute
 
         &__button
             position: absolute
@@ -72,6 +76,7 @@
                 height: 100%
                 opacity: 0
                 z-index: 21
+                
         &__back
             position: absolute
             top: 0
@@ -84,7 +89,7 @@
             display: flex
             flex-direction: column
             align-items: center
-            font-family: variables.$inter-font
+            font-family: variables.$gilroy-font
             color: variables.$white-color
             font-style: normal
             font-weight: 700

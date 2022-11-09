@@ -1,6 +1,5 @@
 import { initEmployee } from "../../../consts";
-import { IEmployeeBase, IWalletMethods } from "../../../types";
-import { IChangePhotoObj } from "../../../types/wallet";
+import { IEmployeeBase, IWalletMethods, IChangePhotoObj } from "../../../types";
 
 // employee
 export const addTronEmployeeToOrg = async (
@@ -43,8 +42,14 @@ export const getTronEmployeeInfo = async (
       const photoLink = await methods.getEmployeePhoto(employeeAddress);
 
       return {
-        address: tipReceiver,
-        orgOwner,
+        address: methods.formatAddressStr({
+          address: tipReceiver,
+          format: "fromHex",
+        }),
+        orgOwner: methods.formatAddressStr({
+          address: orgOwner,
+          format: "fromHex",
+        }),
         name: tipReceiverName,
         photoLink,
         tipSum: tipSum.map((tip: any) => methods.formatNumber(tip)),

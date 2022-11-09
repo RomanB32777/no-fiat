@@ -61,7 +61,7 @@ const WidgetAverageTip = ({
     <div className="widget widget-averageTip">
       <Progress
         type="circle"
-        percent={count ? (review / count) * 100 : 0}
+        percent={+(count ? (review / count) * 100 : 0).toFixed(0)}
         width={300}
         strokeColor="#FEDD2F"
         format={(percent) => (

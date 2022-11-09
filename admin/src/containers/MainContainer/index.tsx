@@ -12,8 +12,8 @@ import FiltersBlock from "./blocks/FiltersBlock";
 import { useAppSelector } from "../../store/hooks";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { IEmployee, IFiltersDates, IFiltersForm } from "../../types";
-import { getUsdKoef } from "../../utils";
 import { currentWalletConf } from "../../consts";
+import { getFromIpfs, getUsdKoef } from "../../utils";
 import "./styles.sass";
 
 const initFiltersData: IFiltersForm = {
@@ -30,7 +30,7 @@ const MainContainer = () => {
 
   const [employees, setEmployees] = useState<IEmployee[]>([]);
   const [usdtKoef, setUsdtKoef] = useState<number>(0);
-  const [loadingDashboard, setLoadingDashboard] = useState<boolean>(false);
+  const [loadingDashboard, setLoadingDashboard] = useState<boolean>(true);
 
   const filtersHandler = (values: IFiltersForm) => {
     setFiltersData(values);
@@ -41,13 +41,13 @@ const MainContainer = () => {
   const filteredDates: IFiltersDates = useMemo(
     () => ({
       start: custom_time_period.every((t) => Boolean(t))
-        ? moment(custom_time_period[0]).valueOf()
+        ? moment(custom_time_period[0]).startOf("day").valueOf()
         : moment()
             .subtract(...time_period.split("_"))
             .startOf("day")
             .valueOf(),
       end: custom_time_period.every((t) => Boolean(t))
-        ? moment(custom_time_period[1]).valueOf()
+        ? moment(custom_time_period[1]).endOf("day").valueOf()
         : moment().endOf("day").valueOf(),
     }),
     [time_period, custom_time_period]
@@ -62,6 +62,8 @@ const MainContainer = () => {
         const employees: IEmployee[] = await Promise.all(
           allTipReceivers.map(async (address) => {
             const employee = await currentWalletConf.getEmployeeInfo(address);
+            const resPhoto = await getFromIpfs(employee.photoLink);
+            if (resPhoto) return { ...employee, photoLink: resPhoto as string };
             return employee;
           })
         );
@@ -70,7 +72,7 @@ const MainContainer = () => {
       setLoadingDashboard(false);
     };
 
-    getEmployees();
+    organization.organizationName && getEmployees();
     getUsdKoef(process.env.REACT_APP_BLOCKCHAIN || "tron", setUsdtKoef);
   }, [organization]);
 

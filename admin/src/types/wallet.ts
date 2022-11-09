@@ -26,6 +26,11 @@ export interface IChangePhotoObj {
   address: string;
 }
 
+export interface IFormatAddressStr {
+  address: string;
+  format: string;
+}
+
 // old
 export interface IBalanceObj {
   walletData: any;
@@ -64,6 +69,7 @@ export interface IWalletAction {
 export interface IWalletMethods {
   // contract
   formatNumber: (from: any) => any; // number
+  formatAddressStr: (formatObj: IFormatAddressStr) => string;
   getBlockchainContractData: () => Promise<any>;
 
   // user

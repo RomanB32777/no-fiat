@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Col, Empty, Row } from "antd";
+import { Col, Row } from "antd";
 
 import BaseButton from "../../../../components/BaseButton";
 import EmployeesModal from "../EmployeesModal";
 import CardItem from "../../blocks/CardItem";
+import EmptyBlock from "../../../../components/EmptyBlock";
 
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   addNotification,
   isValidateFilled,
-  makeStorageClient,
+  uploadToIpfs,
+  getFromIpfs,
 } from "../../../../utils";
 import { getOrganization } from "../../../../store/types/Organization";
 import { IEmployeeBase } from "../../../../types";
@@ -27,11 +29,12 @@ const EmployeesBlock = () => {
   const { isMobile } = useWindowDimensions();
   const { organization } = useAppSelector((state) => state);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
+  const [editedEmployee, setEditedEmployee] = useState<string>("");
+  const [loadingGet, setLoadingGet] = useState(false);
   const [employeesForm, setEmployeesForm] = useState<IEmployeeBase>({
     ...initEmployee,
   });
-  const [photoValue, setPhotoValue] = useState<FileList>();
+  const [photoValue, setPhotoValue] = useState<FileList | null>();
 
   const { allTipReceivers } = organization;
 
@@ -41,16 +44,27 @@ const EmployeesBlock = () => {
   };
 
   const openEditModal = async (employeeAddress: string) => {
-    const { name, photoLink } = await currentWalletConf.getEmployeeBase(
-      employeeAddress
-    );
-    setEmployeesForm({
-      name,
-      photoLink,
-      address: employeeAddress,
-    });
-    setIsEditModal(true);
-    setIsOpenModal(true);
+    try {
+      setEditedEmployee(employeeAddress);
+      setIsOpenModal(true);
+      setLoadingGet(true);
+
+      const { name, photoLink } = await currentWalletConf.getEmployeeBase(
+        employeeAddress
+      );
+
+      await getFromIpfs(photoLink, (result) =>
+        setEmployeesForm({
+          name,
+          address: employeeAddress,
+          photoLink: result,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingGet(false);
+    }
   };
 
   const closeModal = () => {
@@ -58,7 +72,8 @@ const EmployeesBlock = () => {
       ...initEmployee,
     });
     setIsOpenModal(false);
-    setIsEditModal(false);
+    setEditedEmployee("");
+    setPhotoValue(null);
   };
 
   const deleteItem = async (address: string) => {
@@ -66,42 +81,21 @@ const EmployeesBlock = () => {
     itemInfo && dispatch(getOrganization());
   };
 
-  const createJSON = (_uri: string) => {
-    const dict = { URI: _uri };
-    const jsonDict = JSON.stringify(dict);
-    const file = new File([jsonDict], "metadata.json", {
-      type: "text/plain;charset=utf-8",
-    });
-    return file;
-  };
-
-  const storeFiles = async (file: File) => {
-    const client = makeStorageClient();
-    const cid = await client.put([file]);
-    console.log("stored files with cid:", cid);
-    const ipfsLink = "ipfs://" + cid;
-    console.log(ipfsLink);
-    return ipfsLink;
-  };
-
-  const uploadToIpfs = async () => {
-    if (photoValue) {
-      const file = photoValue[0];
-      const sendFile = new File([file], file.name, { type: file.type });
-      const _uri = await storeFiles(sendFile);
-      const badgeDict = createJSON(_uri);
-      const new_uri = await storeFiles(badgeDict);
-      return new_uri;
-    }
-  };
-
-  const sendData = async () => {
+  const sendData = async (field?: keyof IEmployeeBase) => {
+    setLoadingGet(true);
     const isValidate = isValidateFilled(Object.values(employeesForm));
     if (isValidate) {
-      const isExistEmployeeInOrg = organization.allTipReceivers.some(
-        (employeeAddress) => employeeAddress === employeesForm.address // !!!!!!!!!!
+      const isExistEmployeeInOrg = allTipReceivers.some(
+        (employeeAddress) =>
+          employeeAddress === employeesForm.address ||
+          employeeAddress ===
+            currentWalletConf.formatAddressStr({
+              address: employeesForm.address,
+              format: "fromHex",
+            })
       );
-      if (!isEditModal && isExistEmployeeInOrg)
+
+      if (!editedEmployee && isExistEmployeeInOrg)
         return addNotification({
           type: "warning",
           title: "Is exists",
@@ -109,24 +103,69 @@ const EmployeesBlock = () => {
             "An employee with this address is already a member of the organization",
         });
 
-      const _uri = await uploadToIpfs();
-      if (_uri) {
-        const employeeInfo = await currentWalletConf[
-          isEditModal ? "editEmployeeInOrg" : "addEmployeeToOrg"
-        ]({ ...employeesForm, photoLink: _uri });
-
-        if (employeeInfo) {
-          dispatch(getOrganization());
-          closeModal();
-          return employeeInfo;
+      if (field && field === "name") {
+        const editedEmployeeInfo = await currentWalletConf.getEmployeeBase(
+          employeesForm.address
+        );
+        if (editedEmployeeInfo.name !== employeesForm.name) {
+          const employeeInfo = await currentWalletConf.editEmployeeInOrg(
+            employeesForm
+          );
+          if (employeeInfo) {
+            dispatch(getOrganization());
+            closeModal();
+            return employeeInfo;
+          }
+        } else {
+          return addNotification({
+            type: "warning",
+            title: "Employee name has not changed",
+          });
+        }
+      } else if (photoValue && field && field === "photoLink") {
+        const _uri = await uploadToIpfs(photoValue);
+        if (_uri) {
+          const employeeInfo = await currentWalletConf.changeEmployeePhoto({
+            newPhoto: _uri,
+            address: employeesForm.address,
+          });
+          if (employeeInfo) {
+            dispatch(getOrganization());
+            closeModal();
+            return employeeInfo;
+          }
+        } else {
+          return addNotification({
+            type: "warning",
+            title: "An error occurred while loading the image",
+          });
+        }
+      } else if (photoValue) {
+        const _uri = await uploadToIpfs(photoValue);
+        if (_uri) {
+          const employeeInfo = await currentWalletConf.addEmployeeToOrg({
+            ...employeesForm,
+            photoLink: _uri,
+          });
+          if (employeeInfo) {
+            dispatch(getOrganization());
+            closeModal();
+            return employeeInfo;
+          }
+        } else {
+          return addNotification({
+            type: "warning",
+            title: "An error occurred while loading the image",
+          });
         }
       }
     } else {
-      addNotification({
+      return addNotification({
         type: "warning",
         title: "Not all fields are filled",
       });
     }
+    setLoadingGet(false);
   };
 
   return (
@@ -149,7 +188,7 @@ const EmployeesBlock = () => {
         </Row>
       </div>
       <div className="list">
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 32]}>
           {Boolean(allTipReceivers.length) ? (
             allTipReceivers.map((address) => (
               <Col xs={24} sm={12} key={address}>
@@ -162,13 +201,15 @@ const EmployeesBlock = () => {
               </Col>
             ))
           ) : (
-            <Empty className="empty-el" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <EmptyBlock />
           )}
         </Row>
       </div>
       <EmployeesModal
         isOpen={isOpenModal}
-        isEdit={isEditModal}
+        isEdit={Boolean(editedEmployee)}
+        loading={loadingGet}
+        isNewPhotoValue={Boolean(photoValue && photoValue.length)}
         employeesForm={employeesForm}
         setEmployeesForm={setEmployeesForm}
         setPhotoValue={setPhotoValue}

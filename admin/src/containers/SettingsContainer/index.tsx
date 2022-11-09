@@ -11,7 +11,7 @@ import "./styles.sass";
 import Loader from "../../components/Loader";
 
 const SettingsContainer = () => {
-  const { organization } = useAppSelector((state) => state);
+  const { user, employee } = useAppSelector((state) => state);
   const [formSettings, setFormSettings] = useState<{
     userAddress: string;
     tipsLink: string;
@@ -22,19 +22,20 @@ const SettingsContainer = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const { teams } = organization;
-      const ownerTeam = teams.find((t) => t.name === "owner");
       const walletData = await currentWalletConf.getWalletUserData();
+      const ownerAddress =
+        user.userRole === "owner"
+          ? walletData.userAddress
+          : employee.orgOwner;
 
       walletData.userAddress &&
-        ownerTeam &&
         setFormSettings({
           userAddress: walletData.userAddress,
-          tipsLink: `${baseURL}/send-tips/${ownerTeam.employeesInTeam[0]}`,
+          tipsLink: `${baseURL}/send-tips/${ownerAddress}`,
         });
     };
     getUserData();
-  }, [organization]);
+  }, [user, employee]);
 
   const { userAddress, tipsLink } = formSettings;
 

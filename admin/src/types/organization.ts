@@ -35,11 +35,6 @@ interface IEmployeeAction {
   payload: IEmployee;
 }
 
-interface IGetEmployeeAction {
-  type: string;
-  payload: string;
-}
-
 interface IOrganizationAction {
   type: string;
   payload: IOrganization;
@@ -57,7 +52,6 @@ export type {
   teamFields,
   IOrganization,
   IEmployeeAction,
-  IGetEmployeeAction,
   IOrganizationAction,
   IForTipsOrganizationAction,
 };

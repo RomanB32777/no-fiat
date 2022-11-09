@@ -9,14 +9,22 @@ import {
   addInstallWalletNotification,
 } from "./notifications";
 
-import { getRandomStr, shortStr, copyStr } from "./stringMethods";
+import {
+  getRandomStr,
+  shortStr,
+  copyStr,
+  fromHexToString,
+} from "./stringMethods";
 
 import {
   DateTimezoneFormatter,
   DateFormatter,
   DateSorter,
 } from "./dateMethods";
-import { tronlinkMethods, getUsdKoef, makeStorageClient } from "./wallets";
+import { makeStorageClient, uploadToIpfs, getFromIpfs } from "./ipfs";
+import { tronlinkMethods, getUsdKoef } from "./wallets";
+
+console.log(getFromIpfs);
 
 const isValidateFilled = (valuesArray: any[]) =>
   valuesArray.every((val) => Boolean(val));
@@ -35,6 +43,7 @@ export {
   getRandomStr,
   shortStr,
   copyStr,
+  fromHexToString,
 
   // dates
   DateTimezoneFormatter,
@@ -42,12 +51,16 @@ export {
   DateSorter,
   getTimePeriodQuery,
 
-  // wallets
-  tronlinkMethods,
-  makeStorageClient,
-
   // currencies
   getUsdKoef,
+
+  // ipfs
+  makeStorageClient,
+  uploadToIpfs,
+  getFromIpfs,
+
+  // wallets
+  tronlinkMethods,
 
   // data
   isValidateFilled,

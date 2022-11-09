@@ -5,6 +5,7 @@ import {
   getTronUserWallet,
   formatNumber,
   getTronBalance,
+  formatTronAddressStr,
 } from "./contractMethods";
 import { checkIsOwner, checkIsTipReciever } from "./userMethods";
 import {
@@ -35,6 +36,8 @@ import {
 } from "./tipsMethods";
 
 export const tronlinkMethods: IWalletMethods = {
+  formatNumber,
+  formatAddressStr: (formatObj) => formatTronAddressStr(formatObj),
   getWalletUserData() {
     return getTronUserWallet(this);
   },
@@ -42,7 +45,6 @@ export const tronlinkMethods: IWalletMethods = {
     return getTronContractData();
   },
   getBalance: (objForBalance) => getTronBalance({ ...objForBalance }),
-  formatNumber,
 
   // user
   checkIfOwner() {

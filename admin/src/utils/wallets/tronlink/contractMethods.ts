@@ -1,4 +1,9 @@
-import { IBalanceObj, IWalletInitData, IWalletMethods } from "../../../types";
+import {
+  IBalanceObj,
+  IWalletInitData,
+  IWalletMethods,
+  IFormatAddressStr,
+} from "../../../types";
 import {
   addAuthWalletNotification,
   addInstallWalletNotification,
@@ -73,3 +78,14 @@ export const getTronBalance = async ({
 
 export const formatNumber = (from: any) =>
   Number((window as any).tronWeb.fromSun(from));
+
+export const formatTronAddressStr = ({
+  address,
+  format,
+}: IFormatAddressStr) => (window as any).tronWeb.address[format](address);
+
+// export const fromHexToBase58 = (hexStr: string) =>
+//   (window as any).tronWeb.address.fromHex(hexStr);
+
+// export const fromBase58ToHex = (baseStr: string) =>
+//   (window as any).tronWeb.address.toHex(baseStr);

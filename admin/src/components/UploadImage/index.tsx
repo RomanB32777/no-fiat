@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Col, Row } from "antd";
 import clsx from "clsx";
+import Loader from "../Loader";
 import { UploadIcon } from "../../icons/icons";
 import { IFileInfo } from "../../types";
 import "./styles.sass";
@@ -14,12 +15,12 @@ const UploadImage = ({
   disabled,
   setFile,
   filePreview,
-  sizeStr,
   InputCol,
   labelCol,
   gutter,
   bigSize,
   isBanner,
+  loading,
 }: {
   imgName?: string;
   label: string;
@@ -27,12 +28,12 @@ const UploadImage = ({
   disabled?: boolean;
   filePreview?: string;
   setFile?: (fileInfo: IFileInfo) => void;
-  sizeStr?: string;
   InputCol?: number;
   labelCol?: number;
   gutter?: number | [number, number];
   bigSize?: boolean;
   isBanner?: boolean;
+  loading?: boolean;
 }) => {
   const [isMouseOnAvatar, setIsMouseOnAvatar] = useState<boolean>(false);
 
@@ -81,6 +82,11 @@ const UploadImage = ({
             onMouseLeave={() => !disabled && setIsMouseOnAvatar(false)}
           >
             <div className="file-input__row__image">
+              {loading && (
+                <div className="loader-img">
+                  <Loader size="small" />
+                </div>
+              )}
               {imgExist && <img src={filePreview || imgName} alt={label} />}
             </div>
             {!disabled && (

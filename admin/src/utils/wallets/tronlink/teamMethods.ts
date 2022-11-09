@@ -7,9 +7,13 @@ export const addTronTeamToOrg = async (
 ) => {
   try {
     const { name, employeesInTeam, percentageToPay } = team;
+    const formatEmpoyees = employeesInTeam.map((e) =>
+      methods.formatAddressStr({ address: e, format: "toHex" })
+    );
+    console.log(name, formatEmpoyees, percentageToPay);
     const contractData = await methods.getBlockchainContractData();
     const organizationInfo = await contractData
-      .addTeamToOrg(name, employeesInTeam, percentageToPay)
+      .addTeamToOrg(name, formatEmpoyees, percentageToPay)
       .send();
     return organizationInfo;
   } catch (error) {
@@ -17,6 +21,46 @@ export const addTronTeamToOrg = async (
     return false;
   }
 };
+
+// export const addTronTeamToOrg = async (
+//   team: ITeam,
+//   methods: IWalletMethods
+// ) => {
+//   try {
+//     const { name, employeesInTeam, percentageToPay } = team;
+//     const formatEmpoyees = [
+//       "TW1tZymZysw89GkdUYh3PDDeovzSKZXF2c",
+//       "TTxu6qrkF3FAesFWeuJXR4yb2mUX1GEZXT",
+//     ]
+//     // .map((e) => methods.formatAddressStr({ address: e, format: "toHex" }));
+
+//     const listOfAddressToHex58 = []
+//     console.log(formatEmpoyees.length)
+//     for (let i = 0; i < formatEmpoyees.length; i++) {
+//       var a = (window as any).tronWeb.address.toHex(formatEmpoyees[i]);
+//       listOfAddressToHex58.push(a);
+//     }
+
+    
+//     console.log(name, listOfAddressToHex58, percentageToPay);
+//     const contractData = await methods.getBlockchainContractData();
+
+
+//     let instance = await (window as any).tronWeb
+//         .contract()
+//         .at("TFWKMM24a4BCA81oG9F19bgHmtTJEhD2gt");
+
+//     console.log(instance);
+    
+//     const organizationInfo = await instance
+//       .addTeamToOrg("crocs", listOfAddressToHex58, 1)
+//       .send();
+//     return organizationInfo;
+//   } catch (error) {
+//     console.log(error);
+//     return false;
+//   }
+// };
 
 export const deleteTronTeamFromOrg = async (
   organizationName: string,

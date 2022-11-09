@@ -1,8 +1,30 @@
-import { HTMLInputTypeAttribute } from "react";
-import { Col, Input, Row } from "antd";
+import { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
+import { Col, Input, InputProps, Row } from "antd";
 import clsx from "clsx";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import "./styles.sass";
+interface IFormInput extends InputProps {
+  value?: string;
+  label?: string;
+  name?: string;
+  placeholder?: string;
+  typeInput?: HTMLInputTypeAttribute;
+  disabled?: boolean;
+  modificator?: string;
+  descriptionInput?: React.ReactNode;
+  maxLength?: number;
+  minNumber?: number;
+  maxNumber?: number;
+  isTextarea?: boolean;
+  InputCol?: number;
+  labelCol?: number;
+  mobileInputCol?: number;
+  gutter?: number | [number, number];
+  addonBefore?: React.ReactNode;
+  addonAfter?: React.ReactNode;
+  afterEl?: React.ReactNode;
+  onChange?: ChangeEventHandler<HTMLInputElement>; //(value: string) => void;
+}
 
 const FormInput = ({
   label,
@@ -25,28 +47,7 @@ const FormInput = ({
   addonAfter,
   afterEl,
   onChange,
-}: {
-  value?: string;
-  label?: string;
-  name?: string;
-  placeholder?: string;
-  typeInput?: HTMLInputTypeAttribute;
-  disabled?: boolean;
-  modificator?: string;
-  descriptionInput?: React.ReactNode;
-  maxLength?: number;
-  minNumber?: number;
-  maxNumber?: number;
-  isTextarea?: boolean;
-  InputCol?: number;
-  labelCol?: number;
-  mobileInputCol?: number;
-  gutter?: number | [number, number];
-  addonBefore?: React.ReactNode;
-  addonAfter?: React.ReactNode;
-  afterEl?: React.ReactNode;
-  onChange?: (value: string) => void;
-}) => {
+}: IFormInput) => {
   const { isMobile } = useWindowDimensions();
 
   return (
@@ -56,13 +57,7 @@ const FormInput = ({
         justify={afterEl ? "space-between" : "start"}
         align="middle"
       >
-        <Col
-          md={labelCol || (label ? 12 : 0)}
-          xs={24}
-          className={clsx({
-            alignCenter: !isTextarea,
-          })}
-        >
+        <Col md={labelCol || (label ? 12 : 0)} xs={24} className="alignCenter">
           <span className="formInput__label">{label}</span>
         </Col>
         <Col md={InputCol || (label ? 12 : 24)} xs={mobileInputCol || 24}>
@@ -74,37 +69,22 @@ const FormInput = ({
             {addonBefore && (
               <div className="formInput__input_addonBefore">{addonBefore}</div>
             )}
-            {isTextarea ? (
-              <textarea
-                className={clsx({
-                  withAddonAfter: Boolean(addonAfter),
-                  withAddonBefore: Boolean(addonBefore),
-                })}
-                disabled={disabled} // || !Boolean(onChange)
-                name={name || ""}
-                placeholder={placeholder || ""}
-                maxLength={maxLength || 524288}
-                value={value}
-                onChange={(e) => onChange && onChange(e.target.value)}
-              />
-            ) : (
-              <Input
-                className={clsx({
-                  withAddonAfter: Boolean(addonAfter),
-                  withAddonBefore: Boolean(addonBefore),
-                })}
-                disabled={disabled} // || !Boolean(onChange)
-                name={name || ""}
-                placeholder={placeholder || ""}
-                type={typeInput || "text"}
-                min={minNumber || 0}
-                max={maxNumber}
-                maxLength={maxLength || 524288}
-                onWheel={(e) => e.currentTarget.blur()}
-                onChange={(e) => onChange && onChange(e.target.value)}
-                value={value}
-              />
-            )}
+            <Input
+              className={clsx({
+                withAddonAfter: Boolean(addonAfter),
+                withAddonBefore: Boolean(addonBefore),
+              })}
+              disabled={disabled} // || !Boolean(onChange)
+              name={name || ""}
+              placeholder={placeholder || ""}
+              type={typeInput || "text"}
+              min={minNumber || 0}
+              max={maxNumber}
+              maxLength={maxLength || 524288}
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) => onChange && onChange(e)}
+              value={value}
+            />
             {addonAfter && (
               <div className="formInput__input_addonAfter">{addonAfter}</div>
             )}

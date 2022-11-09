@@ -1,14 +1,17 @@
-import { Col, Empty, Row } from "antd";
+import { Col, Row } from "antd";
 import { useState } from "react";
+
 import BaseButton from "../../../../components/BaseButton";
+import EmptyBlock from "../../../../components/EmptyBlock";
+import CardItem from "../../blocks/CardItem";
+import TeamModal from "../TeamModal";
+
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getOrganization } from "../../../../store/types/Organization";
 import { addNotification, isValidateFilled } from "../../../../utils";
 import { ITeam, teamFields } from "../../../../types";
 import { currentWalletConf } from "../../../../consts";
-import CardItem from "../../blocks/CardItem";
-import TeamModal from "../TeamModal";
 
 const checkChangedEmployees = (firstTeamState: ITeam, secondTeamState: ITeam) =>
   firstTeamState.employeesInTeam.find(
@@ -74,8 +77,6 @@ const TeamsBlock = () => {
             "A team with the same name already exists in the organization",
         });
 
-      console.log(editedTeam, field);
-
       if (editedTeam) {
         let updatedTeamInfo;
         switch (field) {
@@ -135,6 +136,8 @@ const TeamsBlock = () => {
           return updatedTeamInfo;
         }
       } else {
+        console.log("before", team);
+
         const newTeam = await currentWalletConf.addTeamToOrg(team);
         if (newTeam) {
           console.log(team, newTeam);
@@ -171,7 +174,7 @@ const TeamsBlock = () => {
         </Row>
       </div>
       <div className="list">
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 32]}>
           {Boolean(teams.length) ? (
             teams.map((team) => (
               <Col xs={24} sm={12} key={team.name}>
@@ -184,7 +187,7 @@ const TeamsBlock = () => {
               </Col>
             ))
           ) : (
-            <Empty className="empty-el" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <EmptyBlock />
           )}
         </Row>
       </div>

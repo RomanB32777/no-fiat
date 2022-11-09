@@ -19,8 +19,8 @@ const FiltersBlock = ({
 
   return (
     <div className="block block-filters">
-      <Row justify="space-between" align="middle">
-        <Col span={12}>
+      <Row justify="space-between" align="middle" gutter={[32, 32]}>
+        <Col xs={12} md={14}>
           <DatesPicker
             label="Choose the exact time period"
             onChange={(startDate, endDate) =>
@@ -31,10 +31,11 @@ const FiltersBlock = ({
             }
             toFormat="YYYY-MM-DD"
             labelCol={isTablet ? 24 : 12}
+            modificator="dates"
             gutter={[8, 8]}
           />
         </Col>
-        <Col xs={10} md={6} lg={4}>
+        <Col xs={12} sm={10} md={8} lg={6}>
           <SelectInput
             value={time_period}
             list={Object.keys(filterPeriodItems).map((key) => ({
