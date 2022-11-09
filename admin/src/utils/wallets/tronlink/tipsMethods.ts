@@ -32,14 +32,19 @@ export const withdrawTronTeams = async (methods: IWalletMethods) => {
   }
 };
 
-export const withdrawTronTipAmountByEmployee = async (methods: IWalletMethods) => {
+export const withdrawTronTipsByEmployee = async (
+  methods: IWalletMethods
+) => {
   try {
     const contractData = await methods.getBlockchainContractData();
-    const withdrawInfo = await contractData.withdrawTipAmountByEmployee().send();
+    console.log(contractData);
+
+    const withdrawInfo = await contractData
+      .withdrawTipsByEmployee()
+      .send();
     return withdrawInfo;
   } catch (error) {
     console.log(error);
     return false;
   }
 };
-

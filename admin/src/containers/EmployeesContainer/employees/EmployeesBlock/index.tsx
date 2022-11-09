@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "antd";
 
 import BaseButton from "../../../../components/BaseButton";
 import EmployeesModal from "../EmployeesModal";
 import CardItem from "../../blocks/CardItem";
+import Loader from "../../../../components/Loader";
 import EmptyBlock from "../../../../components/EmptyBlock";
 
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
@@ -17,6 +18,7 @@ import {
 import { getOrganization } from "../../../../store/types/Organization";
 import { IEmployeeBase } from "../../../../types";
 import { currentWalletConf } from "../../../../consts";
+import { cardObjType } from "../../utils";
 
 const initEmployee: IEmployeeBase = {
   name: "",
@@ -30,7 +32,7 @@ const EmployeesBlock = () => {
   const { organization } = useAppSelector((state) => state);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState<string>("");
-  const [loadingGet, setLoadingGet] = useState(false);
+  const [loadingEmployee, setLoadingEmployee] = useState(false);
   const [employeesForm, setEmployeesForm] = useState<IEmployeeBase>({
     ...initEmployee,
   });
@@ -38,32 +40,34 @@ const EmployeesBlock = () => {
 
   const { allTipReceivers } = organization;
 
-  const getItemName = async (address: string) => {
-    const { name } = await currentWalletConf.getEmployeeBase(address);
+  const getItemName = async ({ address }: cardObjType) => {
+    const { name } = await currentWalletConf.getEmployeeBase(address as string);
     return name;
   };
 
-  const openEditModal = async (employeeAddress: string) => {
+  const openEditModal = async ({ address }: cardObjType) => {
     try {
-      setEditedEmployee(employeeAddress);
-      setIsOpenModal(true);
-      setLoadingGet(true);
+      if (address) {
+        setEditedEmployee(address);
+        setIsOpenModal(true);
+        setLoadingEmployee(true);
 
-      const { name, photoLink } = await currentWalletConf.getEmployeeBase(
-        employeeAddress
-      );
+        const { name, photoLink } = await currentWalletConf.getEmployeeBase(
+          address
+        );
 
-      await getFromIpfs(photoLink, (result) =>
-        setEmployeesForm({
-          name,
-          address: employeeAddress,
-          photoLink: result,
-        })
-      );
+        await getFromIpfs(photoLink, (result) =>
+          setEmployeesForm({
+            name,
+            address,
+            photoLink: result,
+          })
+        );
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setLoadingGet(false);
+      setLoadingEmployee(false);
     }
   };
 
@@ -76,13 +80,15 @@ const EmployeesBlock = () => {
     setPhotoValue(null);
   };
 
-  const deleteItem = async (address: string) => {
-    const itemInfo = await currentWalletConf.removeEmployeeFromOrg(address);
+  const deleteItem = async ({ address }: cardObjType) => {
+    const itemInfo = await currentWalletConf.removeEmployeeFromOrg(
+      address as string
+    );
     itemInfo && dispatch(getOrganization());
   };
 
   const sendData = async (field?: keyof IEmployeeBase) => {
-    setLoadingGet(true);
+    setLoadingEmployee(true);
     const isValidate = isValidateFilled(Object.values(employeesForm));
     if (isValidate) {
       const isExistEmployeeInOrg = allTipReceivers.some(
@@ -165,8 +171,12 @@ const EmployeesBlock = () => {
         title: "Not all fields are filled",
       });
     }
-    setLoadingGet(false);
+    setLoadingEmployee(false);
   };
+
+  useEffect(() => {
+    !editedEmployee && setLoadingEmployee(false);
+  }, [editedEmployee, isOpenModal]);
 
   return (
     <div className="block employees-list">
@@ -188,27 +198,31 @@ const EmployeesBlock = () => {
         </Row>
       </div>
       <div className="list">
-        <Row gutter={[16, 32]}>
-          {Boolean(allTipReceivers.length) ? (
-            allTipReceivers.map((address) => (
-              <Col xs={24} sm={12} key={address}>
-                <CardItem
-                  data={address}
-                  openEditModal={openEditModal}
-                  getCardName={getItemName}
-                  deleteItem={deleteItem}
-                />
-              </Col>
-            ))
-          ) : (
-            <EmptyBlock />
-          )}
-        </Row>
+        {!organization.organizationName ? (
+          <Loader size="big" />
+        ) : (
+          <Row gutter={[16, 32]}>
+            {Boolean(allTipReceivers.length) ? (
+              allTipReceivers.map((address) => (
+                <Col xs={24} sm={12} key={address}>
+                  <CardItem
+                    data={{ address }}
+                    openEditModal={openEditModal}
+                    getCardName={getItemName}
+                    deleteItem={deleteItem}
+                  />
+                </Col>
+              ))
+            ) : (
+              <EmptyBlock />
+            )}
+          </Row>
+        )}
       </div>
       <EmployeesModal
         isOpen={isOpenModal}
         isEdit={Boolean(editedEmployee)}
-        loading={loadingGet}
+        loading={loadingEmployee}
         isNewPhotoValue={Boolean(photoValue && photoValue.length)}
         employeesForm={employeesForm}
         setEmployeesForm={setEmployeesForm}

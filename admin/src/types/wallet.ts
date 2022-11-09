@@ -112,7 +112,7 @@ export interface IWalletMethods {
   // tips
   sendTips: (forSendTipsObj: ITipsObj) => Promise<any>;
   withdrawTeams: () => Promise<any>;
-  withdrawTipAmountByEmployee: () => Promise<any>;
+  withdrawTipsByEmployee: () => Promise<any>;
 
   // old
   getBalance: (objForBalance: IBalanceObj) => Promise<number>;

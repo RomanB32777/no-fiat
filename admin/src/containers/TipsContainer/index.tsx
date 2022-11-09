@@ -24,7 +24,7 @@ const TipsContainer = () => {
   const withdrawClick = async () => {
     const withdrawInfo = isOwner
       ? await currentWalletConf.withdrawTeams()
-      : await currentWalletConf.withdrawTipAmountByEmployee();
+      : await currentWalletConf.withdrawTipsByEmployee();
     if (withdrawInfo) {
       console.log(withdrawInfo);
       isOwner ? dispatch(getOrganization()) : dispatch(getEmployee());

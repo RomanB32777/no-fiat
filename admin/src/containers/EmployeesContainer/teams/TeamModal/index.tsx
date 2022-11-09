@@ -2,6 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Col, Form, Row } from "antd";
 import { useEffect, useState } from "react";
 import BaseButton from "../../../../components/BaseButton";
+import ConfirmPopup from "../../../../components/ConfirmPopup";
 import FormInput from "../../../../components/FormInput";
 import ModalComponent from "../../../../components/ModalComponent";
 import { ITeam, teamFields } from "../../../../types";
@@ -12,28 +13,31 @@ const maxNumber = 100;
 
 const TeamModal = ({
   isOpen,
+  loading,
   editedTeam,
   teamForm,
+  disabledEdit,
   closeModal,
+  deleteEmployeeInTeam,
   sendData,
 }: {
   isOpen: boolean;
+  loading: boolean;
   editedTeam: string | null;
   teamForm: ITeam;
+  disabledEdit?: boolean;
   closeModal: () => void;
+  deleteEmployeeInTeam: (address: string) => Promise<any>;
   sendData: (data: { team: ITeam; field: teamFields | null }) => Promise<any>;
 }) => {
   const [form] = Form.useForm<ITeam>();
   const [editedField, setEditedField] = useState<teamFields | null>(null);
 
-  const onFinish = async (values: ITeam) => {
-    console.log(values);
-
+  const onFinish = async (values: ITeam) =>
     await sendData({
       team: { ...values, percentageToPay: Number(values.percentageToPay) },
       field: editedField,
     });
-  };
 
   const btnSubmit = (field?: teamFields) => {
     field && setEditedField(field);
@@ -77,9 +81,11 @@ const TeamModal = ({
                           onClick={() => btnSubmit("name")} // sendData("name", editedTeam)
                           padding="16.5px 6px"
                           fontSize="20px"
+                          disabled={disabledEdit || loading}
                         />
                       ) : null
                     }
+                    disabled={disabledEdit || loading}
                   />
                 </Form.Item>
               </div>
@@ -113,6 +119,7 @@ const TeamModal = ({
                           onClick={() => btnSubmit("percentageToPay")}
                           padding="16.5px 6px"
                           fontSize="20px"
+                          disabled={loading}
                         />
                       ) : null
                     }
@@ -134,16 +141,24 @@ const TeamModal = ({
                               (e) => e === employeesInTeamValues[index]
                             );
                           const isVisibleDeleteBtn = editedTeam || index !== 0;
+
                           const isDeleting =
                             isExistEmployeeInTeam || !editedTeam;
 
-                          const deletingMethod = () => {
+                          const deleteEmployee = async () => {
+                            const deletedEmployee =
+                              employeesInTeamValues[index];
+                            deletedEmployee &&
+                              (await deleteEmployeeInTeam(deletedEmployee));
                             remove(field.name);
-                            editedTeam && btnSubmit("employeesInTeam");
                           };
 
                           return (
-                            <Form.Item key={field.key} style={{ margin: 0 }}>
+                            <Form.Item
+                              key={field.key}
+                              style={{ margin: 0 }}
+                              name="afdf"
+                            >
                               <Form.Item {...field} noStyle>
                                 <FormInput
                                   label={
@@ -155,23 +170,30 @@ const TeamModal = ({
                                   labelCol={24}
                                   InputCol={24}
                                   gutter={[0, 16]}
+                                  disabled={Boolean(editedTeam) && isDeleting}
                                   addonAfter={
                                     isVisibleDeleteBtn ? (
-                                      <BaseButton
-                                        // <ConfirmPopup confirm={deleteCard}>
-                                        title={isDeleting ? "Delete" : "Add"}
-                                        onClick={() =>
-                                          isDeleting
-                                            ? deletingMethod()
-                                            : btnSubmit("employeesInTeam")
-                                        }
-                                        padding={
-                                          isExistEmployeeInTeam
-                                            ? "16.5px 11px"
-                                            : "16.5px 23px"
-                                        }
-                                        fontSize="20px"
-                                      />
+                                      <ConfirmPopup
+                                        disabled={!isDeleting}
+                                        confirm={deleteEmployee}
+                                      >
+                                        <BaseButton
+                                          title={isDeleting ? "Delete" : "Add"}
+                                          onClick={() =>
+                                            !Boolean(editedTeam)
+                                              ? remove(field.name)
+                                              : !isDeleting &&
+                                                btnSubmit("employeesInTeam")
+                                          }
+                                          padding={
+                                            isExistEmployeeInTeam
+                                              ? "16.5px 11px"
+                                              : "16.5px 23px"
+                                          }
+                                          fontSize="20px"
+                                          disabled={disabledEdit || loading}
+                                        />
+                                      </ConfirmPopup>
                                     ) : null
                                   }
                                 />
@@ -179,12 +201,15 @@ const TeamModal = ({
                             </Form.Item>
                           );
                         })}
-                        <Form.Item className="add-item-list">
-                          <PlusOutlined
-                            onClick={() => add()}
-                            className="plus-icon"
-                          />
-                        </Form.Item>
+                        {!disabledEdit && (
+                          <Form.Item className="add-item-list">
+                            <PlusOutlined
+                              onClick={() => add()}
+                              className="plus-icon"
+                              disabled={loading}
+                            />
+                          </Form.Item>
+                        )}
                       </>
                     );
                   }}
@@ -193,7 +218,6 @@ const TeamModal = ({
             </Col>
           </Row>
         </Form>
-
         {!editedTeam && (
           <div className="btn-create">
             <BaseButton
@@ -201,6 +225,7 @@ const TeamModal = ({
               padding="10px 35px"
               onClick={() => btnSubmit()}
               fontSize="18px"
+              disabled={!editedTeam && loading}
             />
           </div>
         )}

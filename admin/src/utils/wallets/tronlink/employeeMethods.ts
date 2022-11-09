@@ -12,6 +12,7 @@ export const addTronEmployeeToOrg = async (
     const employeeInfo = await contractData
       .addTipReceiverToOrg(address, name, photoLink)
       .send();
+    console.log(employeeInfo);
     return employeeInfo;
   } catch (error) {
     console.log(error);

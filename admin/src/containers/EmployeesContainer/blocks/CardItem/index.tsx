@@ -3,20 +3,24 @@ import { useEffect, useState } from "react";
 import ConfirmPopup from "../../../../components/ConfirmPopup";
 import { PencilIcon, TrashBinIcon } from "../../../../icons/icons";
 import { useAppSelector } from "../../../../store/hooks";
+import { cardObjType } from "../../utils";
 import "./styles.sass";
 
-const CardItem = ({
+interface ICardItem<T> {
+  data: T; // string
+  disabledDelete?: boolean;
+  deleteItem: (data: T) => Promise<any>;
+  getCardName?: (data: T) => Promise<string>;
+  openEditModal?: (data: T) => any; // Promise<any>; // T
+}
+
+const CardItem = <T extends cardObjType>({
   data,
+  disabledDelete = false,
   getCardName,
   deleteItem,
   openEditModal,
-}: {
-  data: any; // string
-  getCardName?: (address: string) => Promise<string>;
-  deleteItem: (data: string) => Promise<any>;
-  openEditModal?: (data: any) => any // Promise<any>; // T
-}) => {
-  const { organization } = useAppSelector((state) => state);
+}: React.PropsWithChildren<ICardItem<T>>) => {
   const [cardName, setCardName] = useState<string>("");
   const [cardLoading, setCardLoading] = useState<boolean>(false);
 
@@ -38,11 +42,11 @@ const CardItem = ({
     };
 
     getCardInfo();
-  }, [data, organization]);
+  }, [data]);
 
   return (
     <div className="employees-item">
-      {cardLoading ? (
+      {cardLoading && !cardName ? (
         <Skeleton active paragraph={{ rows: 0 }} />
       ) : (
         <Row justify="space-between" align="middle">
@@ -58,18 +62,20 @@ const CardItem = ({
               >
                 <PencilIcon />
               </div>
-              <div
-                className="item icon"
-                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-                  e.stopPropagation()
-                }
-              >
-                <ConfirmPopup confirm={deleteCard}>
-                  <div className="icon">
-                    <TrashBinIcon />
-                  </div>
-                </ConfirmPopup>
-              </div>
+              {!disabledDelete && (
+                <div
+                  className="item icon"
+                  onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                    e.stopPropagation()
+                  }
+                >
+                  <ConfirmPopup confirm={deleteCard}>
+                    <div className="icon">
+                      <TrashBinIcon />
+                    </div>
+                  </ConfirmPopup>
+                </div>
+              )}
             </div>
           </Col>
         </Row>

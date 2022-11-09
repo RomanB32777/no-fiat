@@ -81,7 +81,7 @@ const EmployeesModal = ({
                   padding="10px 20px"
                   onClick={editPhoto}
                   fontSize="18px"
-                  disabled={loading}
+                  disabled={isEdit && loading}
                 />
               </div>
             </Col>
@@ -109,7 +109,7 @@ const EmployeesModal = ({
                     />
                   ) : null
                 }
-                disabled={loading}
+                disabled={isEdit && loading}
               />
             </div>
           </Col>

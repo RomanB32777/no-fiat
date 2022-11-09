@@ -24,8 +24,6 @@ import {
 import { makeStorageClient, uploadToIpfs, getFromIpfs } from "./ipfs";
 import { tronlinkMethods, getUsdKoef } from "./wallets";
 
-console.log(getFromIpfs);
-
 const isValidateFilled = (valuesArray: any[]) =>
   valuesArray.every((val) => Boolean(val));
 

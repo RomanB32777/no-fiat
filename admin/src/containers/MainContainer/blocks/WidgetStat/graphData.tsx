@@ -29,11 +29,7 @@ export const options: ChartOptions<"line"> = {
   },
   plugins: {
     legend: {
-      display: true,
-      labels: {
-        color: "rgb(255, 255, 255)",
-      },
-      onClick: (e, legendItem, legend) => null,
+      display: false,
     },
 
     tooltip: {

@@ -32,7 +32,7 @@ import {
 import {
   sendTronTips,
   withdrawTronTeams,
-  withdrawTronTipAmountByEmployee,
+  withdrawTronTipsByEmployee,
 } from "./tipsMethods";
 
 export const tronlinkMethods: IWalletMethods = {
@@ -112,7 +112,7 @@ export const tronlinkMethods: IWalletMethods = {
   withdrawTeams() {
     return withdrawTronTeams(this);
   },
-  withdrawTipAmountByEmployee() {
-    return withdrawTronTipAmountByEmployee(this);
+  withdrawTipsByEmployee() {
+    return withdrawTronTipsByEmployee(this);
   },
 };

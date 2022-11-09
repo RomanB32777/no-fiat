@@ -59,10 +59,11 @@ const OwnerRegistrationBlock = () => {
           typeInput="number"
           maxNumber={100}
           placeholder="Percentage you take on every tip received"
-          onChange={(value) =>
+          onChange={({ target }) =>
             setFormData((prev) => ({
               ...formData,
-              percentages: +value > 100 ? prev.percentages : +value,
+              percentages:
+                +target.value > 100 ? prev.percentages : +target.value,
             }))
           }
         />

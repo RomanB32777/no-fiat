@@ -1,17 +1,23 @@
+import { useMemo, useState } from "react";
 import { Col, Row } from "antd";
-import { useState } from "react";
 
 import BaseButton from "../../../../components/BaseButton";
 import EmptyBlock from "../../../../components/EmptyBlock";
 import CardItem from "../../blocks/CardItem";
 import TeamModal from "../TeamModal";
+import Loader from "../../../../components/Loader";
 
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getOrganization } from "../../../../store/types/Organization";
-import { addNotification, isValidateFilled } from "../../../../utils";
-import { ITeam, teamFields } from "../../../../types";
+import {
+  addNotification,
+  addSuccessNotification,
+  isValidateFilled,
+} from "../../../../utils";
 import { currentWalletConf } from "../../../../consts";
+import { ITeam } from "../../../../types";
+import { sendTeamData } from "../../utils";
 
 const checkChangedEmployees = (firstTeamState: ITeam, secondTeamState: ITeam) =>
   firstTeamState.employeesInTeam.find(
@@ -29,12 +35,20 @@ const TeamsBlock = () => {
   const { isMobile } = useWindowDimensions();
   const { organization } = useAppSelector((state) => state);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [loadingTeam, setLoadingTeam] = useState(false);
   const [teamForm, setTeamForm] = useState<ITeam>({
     ...initTeam,
   });
   const [editedTeam, setEditedTeam] = useState<string | null>(null);
 
-  const { teams } = organization;
+  const { teams, teamsAmountToWithdraw } = organization;
+
+  const isEmptyTeamsAmountToWithdraw = useMemo(
+    () => teamsAmountToWithdraw === 0,
+    [teamsAmountToWithdraw]
+  );
+
+  const isOwnerTeam = (name: string) => name === "owner";
 
   const openEditModal = (team: ITeam) => {
     setTeamForm(team);
@@ -50,22 +64,39 @@ const TeamsBlock = () => {
     setEditedTeam(null);
   };
 
-  const deleteItem = async (name: string) => {
-    const itemInfo = await currentWalletConf.deleteTeamFromOrg(name);
-    itemInfo && dispatch(getOrganization());
+  const deleteItem = async ({ name }: ITeam) => {
+    if (isEmptyTeamsAmountToWithdraw) {
+      const itemInfo = await currentWalletConf.deleteTeamFromOrg(name);
+      itemInfo && dispatch(getOrganization());
+    } else {
+      addNotification({
+        type: "warning",
+        title:
+          "In order to complete this action you need to withdraw your pending balance! You can do that in Tips section.",
+      });
+    }
   };
 
-  const sendData = async ({
-    team,
-    field,
-  }: {
-    team: ITeam;
-    field: teamFields | null;
-  }) => {
+  const deleteEmployeeInTeam = async (deletedEmployee: string) => {
+    if (editedTeam) {
+      setLoadingTeam(true);
+      const updatedTeamInfo = await currentWalletConf.removeEmpoloyeeFromTeam(
+        editedTeam,
+        deletedEmployee
+      );
+      console.log(updatedTeamInfo);
+      dispatch(getOrganization());
+      setLoadingTeam(false);
+      return updatedTeamInfo;
+    }
+  };
+
+  const sendData = async ({ team, field }: sendTeamData) => {
     const isValidate = Object.values(team).every((val) =>
       Array.isArray(val) ? isValidateFilled(val) : Boolean(val)
     );
     if (isValidate) {
+      setLoadingTeam(true);
       const isExistTeamInOrg = organization.teams.some(
         (t) => t.name === team.name
       );
@@ -88,10 +119,18 @@ const TeamsBlock = () => {
             break;
 
           case "percentageToPay":
-            updatedTeamInfo = await currentWalletConf.changeTeamPercentage(
-              editedTeam,
-              team.percentageToPay
-            );
+            if (isEmptyTeamsAmountToWithdraw) {
+              updatedTeamInfo = await currentWalletConf.changeTeamPercentage(
+                editedTeam,
+                team.percentageToPay
+              );
+            } else {
+              return addNotification({
+                type: "warning",
+                title:
+                  "In order to complete this action you need to withdraw your pending balance! You can do that in Tips section.",
+              });
+            }
             break;
 
           case "employeesInTeam":
@@ -99,49 +138,37 @@ const TeamsBlock = () => {
               (t) => t.name === editedTeam
             );
             if (beforeEditTeam) {
-              if (
-                beforeEditTeam.employeesInTeam.length <
-                team.employeesInTeam.length
-              ) {
-                const addedEmployee = checkChangedEmployees(
-                  team,
-                  beforeEditTeam
-                );
+              const addedEmployee = checkChangedEmployees(team, beforeEditTeam);
+              updatedTeamInfo =
                 addedEmployee &&
-                  (await currentWalletConf.addEmployeeToTeam(
-                    editedTeam,
-                    addedEmployee
-                  ));
-              } else {
-                const deletedEmployee = checkChangedEmployees(
-                  beforeEditTeam,
-                  team
-                );
-                deletedEmployee &&
-                  (await currentWalletConf.removeEmpoloyeeFromTeam(
-                    editedTeam,
-                    deletedEmployee
-                  ));
-              }
+                (await currentWalletConf.addEmployeeToTeam(
+                  editedTeam,
+                  addedEmployee
+                ));
             }
             break;
 
           default:
-            break;
+            return addNotification({
+              type: "warning",
+              title: "Team has not been changed",
+            });
         }
         if (updatedTeamInfo) {
           console.log(updatedTeamInfo);
+          setLoadingTeam(false);
           dispatch(getOrganization());
-          closeModal();
+          addSuccessNotification({ message: "Team successfully modified" });
+          // closeModal();
           return updatedTeamInfo;
         }
       } else {
-        console.log("before", team);
-
         const newTeam = await currentWalletConf.addTeamToOrg(team);
         if (newTeam) {
           console.log(team, newTeam);
+          setLoadingTeam(false);
           dispatch(getOrganization());
+          addSuccessNotification({ message: "Team added successfully" });
           closeModal();
           return newTeam;
         }
@@ -174,29 +201,37 @@ const TeamsBlock = () => {
         </Row>
       </div>
       <div className="list">
-        <Row gutter={[16, 32]}>
-          {Boolean(teams.length) ? (
-            teams.map((team) => (
-              <Col xs={24} sm={12} key={team.name}>
-                <CardItem
-                  data={team}
-                  getCardName={async () => team.name}
-                  openEditModal={openEditModal}
-                  deleteItem={deleteItem}
-                />
-              </Col>
-            ))
-          ) : (
-            <EmptyBlock />
-          )}
-        </Row>
+        {!organization.organizationName ? (
+          <Loader size="big" />
+        ) : (
+          <Row gutter={[16, 32]}>
+            {Boolean(teams.length) ? (
+              teams.map((team) => (
+                <Col xs={24} sm={12} key={team.name}>
+                  <CardItem
+                    data={team}
+                    getCardName={async () => team.name}
+                    openEditModal={openEditModal}
+                    deleteItem={deleteItem}
+                    disabledDelete={isOwnerTeam(team.name)}
+                  />
+                </Col>
+              ))
+            ) : (
+              <EmptyBlock />
+            )}
+          </Row>
+        )}
       </div>
       <TeamModal
         isOpen={isOpenModal}
+        loading={loadingTeam}
         editedTeam={editedTeam}
         teamForm={teamForm}
         closeModal={closeModal}
         sendData={sendData}
+        deleteEmployeeInTeam={deleteEmployeeInTeam}
+        disabledEdit={editedTeam ? isOwnerTeam(editedTeam) : false}
       />
     </div>
   );

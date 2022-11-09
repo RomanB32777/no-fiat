@@ -40,7 +40,7 @@ const SettingsContainer = () => {
   const { userAddress, tipsLink } = formSettings;
 
   const shortWalletAddress = useMemo(
-    () => userAddress && shortStr(userAddress, 22),
+    () => userAddress && shortStr(userAddress, 12),
     [userAddress]
   );
 

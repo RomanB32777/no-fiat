@@ -1,5 +1,10 @@
 import { initOrganization } from "../../../consts";
-import { ICreateOrganization, IWalletMethods } from "../../../types";
+import {
+  ICreateOrganization,
+  IOrganization,
+  ITeam,
+  IWalletMethods,
+} from "../../../types";
 
 // organization
 export const addTronOrganization = async (
@@ -22,7 +27,7 @@ export const addTronOrganization = async (
 export const showTronOrganization = async (
   methods: IWalletMethods,
   ownerAddress?: string
-) => {
+): Promise<IOrganization> => {
   try {
     const userAddress =
       ownerAddress || (await methods.getWalletUserData()).userAddress;
@@ -41,6 +46,19 @@ export const showTronOrganization = async (
         allTipReceivers,
       ] = organizationInfo;
 
+      const formatTeams: ITeam[] = teams.map(
+        ({ name, employeesInTeam, percentageToPay }: ITeam) => ({
+          name,
+          employeesInTeam: employeesInTeam.map((address) =>
+            methods.formatAddressStr({
+              address,
+              format: "fromHex",
+            })
+          ),
+          percentageToPay,
+        })
+      );
+
       return {
         organizationAddress: methods.formatAddressStr({
           address: organizationAddress,
@@ -50,7 +68,7 @@ export const showTronOrganization = async (
         teamsPart,
         organizationName,
         teamsAmountToWithdraw: methods.formatNumber(teamsAmountToWithdraw),
-        teams,
+        teams: formatTeams,
         allTipReceivers: allTipReceivers.map((e: string) =>
           methods.formatAddressStr({ address: e, format: "fromHex" })
         ),
