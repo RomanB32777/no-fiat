@@ -6,7 +6,6 @@
   font-weight: 500
   src: local('Gilroy Medium'), local('Gilroy-Medium'), url('../fonts/Gilroy-Medium.woff2') format('woff2'), url('../fonts/Gilroy-Medium.woff') format('woff'), url('../fonts/Gilroy-Medium.ttf') format('truetype')
 
-
 @font-face
   font-family: 'Gilroy'
   font-style: normal
@@ -75,12 +74,37 @@ body
   border-radius: 2px
   width: 2px
 
+.rnc__base.active
+  background: rgba(0, 0, 0, .3)
+  pointer-events: auto
+
+.rnc__notification-item
+  border-left: none !important
+  border-radius: 15px
+
+.rnc__notification-item--success
+  background-color: variables.$yellow-color !important
+
 .rnc__notification-item--info
   background-color: variables.$yellow-color !important
-  border-left: 8px solid #0c078c !important
+
+.rnc__notification-item--danger
+  background-color: #CC1919 !important
+  .rnc__notification-title
+    color: variables.$white-color !important
 
 .rnc__notification-content
   font-family: variables.$gilroy-font, sans-serif
+
+.rnc__notification-title
+  font-family: variables.$gilroy-font, sans-serif
+  color: variables.$black-color
+  text-align: center
+  font-weight: 600
+  font-size: 25px
+
+.rnc__notification-container--top-center
+  top: 40vh !important
 
 .ant-layout-sider,
 .ant-menu.ant-menu-dark,
@@ -88,8 +112,9 @@ body
 .ant-menu-dark .ant-menu-inline.ant-menu-sub
   background: variables.$grey-background-color
 
-.ant-layout-header
-  background: variables.$grey-dark-color
+.ant-layout-header.site-layout-background
+  background: variables.$grey-dark-color //transparent
+  border-bottom: 1px solid transparent
 
 .ant-layout,
 .site-layout
@@ -147,7 +172,7 @@ body
   color: variables.$white-color
   font-family: variables.$gilroy-font
   font-weight: 500
-  
+
 .ant-slider:hover .ant-slider-track,
 .ant-slider-track
   background-color: variables.$yellow-color
@@ -215,6 +240,10 @@ body
   bottom: 0
   z-index: 2
   transition: all .4s
+  background-image: url('../assets/bg_menu.png')
+  background-repeat: no-repeat
+  background-position: bottom left
+  background-size: 300px
 
 .layout-header
   position: fixed
@@ -242,6 +271,10 @@ body
     top: 68px
     z-index: 100
     padding-top: 20px
+    background-size: 350px
+
+    &.ant-layout-sider-zero-width
+      background-image: none
 
     .main-logo
       display: none

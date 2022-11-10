@@ -1,4 +1,8 @@
 import { ITeam, IWalletMethods } from "../../../types";
+import {
+  addErrorNotification,
+  addSuccessNotification,
+} from "../../notifications";
 
 //teams
 export const addTronTeamToOrg = async (
@@ -14,40 +18,17 @@ export const addTronTeamToOrg = async (
     const organizationInfo = await contractData
       .addTeamToOrg(name, formatEmpoyees, percentageToPay)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return organizationInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
-
-// export const addTronTeamToOrg = async (
-//   team: ITeam,
-//   methods: IWalletMethods
-// ) => {
-//   try {
-//     // const { name, employeesInTeam, percentageToPay } = team;
-//     // const formatEmpoyees = employeesInTeam.map((e) =>
-//     //   methods.formatAddressStr({ address: e, format: "toHex" })
-//     // );
-//     // console.log(name, formatEmpoyees, percentageToPay);
-//     // const contractData = await methods.getBlockchainContractData();
-//     const name = "kitchen";
-//     const addresses = [
-//       "41749e4fd208fa708c981c85fdb07fc326261af532",
-//       "411c909b3f6875560f41fb4cfe59c0b92d5db78076",
-//     ];
-//     const percentageToPay = 5;
-//     let instance = await (window as any).tronWeb
-//       .contract()
-//       .at("TFWKMM24a4BCA81oG9F19bgHmtTJEhD2gt");
-//     const organizationInfo = await instance.addTeamToOrg(name, addresses).send();
-//     return organizationInfo;
-//   } catch (error) {
-//     console.log(error);
-//     return false;
-//   }
-// };
 
 export const deleteTronTeamFromOrg = async (
   organizationName: string,
@@ -58,9 +39,14 @@ export const deleteTronTeamFromOrg = async (
     const removedOrganization = await contractData
       .deleteTeamFromOrg(organizationName)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return removedOrganization;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -73,9 +59,14 @@ export const changeTronTeamName = async (
   try {
     const contractData = await methods.getBlockchainContractData();
     const teamInfo = await contractData.changeTeamName(oldName, newName).send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return teamInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -90,9 +81,14 @@ export const changeTronTeamPercentage = async (
     const teamInfo = await contractData
       .changeTeamPercentage(teamName, newPercentageToPay)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return teamInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -107,9 +103,14 @@ export const addTronEmployeeToTeam = async (
     const teamInfo = await contractData
       .addEmployeeToTeam(teamName, employeeAddress)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return teamInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -124,9 +125,14 @@ export const removeTronEmpoloyeeFromTeam = async (
     const teamInfo = await contractData
       .removeEmployeeFromTeam(teamName, employeeAddress)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return teamInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };

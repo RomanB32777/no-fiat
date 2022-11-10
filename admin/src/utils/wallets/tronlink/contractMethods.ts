@@ -5,6 +5,7 @@ import {
 } from "../../../types";
 import {
   addAuthWalletNotification,
+  addErrorNotification,
   addInstallWalletNotification,
 } from "../../notifications";
 
@@ -54,7 +55,9 @@ export const getTronContractData = async () => {
       return contractData;
     } else return null;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return null;
   }
 };

@@ -199,7 +199,7 @@ const LayoutApp = () => {
             visibleGamburger
             visibleLogo
           />
-          <Content>
+          <Content className="layout-container">
             <div className="main-container">
               <Pages />
             </div>

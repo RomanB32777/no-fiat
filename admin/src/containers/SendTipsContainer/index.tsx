@@ -12,7 +12,7 @@ import { getOrganization } from "../../store/types/Organization";
 import { currentBlockchainConf, currentWalletConf } from "../../consts";
 import {
   addErrorNotification,
-  addNotification,
+  addNotValidForm,
   addSuccessNotification,
   isValidateFilled,
   shortStr,
@@ -69,24 +69,21 @@ const SendTipsContainer = () => {
       if (balance >= Number(amount)) {
         const tipsInfo = await currentWalletConf.sendTips(tipsForm);
         if (tipsInfo) {
-          addSuccessNotification({ message: "Tip sent successfully" });
+          addSuccessNotification({ title: "Tip sent successfully" });
           setTipsForm(initTipsForm);
         } else {
           addErrorNotification({
-            message: "Something went wrong while sending the tip",
+            title: "Something went wrong while sending the tip",
           });
         }
       } else {
         addErrorNotification({
-          message: "Not enough balance",
+          title: "Not enough balance",
         });
       }
       setLoadingSent(false);
     } else {
-      addNotification({
-        type: "warning",
-        title: "Not all fields are filled",
-      });
+      addNotValidForm()
     }
   };
 

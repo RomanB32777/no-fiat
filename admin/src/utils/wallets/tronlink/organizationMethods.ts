@@ -5,6 +5,7 @@ import {
   ITeam,
   IWalletMethods,
 } from "../../../types";
+import { addErrorNotification, addSuccessNotification } from "../../notifications";
 
 // organization
 export const addTronOrganization = async (
@@ -17,9 +18,14 @@ export const addTronOrganization = async (
     const organization = await contractData
       .addOrganization(percentages, name)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return organization;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return null;
   }
 };
@@ -76,7 +82,9 @@ export const showTronOrganization = async (
     }
     return initOrganization;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return initOrganization;
   }
 };

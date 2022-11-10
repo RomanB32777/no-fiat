@@ -1,21 +1,33 @@
 import { Store } from "react-notifications-component";
-import {
-  INotification,
-  INotificationWithoutType,
-} from "./types";
+import { INotification, INotificationWithoutType } from "./types";
 
-export const addNotification = ({ type, title, message }: INotification) => {
+export const addNotification = ({
+  type,
+  title,
+  message,
+  duration,
+}: INotification) => {
+  const notifWrapper = document.querySelector(".app-notif");
+  notifWrapper && notifWrapper.classList.add("active");
+
   Store.addNotification({
     title,
     message: message || "",
     type,
     insert: "top",
-    container: "top-right",
-    animationIn: ["animate__animated", "animate__fadeIn"],
-    animationOut: ["animate__animated", "animate__fadeOut"],
+    container: "top-center",
+    width: 450,
     dismiss: {
-      duration: 5000,
-      onScreen: true,
+      duration: duration || 5000,
+      // showIcon: true,
+    },
+    slidingExit: {
+      duration: 300,
+      timingFunction: "ease-out",
+      delay: 0,
+    },
+    onRemoval: (id, removedBy) => {
+      notifWrapper && notifWrapper.classList.remove("active");
     },
   });
 };
@@ -37,27 +49,36 @@ export const addAuthWalletNotification = (wallet: string) =>
 export const addErrorNotification = ({
   message,
   title,
+  duration,
 }: INotificationWithoutType) =>
   addNotification({
-    title: title || "Error",
-    message,
+    title,
+    message: message || "",
     type: "danger",
+    duration: duration || 5000,
   });
 
 export const addSuccessNotification = ({
   message,
   title,
-}: INotificationWithoutType) =>
+}: INotificationWithoutType) => {
   addNotification({
-    title: title || "Success",
-    message,
+    title,
+    message: message || "",
     type: "success",
+    duration: 3000,
   });
+};
 
 export const addNotFoundUserNotification = () =>
   addNotification({
     type: "danger",
     title: "User with this username not found!",
+  });
+
+export const addNotValidForm = () =>
+  addErrorNotification({
+    title: "Not all fields are filled",
   });
 
 export const addInstallWalletNotification = (

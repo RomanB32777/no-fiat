@@ -9,9 +9,10 @@ interface INotification {
   type: NOTIFICATION_TYPE;
   title: string;
   message?: NotificationTitleMessage;
+  duration?: number
 }
 
-export const addNotification = ({ type, title, message }: INotification) => {
+export const addNotification = ({ type, title, message, duration }: INotification) => {
   Store.addNotification({
     title,
     message: message || "",
@@ -21,7 +22,7 @@ export const addNotification = ({ type, title, message }: INotification) => {
     animationIn: ["animate__animated", "animate__fadeIn"],
     animationOut: ["animate__animated", "animate__fadeOut"],
     dismiss: {
-      duration: 5000,
+      duration: duration || 5000,
       onScreen: true,
     },
   });
@@ -39,6 +40,7 @@ export const addSuccessNotification = (message: string) =>
     title: "Success",
     message,
     type: "success",
+    duration: 3000
   });
 
 export const addInstallWalletNotification = (
@@ -91,7 +93,7 @@ export const copyStr = (str: string) => {
     });
   } catch (error) {
     addNotification({
-      type: "warning",
+      type: "danger",
       title: "An error occurred while copying the link",
     });
   }

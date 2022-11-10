@@ -7,9 +7,11 @@ export interface INotification {
   type: NOTIFICATION_TYPE;
   title: string;
   message?: NotificationTitleMessage;
+  duration?: number;
 }
 
 export interface INotificationWithoutType {
-  title?: string;
-  message: NotificationTitleMessage;
+  title: string;
+  message?: NotificationTitleMessage;
+  duration?: number;
 }

@@ -10,10 +10,11 @@ import EmptyBlock from "../../../../components/EmptyBlock";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
-  addNotification,
   isValidateFilled,
   uploadToIpfs,
   getFromIpfs,
+  addErrorNotification,
+  addNotValidForm,
 } from "../../../../utils";
 import { getOrganization } from "../../../../store/types/Organization";
 import { IEmployeeBase } from "../../../../types";
@@ -103,10 +104,8 @@ const EmployeesBlock = () => {
 
       if (!editedEmployee && isExistEmployeeInOrg) {
         setLoadingEmployee(false);
-        return addNotification({
-          type: "warning",
-          title: "Is exists",
-          message:
+        return addErrorNotification({
+          title:
             "Tip Receiver with this address has already been added to the organization",
         });
       }
@@ -125,8 +124,7 @@ const EmployeesBlock = () => {
             // return employeeInfo;
           }
         } else {
-          addNotification({
-            type: "warning",
+          addErrorNotification({
             title: "Employee name has not changed",
           });
         }
@@ -143,8 +141,8 @@ const EmployeesBlock = () => {
             // return employeeInfo;
           }
         } else {
-          addNotification({
-            type: "warning",
+          addErrorNotification({
+
             title: "An error occurred while loading the image",
           });
         }
@@ -161,18 +159,14 @@ const EmployeesBlock = () => {
             // return employeeInfo;
           }
         } else {
-          addNotification({
-            type: "warning",
+          addErrorNotification({
             title: "An error occurred while loading the image",
           });
         }
       }
       setLoadingEmployee(false);
     } else {
-      addNotification({
-        type: "warning",
-        title: "Not all fields are filled",
-      });
+      addNotValidForm()
     }
   };
 

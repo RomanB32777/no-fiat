@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import BaseButton from "../../../components/BaseButton";
 import FormInput from "../../../components/FormInput";
 import { useAppDispatch } from "../../../store/hooks";
-import { addNotification, isValidateFilled } from "../../../utils";
+import { addNotValidForm, isValidateFilled } from "../../../utils";
 import { getWallet } from "../../../store/types/Wallet";
 import { ICreateOrganization } from "../../../types";
 import { currentWalletConf } from "../../../consts";
@@ -34,10 +34,7 @@ const OwnerRegistrationBlock = () => {
         navigate("/employees", { replace: true });
       }
     } else {
-      addNotification({
-        type: "warning",
-        title: "Not all fields are filled",
-      });
+      addNotValidForm()
     }
   };
 

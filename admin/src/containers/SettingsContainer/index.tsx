@@ -24,9 +24,7 @@ const SettingsContainer = () => {
     const getUserData = async () => {
       const walletData = await currentWalletConf.getWalletUserData();
       const ownerAddress =
-        user.userRole === "owner"
-          ? walletData.userAddress
-          : employee.orgOwner;
+        user.userRole === "owner" ? walletData.userAddress : employee.orgOwner;
 
       walletData.userAddress &&
         setFormSettings({
@@ -53,6 +51,9 @@ const SettingsContainer = () => {
 
   return (
     <div className="settings-page">
+      <div className="header">
+        <p className="section-title title">Settings</p>
+      </div>
       <div className="form">
         <Row gutter={[0, 36]} className="form">
           <Col xl={16} xs={24}>
@@ -76,27 +77,17 @@ const SettingsContainer = () => {
                 gutter={[0, 16]}
                 afterEl={
                   <>
-                    {/* <Col md={3} xs={24}> */}
                     <Col md={11} xs={5}>
-                      <div
-                        className="form-element__action"
-                        onClick={() => {
-                          copyStr(userAddress);
-                        }}
-                      >
-                        <span>Copy</span>
+                      <div className="form-element__action">
+                        <span
+                          onClick={() => {
+                            copyStr(userAddress);
+                          }}
+                        >
+                          Copy
+                        </span>
                       </div>
                     </Col>
-                    {/* <Col md={7} xs={24}>
-                      <div
-                        className="form-element__action"
-                        onClick={() => {
-                          // copyStr(wallet);
-                        }}
-                      >
-                        <span>Log-out</span>
-                      </div>
-                    </Col> */}
                   </>
                 }
               />

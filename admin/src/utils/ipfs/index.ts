@@ -1,4 +1,5 @@
 import { Web3Storage } from "web3.storage";
+import { addErrorNotification } from "../notifications";
 
 const makeStorageClient = () => {
   return new Web3Storage({ token: process.env.REACT_APP_STORAGE_TOKEN || "" });
@@ -14,33 +15,41 @@ const storeFiles = async (file: File) => {
 };
 
 const uploadToIpfs = async (photoValue: FileList) => {
-  const file = photoValue[0];
-  const sendFile = new File([file], file.name, { type: file.type });
-  const _uri = await storeFiles(sendFile);
-  console.log(_uri);
-  // const badgeDict = createJSON(_uri);
-  // const new_uri = await storeFiles(badgeDict);
-  return _uri;
+  try {
+    const file = photoValue[0];
+    const sendFile = new File([file], file.name, { type: file.type });
+    const _uri = await storeFiles(sendFile);
+    return _uri;
+  } catch (error) {
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
+  }
 };
 
 const getFromIpfs = async (photoLink: string, cb?: (res: string) => void) => {
-  const rootCid = photoLink.split("//")[1];
-  const client = makeStorageClient();
-  const res = await client.get(rootCid);
+  try {
+    const rootCid = photoLink.split("//")[1];
+    const client = makeStorageClient();
+    const res = await client.get(rootCid);
 
-  if (res) {
-    const files = await res.files();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onload = ({ target }) => {
-        target && resolve(target.result);
-        target && cb && cb((target.result as string) || "");
-      };
-      reader.onerror = reject;
+    if (res) {
+      const files = await res.files();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = ({ target }) => {
+          target && resolve(target.result);
+          target && cb && cb((target.result as string) || "");
+        };
+        reader.onerror = reject;
+      });
+    }
+  } catch (error) {
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
     });
   }
-  // }
 };
 
 export { makeStorageClient, uploadToIpfs, getFromIpfs };

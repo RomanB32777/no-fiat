@@ -11,7 +11,8 @@ import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getOrganization } from "../../../../store/types/Organization";
 import {
-  addNotification,
+  addErrorNotification,
+  addNotValidForm,
   addSuccessNotification,
   isValidateFilled,
 } from "../../../../utils";
@@ -69,8 +70,7 @@ const TeamsBlock = () => {
       const itemInfo = await currentWalletConf.deleteTeamFromOrg(name);
       itemInfo && dispatch(getOrganization());
     } else {
-      addNotification({
-        type: "warning",
+      addErrorNotification({
         title:
           "In order to complete this action you need to withdraw your pending balance! You can do that in Tips section.",
       });
@@ -102,11 +102,8 @@ const TeamsBlock = () => {
       );
       if (!editedTeam && isExistTeamInOrg) {
         setLoadingTeam(false);
-        return addNotification({
-          type: "warning",
-          title: "Is exists",
-          message:
-            "A team with the same name already exists in the organization",
+        return addErrorNotification({
+          title: "A team with the same name already exists in the organization",
         });
       }
 
@@ -127,8 +124,7 @@ const TeamsBlock = () => {
                 team.percentageToPay
               );
             } else {
-              addNotification({
-                type: "warning",
+              addErrorNotification({
                 title:
                   "In order to complete this action you need to withdraw your pending balance! You can do that in Tips section.",
               });
@@ -151,8 +147,7 @@ const TeamsBlock = () => {
             break;
 
           default:
-            addNotification({
-              type: "warning",
+            addErrorNotification({
               title: "Team has not been changed",
             });
         }
@@ -160,7 +155,7 @@ const TeamsBlock = () => {
           console.log(updatedTeamInfo);
           dispatch(getOrganization());
           addSuccessNotification({
-            message: "Team successfully modified",
+            title: "Team successfully modified",
           });
           // closeModal();
         }
@@ -173,22 +168,18 @@ const TeamsBlock = () => {
             dispatch(getOrganization());
             closeModal();
             addSuccessNotification({
-              message: "Team added successfully",
+              title: "Team added successfully",
             });
           }
         } else {
-          addNotification({
-            type: "warning",
+          addErrorNotification({
             title: "Team with such name has already been created",
           });
         }
       }
       setLoadingTeam(false);
     } else {
-      return addNotification({
-        type: "warning",
-        title: "Not all fields are filled",
-      });
+      return addNotValidForm()
     }
   };
 

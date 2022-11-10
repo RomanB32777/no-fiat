@@ -17,7 +17,7 @@ import {
 } from "./organizationMethods";
 import {
   addTronEmployeeToOrg,
-  editTronEmployeeToOrg,
+  editTronEmployeeName,
   getTronEmployeeInfo,
   getTronEmployeeBase,
   removeTronEmployeeFromOrg,
@@ -104,7 +104,7 @@ export const tronlinkMethods: IWalletMethods = {
     return changeTronEmployeePhoto(changePhotoObj, this);
   },
   editEmployeeInOrg(employee) {
-    return editTronEmployeeToOrg(employee, this);
+    return editTronEmployeeName(employee, this);
   },
   removeEmployeeFromOrg(employeeAddress) {
     return removeTronEmployeeFromOrg(employeeAddress, this);

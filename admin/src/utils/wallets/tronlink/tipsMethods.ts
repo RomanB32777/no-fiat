@@ -1,4 +1,8 @@
 import { ITipsObj, IWalletMethods } from "../../../types";
+import {
+  addErrorNotification,
+  addSuccessNotification,
+} from "../../notifications";
 
 // tips
 export const sendTronTips = async (
@@ -16,7 +20,9 @@ export const sendTronTips = async (
       });
     return tipsInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -25,26 +31,30 @@ export const withdrawTronTeams = async (methods: IWalletMethods) => {
   try {
     const contractData = await methods.getBlockchainContractData();
     const withdrawInfo = await contractData.withdrawTeams().send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return withdrawInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
 
-export const withdrawTronTipsByEmployee = async (
-  methods: IWalletMethods
-) => {
+export const withdrawTronTipsByEmployee = async (methods: IWalletMethods) => {
   try {
     const contractData = await methods.getBlockchainContractData();
-    console.log(contractData);
-
-    const withdrawInfo = await contractData
-      .withdrawTipsByEmployee()
-      .send();
+    const withdrawInfo = await contractData.withdrawTipsByEmployee().send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return withdrawInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };

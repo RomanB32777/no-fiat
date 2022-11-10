@@ -1,5 +1,9 @@
 import { initEmployee } from "../../../consts";
 import { IEmployeeBase, IWalletMethods, IChangePhotoObj } from "../../../types";
+import {
+  addErrorNotification,
+  addSuccessNotification,
+} from "../../notifications";
 
 // employee
 export const addTronEmployeeToOrg = async (
@@ -13,9 +17,14 @@ export const addTronEmployeeToOrg = async (
       .addTipReceiverToOrg(address, name, photoLink)
       .send();
     console.log(employeeInfo);
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return employeeInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -61,7 +70,9 @@ export const getTronEmployeeInfo = async (
     }
     return initEmployee;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return initEmployee;
   }
 };
@@ -89,7 +100,9 @@ export const getTronEmployeePhoto = async (
       .call();
     return employeePhoto;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -104,14 +117,19 @@ export const changeTronEmployeePhoto = async (
     const employeeInfo = await contractData
       .changeTipReceiverPhoto(newPhoto, address)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return employeeInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
 
-export const editTronEmployeeToOrg = async (
+export const editTronEmployeeName = async (
   employee: IEmployeeBase,
   methods: IWalletMethods
 ) => {
@@ -121,9 +139,14 @@ export const editTronEmployeeToOrg = async (
     const employeeInfo = await contractData
       .changeTipReceiverName(name, address)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return employeeInfo;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -137,9 +160,14 @@ export const removeTronEmployeeFromOrg = async (
     const removedEmployee = await contractData
       .removeTipReceiverFromOrg(employeeAddress)
       .send();
+    addSuccessNotification({
+      title: "Processed successfully!",
+    });
     return removedEmployee;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };

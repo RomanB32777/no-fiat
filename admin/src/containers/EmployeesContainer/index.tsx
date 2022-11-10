@@ -6,7 +6,7 @@ const EmployeesContainer = () => {
   return (
     <div className="employees-page">
       <div className="header">
-        <p className="section-title title">Tips</p>
+        <p className="section-title title">Employees</p>
       </div>
       <div className="content">
         <TeamsBlock />

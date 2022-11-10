@@ -1,4 +1,5 @@
 import { IWalletMethods } from "../../../types";
+import { addErrorNotification } from "../../notifications";
 
 export const checkIsOwner = async (methods: IWalletMethods) => {
   try {
@@ -9,7 +10,9 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
       .call();
     return isOwner;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
@@ -23,18 +26,29 @@ export const checkIsTipReciever = async (methods: IWalletMethods) => {
       .call();
     return tipRecieverData;
   } catch (error) {
-    console.log(error);
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
     return false;
   }
 };
 
 export const getTronBalance = async (methods: IWalletMethods) => {
-  const tronWeb = (window as any).tronWeb;
-  const userWalletData = await methods.getWalletUserData();
-  const tronBalance = await tronWeb.trx.getBalance(userWalletData.userAddress);
-  if (tronBalance) {
-    const formatTronBalance = tronWeb.fromSun(tronBalance);
-    return parseFloat(formatTronBalance);
+  try {
+    const tronWeb = (window as any).tronWeb;
+    const userWalletData = await methods.getWalletUserData();
+    const tronBalance = await tronWeb.trx.getBalance(
+      userWalletData.userAddress
+    );
+    if (tronBalance) {
+      const formatTronBalance = tronWeb.fromSun(tronBalance);
+      return parseFloat(formatTronBalance);
+    }
+    return 0;
+  } catch (error) {
+    addErrorNotification({
+      title: (error as Error).message || "Processing error. Try again!",
+    });
+    return 0;
   }
-  return 0;
 };
