@@ -8,6 +8,7 @@ import { getOrganization } from "../../store/types/Organization";
 const asyncGetEmployee = async () => {
   const { userAddress } = await currentWalletConf.getWalletUserData();
   if (userAddress) {
+    
     const user = await currentWalletConf.getEmployeeInfo(userAddress);
     if (user) return user;
   }

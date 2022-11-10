@@ -58,23 +58,14 @@ const SendTipsContainer = () => {
 
   const sendTips = async () => {
     const isValidate = isValidateFilled(Object.values(tipsForm));
-
-    if (isValidate) {
+    if (isValidate && owner) {
       setLoadingSent(true);
-      // await wallet.getBalance({
-      //   walletData,
-      //   setBalance,
-      // });
       const balance = await currentWalletConf.getBalance();
       if (balance >= Number(amount)) {
         const tipsInfo = await currentWalletConf.sendTips(tipsForm);
         if (tipsInfo) {
           addSuccessNotification({ title: "Tip sent successfully" });
-          setTipsForm(initTipsForm);
-        } else {
-          addErrorNotification({
-            title: "Something went wrong while sending the tip",
-          });
+          setTipsForm({ ...initTipsForm, ownerAddress: owner });
         }
       } else {
         addErrorNotification({
@@ -83,7 +74,7 @@ const SendTipsContainer = () => {
       }
       setLoadingSent(false);
     } else {
-      addNotValidForm()
+      addNotValidForm();
     }
   };
 
@@ -122,91 +113,98 @@ const SendTipsContainer = () => {
 
   const { employeeAddress, review, amount } = tipsForm;
 
-  if (loading) return <Loader size="big" />;
-
   return (
     <div className="sentTips-page">
-      <div className="title">
-        Send tips to employee of {organization.organizationName} in crypto
-      </div>
-      <div className="form">
-        <Row gutter={[0, 36]} className="form">
-          <Col span={24}>
-            <div className="form-element">
-              <SelectInput
-                placeholder="Select employee"
-                value={employeeAddress}
-                list={employeesListSelect}
-                onChange={(selected) =>
-                  setTipsForm({
-                    ...tipsForm,
-                    employeeAddress: selected as string,
-                  })
-                }
-                dropdownClassName="employees-select-list"
-                renderOption={SelectDropdownOption}
-                dropdownRender={SelectDropdown}
-                disabled={loadingSent}
-                modificator="select"
-              />
-            </div>
-          </Col>
-          <Col span={24}>
-            <div className="form-element">
-              <FormInput
-                value={review}
-                typeInput="number"
-                minNumber={minReview}
-                maxNumber={maxReview}
-                placeholder={`Assess service from ${minReview} to ${maxReview}`}
-                onChange={({ target }) =>
-                  setTipsForm((prev) => ({
-                    ...tipsForm,
-                    review:
-                      target.value.length &&
-                      (+target.value > maxReview || +target.value < minReview)
-                        ? prev.review
-                        : target.value,
-                  }))
-                }
-                disabled={loadingSent}
-              />
-            </div>
-          </Col>
+      {loading ? (
+        <Loader size="big" />
+      ) : (
+        <>
+          <div className="title">
+            Send tips to employee of {organization.organizationName} in crypto
+          </div>
+          <>
+            <div className="form">
+              <Row gutter={[0, 36]} className="form">
+                <Col span={24}>
+                  <div className="form-element">
+                    <SelectInput
+                      placeholder="Select employee"
+                      value={employeeAddress}
+                      list={employeesListSelect}
+                      onChange={(selected) =>
+                        setTipsForm({
+                          ...tipsForm,
+                          employeeAddress: selected as string,
+                        })
+                      }
+                      dropdownClassName="employees-select-list"
+                      renderOption={SelectDropdownOption}
+                      dropdownRender={SelectDropdown}
+                      disabled={loadingSent}
+                      modificator="select"
+                    />
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div className="form-element">
+                    <FormInput
+                      value={review}
+                      typeInput="number"
+                      minNumber={minReview}
+                      maxNumber={maxReview}
+                      placeholder={`Assess service from ${minReview} to ${maxReview}`}
+                      onChange={({ target }) =>
+                        setTipsForm((prev) => ({
+                          ...tipsForm,
+                          review:
+                            target.value.length &&
+                            (+target.value > maxReview ||
+                              +target.value < minReview)
+                              ? prev.review
+                              : target.value,
+                        }))
+                      }
+                      disabled={loadingSent}
+                    />
+                  </div>
+                </Col>
 
-          <Col span={24}>
-            <div className="form-element">
-              <FormInput
-                value={amount}
-                onChange={({ target }) => {
-                  setTipsForm({
-                    ...tipsForm,
-                    amount: +target.value < 0 ? "0" : target.value,
-                  });
-                }}
-                addonAfter={
-                  <p className="currency">
-                    {currentBlockchainConf?.nativeCurrency.symbol}
-                  </p>
-                }
-                typeInput="number"
-                modificator="inputs-amount"
-                placeholder="Insert tip sum"
+                <Col span={24}>
+                  <div className="form-element">
+                    <FormInput
+                      value={amount}
+                      onChange={({ target }) => {
+                        setTipsForm({
+                          ...tipsForm,
+                          amount: +target.value < 0 ? "0" : target.value,
+                        });
+                      }}
+                      addonAfter={
+                        <p className="currency">
+                          {currentBlockchainConf?.nativeCurrency.symbol}
+                        </p>
+                      }
+                      typeInput="number"
+                      modificator="inputs-amount"
+                      placeholder="Insert tip sum"
+                      disabled={loadingSent}
+                    />
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <div className="btn">
+              <BaseButton
+                title="Send tips"
+                onClick={sendTips}
+                padding="10px 25px"
+                fontSize="21px"
                 disabled={loadingSent}
               />
             </div>
-          </Col>
-        </Row>
-      </div>
-      <div className="btn">
-        <BaseButton
-          title="Send tips"
-          onClick={sendTips}
-          padding="10px 25px"
-          fontSize="21px"
-          disabled={loadingSent}
-        />
-      </div>
+          </>
+        </>
+      )}
     </div>
   );
 };

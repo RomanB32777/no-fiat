@@ -16,7 +16,6 @@ export const addTronEmployeeToOrg = async (
     const employeeInfo = await contractData
       .addTipReceiverToOrg(address, name, photoLink)
       .send();
-    console.log(employeeInfo);
     addSuccessNotification({
       title: "Processed successfully!",
     });
@@ -35,6 +34,8 @@ export const getTronEmployeeInfo = async (
 ) => {
   try {
     const contractData = await methods.getBlockchainContractData();
+    console.log(employeeAddress);
+    
     const employeeInfo = await contractData
       .showTipReceiver(employeeAddress)
       .call();
@@ -48,6 +49,7 @@ export const getTronEmployeeInfo = async (
         review,
         date,
       ] = employeeInfo;
+
 
       const photoLink = await methods.getEmployeePhoto(employeeAddress);
 
@@ -70,9 +72,7 @@ export const getTronEmployeeInfo = async (
     }
     return initEmployee;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message || error);
     return initEmployee;
   }
 };
@@ -100,9 +100,7 @@ export const getTronEmployeePhoto = async (
       .call();
     return employeePhoto;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
     return false;
   }
 };
@@ -165,6 +163,7 @@ export const removeTronEmployeeFromOrg = async (
     });
     return removedEmployee;
   } catch (error) {
+    console.log((error as Error).message);
     addErrorNotification({
       title: (error as Error).message || "Processing error. Try again!",
     });

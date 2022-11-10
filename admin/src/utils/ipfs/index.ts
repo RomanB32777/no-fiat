@@ -21,9 +21,10 @@ const uploadToIpfs = async (photoValue: FileList) => {
     const _uri = await storeFiles(sendFile);
     return _uri;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
   }
 };
 
@@ -46,9 +47,10 @@ const getFromIpfs = async (photoLink: string, cb?: (res: string) => void) => {
       });
     }
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
   }
 };
 

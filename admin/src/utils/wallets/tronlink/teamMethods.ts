@@ -108,6 +108,7 @@ export const addTronEmployeeToTeam = async (
     });
     return teamInfo;
   } catch (error) {
+    console.log((error as Error).message);
     addErrorNotification({
       title: (error as Error).message || "Processing error. Try again!",
     });
@@ -130,6 +131,7 @@ export const removeTronEmpoloyeeFromTeam = async (
     });
     return teamInfo;
   } catch (error) {
+    console.log((error as Error).message);
     addErrorNotification({
       title: (error as Error).message || "Processing error. Try again!",
     });

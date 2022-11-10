@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import clsx from "clsx";
 import { BackTop, Layout, Menu } from "antd";
 import DocumentTitle from "react-document-title";
 
+import Logo from "../../components/HeaderComponents/LogoComponent";
+import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 import { IRoute, Pages, routers } from "../../routes";
 import { useAppSelector } from "../../store/hooks";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import Logo from "../../components/HeaderComponents/LogoComponent";
 import { IUser } from "../../types";
 import "./styles.sass";
-import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 
 const { Content, Sider } = Layout;
 
@@ -74,8 +75,14 @@ const LayoutApp = () => {
     const pathsWithHiddenLayoutElements = routers.filter(
       (route) => route.hiddenLayoutElements
     );
-
     return pathsWithHiddenLayoutElements.some(
+      (route) => pathname.split("/")[1] === route.path?.split("/")[0]
+    );
+  }, [pathname]);
+
+  const showOnlyLogo: boolean = useMemo(() => {
+    const pathsWithShowLogo = routers.filter((route) => route.showLogo);
+    return pathsWithShowLogo.some(
       (route) => pathname.split("/")[1] === route.path?.split("/")[0]
     );
   }, [pathname]);
@@ -186,7 +193,10 @@ const LayoutApp = () => {
         </Sider>
         <BackTop />
         <Layout
-          className="site-layout"
+          className={clsx("site-layout", {
+            noMarginTo: showOnlyLogo,
+            visibleBgImage: showOnlyLogo,
+          })}
           style={{
             marginLeft: hiddenLayoutElements || isTablet ? 0 : 250, // collapsed
           }}
@@ -199,8 +209,13 @@ const LayoutApp = () => {
             visibleGamburger
             visibleLogo
           />
+          {showOnlyLogo && <Logo navigateUrl="/" modificator="logo-absolute" />}
           <Content className="layout-container">
-            <div className="main-container">
+            <div
+              className={clsx("main-container", {
+                noMarginTo: showOnlyLogo,
+              })}
+            >
               <Pages />
             </div>
           </Content>

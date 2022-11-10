@@ -5,8 +5,14 @@ import BaseButton from "../../../../components/BaseButton";
 import ConfirmPopup from "../../../../components/ConfirmPopup";
 import FormInput from "../../../../components/FormInput";
 import ModalComponent from "../../../../components/ModalComponent";
+import { currentWalletConf } from "../../../../consts";
+import { useAppSelector } from "../../../../store/hooks";
 import { ITeam, teamFields } from "../../../../types";
+import { addErrorNotification, addInvalidAddress, addNotValidForm, isValidateFilled } from "../../../../utils";
+import { checkChangedEmployees, checkExistAddressInArr } from "../../utils";
 import "./styles.sass";
+
+const formName = "teamForm";
 
 const minNumber = 0;
 const maxNumber = 100;
@@ -30,14 +36,71 @@ const TeamModal = ({
   deleteEmployeeInTeam: (address: string) => Promise<any>;
   sendData: (data: { team: ITeam; field: teamFields | null }) => Promise<any>;
 }) => {
+  const { organization } = useAppSelector((state) => state);
   const [form] = Form.useForm<ITeam>();
   const [editedField, setEditedField] = useState<teamFields | null>(null);
 
-  const onFinish = async (values: ITeam) =>
-    await sendData({
-      team: { ...values, percentageToPay: Number(values.percentageToPay) },
-      field: editedField,
-    });
+  const { allTipReceivers, teams } = organization;
+
+  const isValidateForm = (team: ITeam): boolean => {
+    const beforeEditTeam = organization.teams.find(
+      (t) => t.name === editedTeam
+    );
+    const isFilledForm = isValidateFilled(Object.values(team)) && isValidateFilled(team.employeesInTeam)
+    if (!isFilledForm) {
+      addNotValidForm();
+      return false
+    }
+    
+    if (beforeEditTeam) {
+      const addedEmployee = checkChangedEmployees(team, beforeEditTeam);
+      if (addedEmployee) {
+        const isExistEmployeesInOrg =
+          allTipReceivers.some((address) =>
+            checkExistAddressInArr(address, addedEmployee)
+          ) ||
+          teams.some((t) =>
+            t.employeesInTeam.some((address) =>
+              checkExistAddressInArr(address, addedEmployee)
+            )
+          );
+        if (isExistEmployeesInOrg) {
+          addErrorNotification({
+            title:
+              "Tip Receiver with this address has already been added to the organization",
+          });
+          return false;
+        } else {
+          const isValidAddress =
+            currentWalletConf.isValidAddress(addedEmployee);
+
+          if (!isValidAddress) {
+            addInvalidAddress();
+            return false;
+          }
+          return true;
+        }
+      } else if (
+        team.employeesInTeam.length !== beforeEditTeam.employeesInTeam.length
+      ) {
+        addErrorNotification({
+          title:
+            "Tip Receiver with this address has already been added to the organization",
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const onFinish = async (values: ITeam) => {
+    const addedEmployee = isValidateForm(values);
+    addedEmployee &&
+      (await sendData({
+        team: { ...values, percentageToPay: Number(values.percentageToPay) },
+        field: editedField,
+      }));
+  };
 
   const btnSubmit = (field?: teamFields) => {
     field && setEditedField(field);
@@ -63,7 +126,7 @@ const TeamModal = ({
       topModal
     >
       <div className="team-modal">
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} name={formName}>
           <Row gutter={[0, 36]} className="form" justify="center">
             <Col span={24}>
               <div className="form-element">
@@ -218,6 +281,7 @@ const TeamModal = ({
             </Col>
           </Row>
         </Form>
+
         {!editedTeam && (
           <div className="btn-create">
             <BaseButton

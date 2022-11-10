@@ -13,17 +13,11 @@ import { getOrganization } from "../../../../store/types/Organization";
 import {
   addErrorNotification,
   addNotValidForm,
-  addSuccessNotification,
   isValidateFilled,
 } from "../../../../utils";
 import { currentWalletConf } from "../../../../consts";
 import { ITeam } from "../../../../types";
-import { sendTeamData } from "../../utils";
-
-const checkChangedEmployees = (firstTeamState: ITeam, secondTeamState: ITeam) =>
-  firstTeamState.employeesInTeam.find(
-    (e) => secondTeamState.employeesInTeam.indexOf(e) < 0
-  );
+import { checkChangedEmployees, sendTeamData } from "../../utils";
 
 const initTeam: ITeam = {
   name: "",
@@ -42,7 +36,7 @@ const TeamsBlock = () => {
   });
   const [editedTeam, setEditedTeam] = useState<string | null>(null);
 
-  const { teams, teamsAmountToWithdraw } = organization;
+  const { allTipReceivers, teams, teamsAmountToWithdraw } = organization;
 
   const isEmptyTeamsAmountToWithdraw = useMemo(
     () => teamsAmountToWithdraw === 0,
@@ -100,6 +94,7 @@ const TeamsBlock = () => {
       const isExistTeamInOrg = organization.teams.some(
         (t) => t.name === team.name
       );
+
       if (!editedTeam && isExistTeamInOrg) {
         setLoadingTeam(false);
         return addErrorNotification({
@@ -137,12 +132,14 @@ const TeamsBlock = () => {
             );
             if (beforeEditTeam) {
               const addedEmployee = checkChangedEmployees(team, beforeEditTeam);
-              updatedTeamInfo =
-                addedEmployee &&
-                (await currentWalletConf.addEmployeeToTeam(
+              if (addedEmployee) {
+                console.log(addedEmployee);
+                updatedTeamInfo = await currentWalletConf.addEmployeeToTeam(
                   editedTeam,
                   addedEmployee
-                ));
+                );
+                console.log("updatedTeamInfo");
+              }
             }
             break;
 
@@ -151,12 +148,11 @@ const TeamsBlock = () => {
               title: "Team has not been changed",
             });
         }
-        if (updatedTeamInfo) {
+        console.log("is updatedTeamInfo", updatedTeamInfo);
+        if (Boolean(updatedTeamInfo)) {
           console.log(updatedTeamInfo);
           dispatch(getOrganization());
-          addSuccessNotification({
-            title: "Team successfully modified",
-          });
+          setTeamForm(team);
           // closeModal();
         }
       } else {
@@ -167,9 +163,6 @@ const TeamsBlock = () => {
             console.log(team, newTeam);
             dispatch(getOrganization());
             closeModal();
-            addSuccessNotification({
-              title: "Team added successfully",
-            });
           }
         } else {
           addErrorNotification({
@@ -179,7 +172,7 @@ const TeamsBlock = () => {
       }
       setLoadingTeam(false);
     } else {
-      return addNotValidForm()
+      return addNotValidForm();
     }
   };
 

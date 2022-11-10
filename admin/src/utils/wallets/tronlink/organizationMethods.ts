@@ -5,7 +5,10 @@ import {
   ITeam,
   IWalletMethods,
 } from "../../../types";
-import { addErrorNotification, addSuccessNotification } from "../../notifications";
+import {
+  addErrorNotification,
+  addSuccessNotification,
+} from "../../notifications";
 
 // organization
 export const addTronOrganization = async (
@@ -82,9 +85,10 @@ export const showTronOrganization = async (
     }
     return initOrganization;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
     return initOrganization;
   }
 };

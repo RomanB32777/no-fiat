@@ -41,8 +41,7 @@ export const addAuthNotification = () =>
 
 export const addAuthWalletNotification = (wallet: string) =>
   addNotification({
-    title: "Authorization",
-    message: `You need to log in to your wallet ${wallet}`,
+    title: `Authorization - You need to log in to your wallet ${wallet}`,
     type: "warning",
   });
 
@@ -55,7 +54,7 @@ export const addErrorNotification = ({
     title,
     message: message || "",
     type: "danger",
-    duration: duration || 5000,
+    duration: duration || 2500,
   });
 
 export const addSuccessNotification = ({
@@ -66,21 +65,19 @@ export const addSuccessNotification = ({
     title,
     message: message || "",
     type: "success",
-    duration: 3000,
+    duration: 1500,
   });
 };
-
-export const addNotFoundUserNotification = () =>
-  addNotification({
-    type: "danger",
-    title: "User with this username not found!",
-  });
 
 export const addNotValidForm = () =>
   addErrorNotification({
     title: "Not all fields are filled",
   });
 
+export const addInvalidAddress = () =>
+  addErrorNotification({
+    title: "Invalid address provided",
+  });
 export const addInstallWalletNotification = (
   walletName: string,
   installUrl: string

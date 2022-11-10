@@ -29,6 +29,7 @@ interface IRoute extends RouteObject {
   transparet?: boolean;
   hiddenLayoutElements?: boolean;
   noPaddingMainConteiner?: boolean;
+  showLogo?: boolean;
 }
 
 //protected Route state
@@ -118,6 +119,7 @@ export const routers: IRoute[] = [
     element: <SendTipsPage />,
     hiddenLayoutElements: true,
     noPaddingMainConteiner: true,
+    showLogo: true,
   },
   {
     path: "*",

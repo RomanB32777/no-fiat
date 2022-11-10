@@ -15,11 +15,12 @@ import {
   getFromIpfs,
   addErrorNotification,
   addNotValidForm,
+  addInvalidAddress,
 } from "../../../../utils";
 import { getOrganization } from "../../../../store/types/Organization";
 import { IEmployeeBase } from "../../../../types";
 import { currentWalletConf } from "../../../../consts";
-import { cardObjType } from "../../utils";
+import { cardObjType, checkExistAddressInArr } from "../../utils";
 
 const initEmployee: IEmployeeBase = {
   name: "",
@@ -39,7 +40,7 @@ const EmployeesBlock = () => {
   });
   const [photoValue, setPhotoValue] = useState<FileList | null>();
 
-  const { allTipReceivers } = organization;
+  const { allTipReceivers, teams } = organization;
 
   const getItemName = async ({ address }: cardObjType) => {
     const { name } = await currentWalletConf.getEmployeeBase(address as string);
@@ -92,15 +93,25 @@ const EmployeesBlock = () => {
     const isValidate = isValidateFilled(Object.values(employeesForm));
     if (isValidate) {
       setLoadingEmployee(true);
-      const isExistEmployeeInOrg = allTipReceivers.some(
-        (employeeAddress) =>
-          employeeAddress === employeesForm.address ||
-          employeeAddress ===
-            currentWalletConf.formatAddressStr({
-              address: employeesForm.address,
-              format: "fromHex",
-            })
+
+      const isVallidAddress = currentWalletConf.isValidAddress(
+        employeesForm.address
       );
+
+      if (!isVallidAddress) {
+        setLoadingEmployee(false);
+        return addInvalidAddress();
+      }
+
+      const isExistEmployeeInOrg =
+        allTipReceivers.some((address) =>
+          checkExistAddressInArr(address, employeesForm.address)
+        ) ||
+        teams.some((t) =>
+          t.employeesInTeam.some((address) =>
+            checkExistAddressInArr(address, employeesForm.address)
+          )
+        );
 
       if (!editedEmployee && isExistEmployeeInOrg) {
         setLoadingEmployee(false);
@@ -142,7 +153,6 @@ const EmployeesBlock = () => {
           }
         } else {
           addErrorNotification({
-
             title: "An error occurred while loading the image",
           });
         }
@@ -166,7 +176,7 @@ const EmployeesBlock = () => {
       }
       setLoadingEmployee(false);
     } else {
-      addNotValidForm()
+      addNotValidForm();
     }
   };
 

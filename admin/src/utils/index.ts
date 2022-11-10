@@ -6,7 +6,7 @@ import {
   addErrorNotification,
   addNotValidForm,
   addSuccessNotification,
-  addNotFoundUserNotification,
+  addInvalidAddress,
   addInstallWalletNotification,
 } from "./notifications";
 
@@ -36,7 +36,7 @@ export {
   addErrorNotification,
   addNotValidForm,
   addSuccessNotification,
-  addNotFoundUserNotification,
+  addInvalidAddress,
   addInstallWalletNotification,
 
   // strings

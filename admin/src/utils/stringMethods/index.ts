@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import { addNotification } from "../notifications";
+import { addSuccessNotification } from "../notifications";
 
 const getRandomStr = (length: number) => {
   let result = "";
@@ -21,13 +21,11 @@ const shortStr = (str: string, length: number) => {
 const copyStr = (str: string) => {
   try {
     navigator.clipboard.writeText(str);
-    addNotification({
-      type: "success",
+    addSuccessNotification({
       title: "Link successfully copied",
     });
   } catch (error) {
-    addNotification({
-      type: "warning",
+    addSuccessNotification({
       title: "An error occurred while copying the link",
     });
   }

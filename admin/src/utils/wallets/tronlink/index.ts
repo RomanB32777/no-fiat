@@ -5,6 +5,7 @@ import {
   getTronUserWallet,
   formatNumber,
   formatTronAddressStr,
+  isValidTronAddress,
 } from "./contractMethods";
 import {
   checkIsOwner,
@@ -50,6 +51,7 @@ export const tronlinkMethods: IWalletMethods = {
   getBalance() {
     return getTronBalance(this);
   },
+  isValidAddress: (address) => isValidTronAddress(address),
 
   // user
   checkIfOwner() {

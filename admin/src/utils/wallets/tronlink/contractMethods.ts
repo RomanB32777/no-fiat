@@ -55,12 +55,15 @@ export const getTronContractData = async () => {
       return contractData;
     } else return null;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
     return null;
   }
 };
+
+export const isValidTronAddress = (address: string) =>
+  (window as any).tronWeb.isAddress(address) as boolean;
 
 export const formatNumber = (from: any) =>
   Number((window as any).tronWeb.fromSun(from));

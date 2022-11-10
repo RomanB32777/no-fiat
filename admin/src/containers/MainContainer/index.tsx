@@ -23,7 +23,7 @@ const initFiltersData: IFiltersForm = {
 
 const MainContainer = () => {
   const { isTablet } = useWindowDimensions();
-  const { organization } = useAppSelector((state) => state);
+  const { user, organization, employee } = useAppSelector((state) => state);
   const [filtersData, setFiltersData] = useState<IFiltersForm>({
     ...initFiltersData,
   });
@@ -56,19 +56,29 @@ const MainContainer = () => {
   useEffect(() => {
     const getEmployees = async () => {
       setLoadingDashboard(true);
-      const { allTipReceivers } = organization;
+      
+      if (employee && user.userRole === "employee") {
+        const resPhoto = await getFromIpfs(employee.photoLink);
+        if (resPhoto)
+          setEmployees([{ ...employee, photoLink: resPhoto as string }]);
+        else setEmployees([employee]);
 
-      if (allTipReceivers.length) {
-        const employees: IEmployee[] = await Promise.all(
-          allTipReceivers.map(async (address) => {
-            const employee = await currentWalletConf.getEmployeeInfo(address);
-            const resPhoto = await getFromIpfs(employee.photoLink);
-            if (resPhoto) return { ...employee, photoLink: resPhoto as string };
-            return employee;
-          })
-        );
-        setEmployees(employees);
-      } else setEmployees([]);
+      } else {
+        const { allTipReceivers } = organization;
+
+        if (allTipReceivers.length) {
+          const employees: IEmployee[] = await Promise.all(
+            allTipReceivers.map(async (address) => {
+              const employee = await currentWalletConf.getEmployeeInfo(address);
+              const resPhoto = await getFromIpfs(employee.photoLink);
+              if (resPhoto)
+                return { ...employee, photoLink: resPhoto as string };
+              return employee;
+            })
+          );
+          setEmployees(employees);
+        } else setEmployees([]);
+      }
       setLoadingDashboard(false);
     };
 

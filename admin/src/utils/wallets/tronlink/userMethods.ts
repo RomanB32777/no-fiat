@@ -1,5 +1,4 @@
 import { IWalletMethods } from "../../../types";
-import { addErrorNotification } from "../../notifications";
 
 export const checkIsOwner = async (methods: IWalletMethods) => {
   try {
@@ -10,9 +9,10 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
       .call();
     return isOwner;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
     return false;
   }
 };
@@ -26,9 +26,10 @@ export const checkIsTipReciever = async (methods: IWalletMethods) => {
       .call();
     return tipRecieverData;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
     return false;
   }
 };
@@ -46,9 +47,10 @@ export const getTronBalance = async (methods: IWalletMethods) => {
     }
     return 0;
   } catch (error) {
-    addErrorNotification({
-      title: (error as Error).message || "Processing error. Try again!",
-    });
+    console.log((error as Error).message);
+    // addErrorNotification({
+    //   title: (error as Error).message || "Processing error. Try again!",
+    // });
     return 0;
   }
 };
