@@ -1,240 +1,203 @@
 import { useMemo, useState } from "react";
-import { Col, Row } from "antd";
-import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
-import { FormattedMessage } from "react-intl";
-import {
-  DashboardLandingIcon,
-  DonationLandingIcon,
-  PencilLandingIcon,
-  ShieldLandingIcon,
-  WidgetsLandingIcon,
-} from "../../icons/icons";
-import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
+import { Col, Divider, Row } from "antd";
 import BaseButton from "../../components/BaseButton";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import bigImg from "../../assets/big_don.png";
+
+
+import bannerImg from "../../assets/banner_top.png";
+import cubeImg from "../../assets/cube.png";
+import coffeImg from "../../assets/coffe.png";
+import stepsImg from "../../assets/steps.png";
+import cubesImg from "../../assets/cubes.png";
+import humansImg from "../../assets/humans.png";
+import graphImg from "../../assets/graph.png";
+import starsImg from "../../assets/stars.png";
+
 import "./styles.sass";
 
-const cryptoSteps = [
-  {
-    title: "mainpage_crypto_steps_step_one_title",
-    subtitle: "mainpage_crypto_steps_step_one_subtitle",
-  },
-  {
-    title: "mainpage_crypto_steps_step_two_title",
-    subtitle: "mainpage_crypto_steps_step_two_subtitle",
-  },
-  {
-    title: "mainpage_crypto_steps_step_three_title",
-    subtitle: "mainpage_crypto_steps_step_three_subtitle",
-  },
-];
-
-const features = [
-  {
-    icon: <DashboardLandingIcon />,
-    title: "mainpage_feature_one_title",
-    subtitle: "mainpage_feature_one_subtitle",
-  },
-  {
-    icon: <WidgetsLandingIcon />,
-    title: "mainpage_feature_two_title",
-    subtitle: "mainpage_feature_two_subtitle",
-  },
-  {
-    icon: <ShieldLandingIcon />,
-    title: "mainpage_feature_three_title",
-    subtitle: "mainpage_feature_three_subtitle",
-  },
-  {
-    icon: <PencilLandingIcon />,
-    title: "mainpage_feature_four_title",
-    subtitle: "mainpage_feature_four_subtitle",
-  },
-  {
-    icon: <DonationLandingIcon />,
-    title: "mainpage_feature_five_title",
-    subtitle: "mainpage_feature_five_subtitle",
-  },
-];
-
 const LandingContainer = () => {
-  const navigate = useNavigate();
-  const { isMobile, isTablet } = useWindowDimensions();
-  const user: any = useSelector((state: any) => state.user);
-
-  const [isOpenHeaderSelect, setIsOpenHeaderSelect] = useState<boolean>(false);
-
-  const handlerHeaderSelect = () => {
-    setIsOpenHeaderSelect(!isOpenHeaderSelect);
-  };
-
-  const signUp = async () => {
-    user.id ? navigate("/") : navigate("/wallets");
-  };
-
-  const videoWidth = useMemo(() => {
-    if (isMobile) return 300;
-    if (isTablet) return 500;
-    return 630;
-  }, [isTablet, isMobile]);
+  const { isMobile } = useWindowDimensions();
 
   return (
     <>
-      {/* <HeaderBanner /> */}
-      <HeaderComponent
-        visibleLogo
-        isOpenHeaderSelect={isOpenHeaderSelect}
-        handlerHeaderSelect={handlerHeaderSelect}
-        logoUrl="/"
-      />
       <div className="landing-container">
-        <div
-          className="landing-container__first-mocup"
-          style={{
-            height: isMobile ? 550 : 840,
-          }}
-        >
-          <div className="landing-container__first-mocup__background" />
-          <div className="landing-container__first-mocup__title">
-            <span>
-              <FormattedMessage id="mainpage_main_title" />
-            </span>
-            <BaseButton
-              formatId={
-                user && user.id
-                  ? "mainpage_main_button_logged"
-                  : "mainpage_main_button"
-              }
-              onClick={signUp}
-              padding={document.body.clientWidth > 640 ? "23px" : "17px"}
-              fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
-              isBlue
-            />
+        <div className="landing-block banner-block">
+          <div className="content">
+            <div className="img-wrapper">
+              <img src={bannerImg} alt="bannerImg" />
+            </div>
           </div>
         </div>
-
-        <div
-          className="landing-container__video-wrapper"
-          style={{
-            marginBottom: "0px",
-          }}
-        >
-          <span className="block-title">What is Crypto Donutz?</span>
-          <iframe
-            width="100%"
-            height={videoWidth}
-            // width="560"
-            // height="315"
-            src="https://www.youtube.com/embed/ng-7g2x4GnM"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen={true}
-          />
-        </div>
-
-        <div className="landing-container__row-panel">
-          <span className="block-title">
-            <FormattedMessage id="mainpage_crypto_steps_title" />
-          </span>
-          <Row
-            justify="space-around"
-            style={{
-              width: "90%",
-            }}
-          >
-            {cryptoSteps.map((cryptoStep, cryptoStepIndex) => (
-              <Col key={"mainpage_crypto_steps_" + cryptoStepIndex}>
-                <span className="icon">{cryptoStepIndex + 1}</span>
-                <span className="title">
-                  <FormattedMessage id={cryptoStep.title} />
-                </span>
-                <span className="sub-title">
-                  <FormattedMessage id={cryptoStep.subtitle} />
-                </span>
-              </Col>
-            ))}
-          </Row>
-        </div>
-
-        <div className="landing-container__big-mocup">
-          <div>
-            <FormattedMessage id="mainpage_submocup_title" />
+        <div className="landing-block header-block">
+          <div className="title">This button is right here!</div>
+          <div className="content">
+            <div className="btn-wrapper">
+              <BaseButton
+                title="Sign-up"
+                onClick={() => {}}
+                fontSize="50px"
+                padding="30px"
+                // padding={document.body.clientWidth > 640 ? "23px" : "17px"}
+                // fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
+                modificator="landing-btn"
+              />
+            </div>
           </div>
         </div>
-
-        <div className="landing-container__row-panel">
-          <span className="block-title">
-            <FormattedMessage id="mainpage_features_title" />
-          </span>
-          <Row
-            justify="center"
-            className="landing-container__row-panel-features"
-            style={{
-              width: "90%",
-            }}
-          >
-            {features.map((feature) => (
-              <Col
-                lg={8}
-                md={12}
-                xs={24}
-                className="landing-container__row-panel-features_item"
-                key={"mainpage_features_" + feature.title}
-              >
-                <span className="icon" style={{ marginBottom: "-12px" }}>
-                  {feature.icon}
-                </span>
-                <span className="title">
-                  <FormattedMessage id={feature.title} />
-                </span>
-                <span className="sub-title">
-                  <FormattedMessage id={feature.subtitle} />
-                </span>
-              </Col>
-            ))}
-          </Row>
-
-          <div className="landing-container__donut-panel">
-            <Row>
-              <Col lg={8} md={12} xs={24}>
-                <div className="landing-container__donut-panel_img">
-                  <img src={bigImg} alt="bigImg" />
+        <div className="landing-block whatIs-block black-block">
+          <div className="title">
+            <span className="yellow">So, what’s NoFiat?</span>
+          </div>
+          <div className="content">
+            <Row
+              justify="space-between"
+              align="middle"
+              style={{ width: "100%" }}
+            >
+              <Col span={12}>
+                <div className="description">
+                  NoFiat - is service that allows start processing tips in{" "}
+                  <span className="yellow">crypto</span>
+                  for caffes, restaurants, barber shops, massage parlor and
+                  other organizations that need it.
                 </div>
               </Col>
-              <Col lg={8} md={12} xs={24}>
-                <div className="landing-container__donut-panel_txt">
-                  <span className="title">
-                    <FormattedMessage id="mainpage_donut_mocup_title" />
-                  </span>
-                  <span className="subtitle">
-                    <FormattedMessage id="mainpage_donut_mocup_subtitle" />
-                  </span>
+              <Col span={10}>
+                <div className="img-wrapper">
+                  <img src={cubeImg} alt="cubeImg" />
                 </div>
               </Col>
             </Row>
           </div>
-          <div className="landing-container__bottom-panel">
-            <div>
-              <span>
-                <FormattedMessage id="mainpage_bottom_panel_title" />
-              </span>
-              <BaseButton
-                onClick={signUp}
-                fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
-                formatId={
-                  user && user.id
-                    ? "mainpage_main_button_logged"
-                    : "mainpage_main_button"
-                }
-                padding={
-                  document.body.clientWidth > 640 ? "22px 78px" : "12px 64px"
-                }
-                isBlue
-              />
+        </div>
+        <div className="landing-block howWork-block">
+          <div className="title">Awesome! How does it work?</div>
+          <Divider className="divider" />
+          <div className="content">
+            <Row justify="center" align="middle" style={{ width: "100%" }}>
+              <Col span={8}>
+                <div className="img-wrapper">
+                  <img src={coffeImg} alt="coffeImg" />
+                </div>
+              </Col>
+              <Col span={12}>
+                <div className="description">
+                  <p>
+                    Tom owns a caffe and has 3 employees: waiter Bob and two
+                    cooks, Alice and Mike.{" "}
+                  </p>
+                  <p>
+                    Tom wants to get 5% of every tip Bob receives. He thinks
+                    it’s fair for Alice and Mike to receive 5% as well.
+                  </p>
+                </div>
+              </Col>
+            </Row>
+            <Divider className="divider" />
+            <div className="img-wrapper banner">
+              <img src={stepsImg} alt="stepsImg" />
             </div>
+          </div>
+        </div>
+
+        <div className="landing-block features-block black-block">
+          <div className="title">Features</div>
+          <div className="content">
+            <div className="feature-row decentralized">
+              <Row
+                justify="space-between"
+                align="middle"
+                style={{ width: "100%" }}
+              >
+                <Col span={8}>
+                  <div className="img-wrapper">
+                    <img src={cubesImg} alt="cubesImg" />
+                  </div>
+                </Col>
+                <Col span={14}>
+                  <div className="description">
+                    <span className="yellow">Fully decentralized.</span> No
+                    information is stored in databasa. There is no database.
+                    Everything is processed on Blockchain.
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <div className="feature-row teams">
+              <Row
+                justify="space-between"
+                align="middle"
+                style={{ width: "100%" }}
+              >
+                <Col span={14}>
+                  <div className="description">
+                    <span className="yellow">Team creation.</span>
+                    Create and manage teams Let your employees take a fair bite
+                    from the pie.
+                  </div>
+                </Col>
+                <Col span={8}>
+                  <div className="img-wrapper">
+                    <img src={humansImg} alt="humansImg" />
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <div className="feature-row dashboard">
+              <Row
+                justify="space-between"
+                align="middle"
+                style={{ width: "100%" }}
+              >
+                <Col span={10}>
+                  <div className="img-wrapper">
+                    <img src={graphImg} alt="graphImg" />
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div className="description">
+                    <span className="yellow">Dashboard.</span>
+                    Select any time period and check the summary of tips
+                    received with easy-to-use dashboard.
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <div className="feature-row reviews">
+              <Row
+                justify="space-between"
+                align="middle"
+                style={{ width: "100%" }}
+              >
+                <Col span={12}>
+                  <div className="description">
+                    <span className="yellow">Reviews.</span>
+                    Collect clients’ reviews and store them on blockchain. No
+                    fake reviews.
+                  </div>
+                </Col>
+                <Col span={10}>
+                  <div className="img-wrapper">
+                    <img src={starsImg} alt="starsImg" />
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </div>
+
+        <div className="landing-block btn-block">
+          <div className="title"> It’s still the same button:)</div>
+          <div className="content">
+            <BaseButton
+              title="Sign-up"
+              onClick={() => {}}
+              fontSize="50px"
+              padding="30px"
+              modificator="landing-btn"
+              // padding={document.body.clientWidth > 640 ? "23px" : "17px"}
+              // fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
+            />
           </div>
         </div>
       </div>

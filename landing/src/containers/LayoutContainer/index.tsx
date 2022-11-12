@@ -3,6 +3,7 @@ import { BackTop, Layout } from "antd";
 import LandingPage from "../../pages/LandingPage";
 
 import "./styles.sass";
+import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 
 const { Content } = Layout;
 
@@ -16,7 +17,8 @@ const LayoutApp = () => {
     >
       <BackTop />
       <Layout className="site-layout">
-        <Content>
+        <Content className="layout-container">
+          <HeaderComponent visibleLogo logoUrl="/" />
           <div className="main-container">
             <LandingPage />
           </div>

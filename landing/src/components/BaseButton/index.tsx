@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { FormattedMessage } from "react-intl";
 import "./styles.sass";
 
 const BaseButton = (props: {
@@ -12,7 +11,7 @@ const BaseButton = (props: {
   isRed?: boolean;
   isBlack?: boolean;
   disabled?: boolean;
-  color?: string,
+  color?: string;
   modificator?: string;
   onClick: (event?: React.MouseEvent<HTMLDivElement>) => void;
 }) => (
@@ -33,7 +32,6 @@ const BaseButton = (props: {
       borderColor: props.color,
     }}
   >
-    {props.formatId && <FormattedMessage id={props.formatId} />}
     {props.title}
     {props.icon && <div className="base-button__icon icon">{props.icon}</div>}
   </div>

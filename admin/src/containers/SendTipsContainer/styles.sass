@@ -4,7 +4,7 @@
     display: flex
     flex-direction: column
     align-items: center
-    margin-top: 200px
+    margin-top: 150px
     width: 100%
 
     .title
@@ -51,7 +51,7 @@
 
     .select-dropdown
         background: variables.$grey-dark-color
-        padding: 10px 0 30px
+        padding: 10px 0 20px
         border-radius: 20px
 
         .ant-select-item-option-active:not(.ant-select-item-option-disabled),
@@ -71,3 +71,13 @@
                 font-size: 20px
                 line-height: 25px
                 font-weight: 700
+
+        .ant-select-item-option-content:last-child
+            padding: 90px
+
+.ant-select-dropdown.employees-select-list.small
+    .select-dropdown
+        padding: 10px 0
+
+        .ant-select-item-option-content
+            border-bottom: none

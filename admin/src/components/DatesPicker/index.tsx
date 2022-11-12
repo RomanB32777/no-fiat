@@ -50,6 +50,8 @@ const DatesPicker = ({
                   )
                 : onChange("", "")
             }
+            disabledDate={(d) => !d || d.isAfter()}
+            popupClassName="app-calendar"
           />
         </Col>
       </Row>

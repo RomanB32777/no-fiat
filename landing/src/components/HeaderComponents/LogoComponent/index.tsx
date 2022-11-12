@@ -1,13 +1,23 @@
-import { useNavigate } from "react-router";
-import DonutzLogo from "../../../assets/DonutzLogo.png";
+import clsx from "clsx";
 import "./styles.sass";
 
-const Logo = ({ navigateUrl }: { navigateUrl: string }) => {
-  const navigate = useNavigate();
+const Logo = ({
+  navigateUrl,
+  modificator,
+}: {
+  navigateUrl: string;
+  modificator?: string;
+}) => {
   return (
-    <div className="main-logo" onClick={() => navigate(navigateUrl)}>
-      <span>Crypto Donutz</span>
-      <img src={DonutzLogo} alt="donut logo" />
+    <div
+      className={clsx("main-logo", {
+        [modificator as string]: modificator,
+      })}
+      onClick={() => {}}
+    >
+      <p>
+        <span className="yellow">NO</span>FIAT
+      </p>
     </div>
   );
 };

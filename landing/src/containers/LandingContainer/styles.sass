@@ -8,290 +8,152 @@
     flex-direction: column
     align-items: center
 
-    &__video-wrapper
-        width: 90%
-        display: flex
-        flex-direction: column
-        align-items: center
-        margin: 56px 0 0px 0
-
-        span
-            margin-bottom: 54px
-            font-family: variables.$gilroy-font
-            font-style: normal
-            font-weight: 700
-            font-size: 50px
-            line-height: 61px
-            text-align: center
-            color: variables.$white-color
-
-    &__first-mocup
+    .landing-btn
+        margin: 0 auto
         width: 100%
-        height: 800px
+        background: none
+        border: none
+        background-image: url('../../assets/btn.png')
+        background-repeat: no-repeat
+        background-position: center
+        background-size: contain
+
+        &:hover
+            box-shadow: none
+
+    .banner-block
+        .content
+            .img-wrapper
+                img
+                    max-width: 1200px
+
+    .header-block
+        width: 100%
         position: relative
+        padding-bottom: 50px
 
-        &__background
+        &::before,
+        &:after
+            content: ''
             position: absolute
-            z-index: 1
-            width: 100%
-            height: 100%
-            background: url('../../assets/mainMocup.png')
-            background-size: cover
+            top: 20%
+            background-image: url('../../assets/title_img.png')
+            background-repeat: no-repeat
+            background-position: left
+            background-size: contain
+            width: 130px
+            height: 230px
 
-            @media (max-width: 576px)
-                opacity: 0.3
+        &::before
+            left: 0
 
-        &__title
-            position: relative
-            margin: auto 8px auto auto
-            max-width: 564px
-            height: 100%
-            display: flex
-            flex-direction: column
-            justify-content: center
-            z-index: 3
+        &:after
+            right: 0
+            transform: scale(-1, 1)
 
-            @media (max-width: 576px)
-                align-items: center
-                margin: auto
-                max-width: 100%
+        .content
+            padding-top: 50px
 
-            span
-                font-family: variables.$gilroy-font
-                font-style: normal
-                font-weight: 700
-                font-size: 100px
-                line-height: 121px
-                color: variables.$white-color
-                margin-bottom: 52px
+    .landing-block
+        margin: 40px 0
 
-                @media (max-width: 576px)
-                    font-size: 55px
-                    line-height: 65px
-                    margin: 0 auto 36px 0
-                    text-align: center
-
-    &__row-panel
-        height: fit-content
-        width: 100%
-        box-sizing: border-box
-        padding: 89px 0 112px 0
-
-        display: flex
-        flex-direction: column
-        align-items: center
-
-        span
-            margin-bottom: 76px
-            font-family: variables.$gilroy-font
-            font-style: normal
+        .title
+            text-align: center
             font-weight: 700
             font-size: 50px
-            line-height: 61px
-            text-align: center
-            color: variables.$white-color
+            line-height: 50px
+            margin-bottom: 40px
 
-        @media (max-width: 576px)
-            padding: 69px 0 82px 0
+        .content
+            .description
+                font-size: 40px
+                line-height: 40px
 
-        & > div
-            & > div
+            .img-wrapper
                 display: flex
-                flex-direction: column
-                align-items: center
                 justify-content: center
 
-                .icon
-                    margin-bottom: 26px
-                    font-family: variables.$gilroy-font
-                    font-style: normal
-                    font-weight: 500
-                    font-size: 60px
-                    line-height: 76px
-                    text-align: center
-                    color: variables.$white-color
+                img
+                    object-fit: cover
 
-                .title
-                    font-family: variables.$gilroy-font
-                    font-style: normal
-                    font-weight: 700
-                    font-size: 30px
-                    line-height: 38px
-                    color: variables.$white-color
-                    text-align: center
-                    margin-bottom: 20px
-
-                .sub-title
-                    font-family: variables.$gilroy-font
-                    font-style: normal
-                    font-weight: 700
-                    font-size: 20px
-                    line-height: 25px
-                    color: variables.$grey-color
-                    max-width: 330px
-
-                @media (max-width: 576px)
-                    max-width: 80%
-
-                    .icon
-                        margin-bottom: 20px
-                        svg
-                            width: 80px
-
-                    .title
-                        font-size: 25px
-                        line-height: 32px
-                        margin-bottom: 10px
-
-                    .sub-title
-                        font-size: 18px
-                        line-height: 23px
-                        margin-bottom: 45px
-    &__big-mocup
-        width: 100%
-        height: 520px
-        background: url('../../assets/subScopeMocup.gif')
-        background-size: cover
-        display: flex
-        justify-content: center
-        align-items: center
-
-        @media (max-width: 576px)
-            height: 320px
-
-        div
-            width: fit-content
-            box-sizing: border-box
-            padding: 60px 72px
-            background: #212127
-            mix-blend-mode: hard-light
-            display: flex
-            justify-content: center
-            align-items: center
-            font-family: variables.$gilroy-font
-            font-style: normal
-            font-weight: 700
-            font-size: 50px
-            line-height: 61px
-            text-align: center
-            color: variables.$white-color
-
-            @media (max-width: 576px)
-                font-size: 32px
-                line-height: 36px
-                padding: 20px 12px
-                max-width: 90%
-
-    &__donut-panel
-        height: 420px
-        width: 90%
-        box-sizing: border-box
-
-        @media (max-width: 576px)
-            margin-top: 12px
-
-        &_img
-            display: flex
-            justify-content: center
-            
-            img
-                animation: infiniteRotating 10s linear infinite
-
-        &_txt
-            display: flex
-            flex-direction: column
-
-        & > div
-            position: relative
-            flex-direction: row !important
-
-            @media (max-width: 576px)
-                max-width: 100% !important
-                width: 100%
-                margin-top: 44px
-                margin-right: 0
-
-            .title
-                width: fit-content
-                font-family: variables.$gilroy-font
-                font-style: normal
-                font-weight: 700
-                font-size: 78px
-                line-height: 120px
-                color: variables.$white-color
-                text-align: start
-                margin-right: auto
-
-            .subtitle
-                width: 100%
-                font-family: variables.$gilroy-font
-                font-style: normal
-                font-weight: 700
-                font-size: 20px
-                line-height: 21px
-                color: variables.$grey-color
-                text-align: start
-                margin-bottom: 0
-
-            @media (max-width: 768px)
-                .title
-                    margin: 20px auto 0
-                    margin-bottom: 10px !important
-
-                .subtitle
-                    text-align: center
-
-    &__bottom-panel
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        background: variables.$grey-background-color
+    .black-block
+        background: variables.$black-color
         border-radius: 30px
-        margin-top: 10px
-        position: relative
+        padding: 50px 90px
+        font-style: normal
+        font-family: variables.$gilroy-font
 
-        & > div
-            margin: 0 80px
-            box-sizing: border-box
-            min-width: 90%
-            display: flex
-            flex-direction: column
-            align-items: center
+    .whatIs-block
+        .content
+            .description
+                font-weight: 600
 
-            & > span
-                font-family: variables.$gilroy-font
-                margin-top: 70px
-                font-style: normal
-                font-weight: 700
-                font-size: 30px
-                line-height: 38px
-                text-align: center
-                color: variables.$white-color
-                margin-bottom: 43px
-                min-width: 100%
+            .img-wrapper
+                img
+                    max-width: 300px
+                    max-height: 360px
 
-            & > div
-                margin-bottom: 48px
+    .howWork-block
+        .divider
+            background: variables.$white-color
+            width: 60%
+            min-width: 60%
+            text-align: center
+            margin: 24px auto
 
-        @media (max-width: 576px)
-            margin-top: 60px
+        .content
+            .description
+                padding: 40px 0
 
-            & > div
-                & > span
-                    margin-bottom: 40px
-                    margin-top: 45px
-                    font-size: 25px
-                    line-height: 32px
+                p
+                    &:last-child
+                        margin: 0
 
-    .block-title
-        @media (max-width: 576px)
-            font-size: 32px
-            line-height: 37px
-            margin-bottom: 30px
+            .img-wrapper
+                img
+                    max-width: 200px
+                    max-height: 200px
 
-@keyframes infiniteRotating
-    0%
-        transform: rotate(0deg)
-    100%
-        transform: rotate(-360deg)
+                &.banner
+                    margin-top: 80px
+
+                    img
+                        margin-left: -50px
+                        width: 100%
+                        max-width: none
+                        max-height: none
+
+    .features-block
+        .content
+            .feature-row
+                margin: 50px 0
+
+                &:first-child
+                    margin: 0 0 50px
+
+                .description
+                    font-weight: 400
+
+                &.decentralized
+                    .img-wrapper
+                        img
+                            max-width: 300px
+                            max-height: 300px
+
+                &.teams
+                    .img-wrapper
+                        img
+                            max-width: 210px
+                            max-height: 240px
+
+                &.dashboard
+                    .img-wrapper
+                        img
+                            max-width: 360px
+                            max-height: 360px
+
+                &.reviews
+                    .img-wrapper
+                        img
+                            max-width: 360px
+                            max-height: 360px

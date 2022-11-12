@@ -75,6 +75,7 @@ const SelectInput = ({
             dropdownRender={dropdownRender}
             popupClassName={dropdownClassName}
             optionLabelProp="title"
+            bordered={false}
             showArrow
             // open={true}
           >

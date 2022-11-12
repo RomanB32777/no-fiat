@@ -19,6 +19,7 @@ import {
 } from "../../utils";
 import { IEmployeeBase, ITipsObj } from "../../types";
 import "./styles.sass";
+import clsx from "clsx";
 
 const SelectDropdown = (menu: React.ReactElement) => {
   return <div className="select-dropdown">{menu}</div>;
@@ -137,7 +138,9 @@ const SendTipsContainer = () => {
                           employeeAddress: selected as string,
                         })
                       }
-                      dropdownClassName="employees-select-list"
+                      dropdownClassName={clsx("employees-select-list", {
+                        small: employeesListSelect.length < 2,
+                      })}
                       renderOption={SelectDropdownOption}
                       dropdownRender={SelectDropdown}
                       disabled={loadingSent}

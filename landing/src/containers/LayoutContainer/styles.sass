@@ -4,9 +4,11 @@
 .ant-menu-dark .ant-menu-inline.ant-menu-sub
     background: variables.$grey-background-color
 
-.ant-layout,
-.site-layout
-    background: variables.$black-color
+.layout-container
+    background-image: url('../../assets/bg_top.png')
+    background-repeat: no-repeat
+    background-position: top right
+    background-size: 300px
 
 .ant-layout-header
     display: flex
@@ -38,33 +40,26 @@
     bottom: 20px
 
 .ant-btn-default:hover
-    border-color: variables.$blue-color
-    color: variables.$blue-color
+    border-color: variables.$yellow-color
+    color: variables.$yellow-color
 
 .ant-btn-primary,
 .ant-btn-primary:hover
-    border-color: variables.$blue-color
-    background-color: variables.$blue-color
+    border-color: variables.$yellow-color
+    background-color: variables.$yellow-color
 
 .icon
     display: flex
     align-items: center
 
-    &-notifications
-        height: 100%
-        cursor: pointer
-
-.form
-    &-element
-        &__label
-            font-family: variables.$gilroy-font
-            font-style: normal
-            font-weight: 500
-            font-size: 20px
-            line-height: 25px
-            color: variables.$white-color
-
 .main-container
+    margin-top: 30px
+    min-height: 100vh
+    padding: 0 80px 34px
+    background-image: url('../../assets/bg_btm.png')
+    background-repeat: no-repeat
+    background-position: bottom left
+    background-size: 400px
     color: variables.$white-color
 
 .layout-header
@@ -77,3 +72,7 @@
 @media (max-width: 992px)
     .layout-header
         z-index: 100
+
+@media (max-width: 768px)
+    .main-container
+        padding: 0 25px 34px

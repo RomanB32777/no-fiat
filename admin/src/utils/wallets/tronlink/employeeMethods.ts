@@ -16,9 +16,12 @@ export const addTronEmployeeToOrg = async (
     const employeeInfo = await contractData
       .addTipReceiverToOrg(address, name, photoLink)
       .send();
-    addSuccessNotification({
-      title: "Processed successfully!",
-    });
+    console.log(employeeInfo);
+
+    employeeInfo &&
+      addSuccessNotification({
+        title: "Processed successfully!",
+      });
     return employeeInfo;
   } catch (error) {
     addErrorNotification({
@@ -34,8 +37,6 @@ export const getTronEmployeeInfo = async (
 ) => {
   try {
     const contractData = await methods.getBlockchainContractData();
-    console.log(employeeAddress);
-    
     const employeeInfo = await contractData
       .showTipReceiver(employeeAddress)
       .call();
@@ -49,7 +50,6 @@ export const getTronEmployeeInfo = async (
         review,
         date,
       ] = employeeInfo;
-
 
       const photoLink = await methods.getEmployeePhoto(employeeAddress);
 

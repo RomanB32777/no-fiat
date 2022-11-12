@@ -47,18 +47,23 @@
         input
             color: variables.$white-color
 
-    .ant-select-disabled.ant-select:not(.ant-select-customize-input) 
+    .ant-select-borderless,
+    .ant-select-disabled.ant-select:not(.ant-select-customize-input)
         .ant-select-selector
-            width: 100%
-            height: auto
-            background-color: variables.$grey-color
-            border: 1px solid variables.$grey-color
+            width: 100% !important
+            height: auto !important
+            background-color: variables.$grey-color !important
+            border: 1px solid variables.$grey-color !important
             border-radius: 10px
             padding: 20px 24px
+            outline: none
+
+            &:focus-visible
+                outline: none
 
     .ant-select:not(.ant-select-disabled):hover
         .ant-select-selector
-            border-color: variables.$white-color !important
+            border-color: variables.$grey-color !important
 
     .ant-select-selection-item,
     .ant-select-multiple .ant-select-selection-item,
