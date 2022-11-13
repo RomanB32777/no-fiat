@@ -5,14 +5,17 @@ import { BackTop, Layout, Menu } from "antd";
 import DocumentTitle from "react-document-title";
 
 import Logo from "../../components/HeaderComponents/LogoComponent";
+import { HeaderBanner } from "../../components/HeaderComponents/HeaderBanner";
 import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 import { IRoute, Pages, routers } from "../../routes";
 import { useAppSelector } from "../../store/hooks";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import { IUser } from "../../types";
+import { userRoles } from "../../types";
 import "./styles.sass";
 
 const { Content, Sider } = Layout;
+
+const withBanner = true;
 
 const getItem = ({
   label,
@@ -43,49 +46,35 @@ const scrollToPosition = (top = 0) => {
 const addToMenu = (
   route: IRoute,
   menuArr: IRoute[],
-  user: IUser,
+  userRole: userRoles | null,
   iter: number = 0
 ) => {
-  const add = () => {
-    if (route.children) {
-      iter++;
-      route.children.forEach((chRoute) => {
-        chRoute.menu &&
-          iter !== 3 &&
-          menuArr.push({
-            ...chRoute,
-            path: chRoute.index ? route.path : chRoute.path,
-          });
-        addToMenu(chRoute, menuArr, user, iter);
-      });
-    }
-  };
-  route.roleRequired ? route.roleRequired === user.userRole && add() : add();
+  if (route.children) {
+    iter++;
+    route.children.forEach((chRoute) => {
+      // chRoute.menu && console.log( chRoute.roleRequired, userRole);
+
+      chRoute.menu &&
+        iter !== 3 &&
+        chRoute.roleRequired &&
+        userRole &&
+        chRoute.roleRequired.includes(userRole) &&
+        menuArr.push({
+          ...chRoute,
+          path: chRoute.index ? route.path : chRoute.path,
+        });
+      addToMenu(chRoute, menuArr, userRole, iter);
+    });
+  }
 };
 
 const LayoutApp = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const user = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state);
   const { width, isTablet } = useWindowDimensions();
 
   const [collapsed, setCollapsed] = useState(true);
-
-  const hiddenLayoutElements: boolean = useMemo(() => {
-    const pathsWithHiddenLayoutElements = routers.filter(
-      (route) => route.hiddenLayoutElements
-    );
-    return pathsWithHiddenLayoutElements.some(
-      (route) => pathname.split("/")[1] === route.path?.split("/")[0]
-    );
-  }, [pathname]);
-
-  const showOnlyLogo: boolean = useMemo(() => {
-    const pathsWithShowLogo = routers.filter((route) => route.showLogo);
-    return pathsWithShowLogo.some(
-      (route) => pathname.split("/")[1] === route.path?.split("/")[0]
-    );
-  }, [pathname]);
 
   useEffect(() => {
     isTablet ? setCollapsed(true) : setCollapsed(false);
@@ -93,9 +82,9 @@ const LayoutApp = () => {
 
   const menuItems: IRoute[] = useMemo(() => {
     const menuShowItems = routers.reduce((acc, route) => {
-      route.protected
-        ? user.userRole && addToMenu(route, acc, user)
-        : addToMenu(route, acc, user);
+      route.protected && user.userRole
+        ? addToMenu(route, acc, user.userRole)
+        : addToMenu(route, acc, null);
       return acc;
     }, [] as IRoute[]);
 
@@ -107,6 +96,28 @@ const LayoutApp = () => {
       return 0;
     });
   }, [user]);
+
+  const hiddenLayoutElements: boolean = useMemo(() => {
+    const pathsWithHiddenLayoutElements = routers.filter(
+      (route) => route.hiddenLayoutElements
+    );
+    return (
+      !menuItems.length ||
+      pathsWithHiddenLayoutElements.some(
+        (route) => pathname.split("/")[1] === route.path?.split("/")[0]
+      )
+    );
+  }, [pathname, menuItems]);
+
+  const showOnlyLogo: boolean = useMemo(() => {
+    const pathsWithShowLogo = routers.filter((route) => route.showLogo);
+    return (
+      !menuItems.length ||
+      pathsWithShowLogo.some(
+        (route) => pathname.split("/")[1] === route.path?.split("/")[0]
+      )
+    );
+  }, [pathname, menuItems]);
 
   const activeRoute: string = useMemo(
     () =>
@@ -136,40 +147,45 @@ const LayoutApp = () => {
     <DocumentTitle
       title={`NoFiat${Boolean(titleApp?.length) ? ` - ${titleApp}` : ""}`}
     >
-      <Layout
-        style={{
-          minHeight: "100vh",
-          position: "relative",
-        }}
-      >
-        {!collapsed && (
-          <div className="sidebar-overlay" onClick={() => setCollapsed(true)} />
-        )}
-        <Sider
-          hidden={hiddenLayoutElements}
-          width={isTablet ? 275 : 250}
-          collapsible
-          collapsed={collapsed}
-          collapsedWidth="0"
-          className="layout-sidebar"
-          trigger={null}
-          onCollapse={(c, t) => console.log(c, t)}
+      <>
+        {withBanner && <HeaderBanner />}
+        <Layout
+          style={{
+            minHeight: "100vh",
+            position: "relative",
+          }}
         >
-          {!collapsed && <Logo navigateUrl="/" />}
-          <div className="sidebar-content">
-            <Menu
-              theme="dark"
-              selectedKeys={[activeRoute]}
-              triggerSubMenuAction="click"
-              mode="inline"
-              onClick={({ key }) => {
-                navigate(key);
-                scrollToPosition();
-                isTablet && setCollapsed(true);
-              }}
-              items={
-                menuItems &&
-                menuItems.map(({ name, menu, path, children }) => {
+          {!collapsed && (
+            <div
+              className={clsx("sidebar-overlay", { withBanner })}
+              onClick={() => setCollapsed(true)}
+            />
+          )}
+          <Sider
+            hidden={hiddenLayoutElements}
+            width={isTablet ? 275 : 250}
+            collapsible
+            collapsed={collapsed}
+            collapsedWidth="0"
+            className={clsx("layout-sidebar", {
+              withBanner,
+            })}
+            trigger={null}
+            onCollapse={(c, t) => console.log(c, t)}
+          >
+            {!collapsed && <Logo navigateUrl="/" />}
+            <div className="sidebar-content">
+              <Menu
+                theme="dark"
+                selectedKeys={[activeRoute]}
+                triggerSubMenuAction="click"
+                mode="inline"
+                onClick={({ key }) => {
+                  navigate(key);
+                  scrollToPosition();
+                  isTablet && setCollapsed(true);
+                }}
+                items={menuItems.map(({ name, menu, path, children }) => {
                   return menu
                     ? getItem({
                         label: name,
@@ -186,41 +202,50 @@ const LayoutApp = () => {
                           : null,
                       })
                     : null;
-                })
-              }
+                })}
+              />
+            </div>
+          </Sider>
+          <BackTop />
+          <Layout
+            className={clsx("site-layout", {
+              noMarginTo: showOnlyLogo,
+              visibleBgImage: showOnlyLogo,
+            })}
+            style={{
+              marginLeft: hiddenLayoutElements || isTablet ? 0 : 250, // collapsed
+            }}
+          >
+            <HeaderComponent
+              hidden={hiddenLayoutElements || !isTablet}
+              collapsedSidebar={collapsed}
+              setCollapsedSidebar={setCollapsed}
+              modificator={clsx("layout-header", {
+                withBanner,
+              })}
+              visibleGamburger
+              visibleLogo
             />
-          </div>
-        </Sider>
-        <BackTop />
-        <Layout
-          className={clsx("site-layout", {
-            noMarginTo: showOnlyLogo,
-            visibleBgImage: showOnlyLogo,
-          })}
-          style={{
-            marginLeft: hiddenLayoutElements || isTablet ? 0 : 250, // collapsed
-          }}
-        >
-          <HeaderComponent
-            hidden={hiddenLayoutElements || !isTablet}
-            collapsedSidebar={collapsed}
-            setCollapsedSidebar={setCollapsed}
-            modificator="layout-header"
-            visibleGamburger
-            visibleLogo
-          />
-          {showOnlyLogo && <Logo navigateUrl="/" modificator="logo-absolute" />}
-          <Content className="layout-container">
-            <div
-              className={clsx("main-container", {
-                noMarginTo: showOnlyLogo,
+            {showOnlyLogo && (
+              <Logo navigateUrl="/" modificator="logo-absolute" />
+            )}
+            <Content
+              className={clsx("layout-container", {
+                withBanner,
               })}
             >
-              <Pages />
-            </div>
-          </Content>
+              <div
+                className={clsx("main-container", {
+                  noMarginTo: showOnlyLogo,
+                  withBanner,
+                })}
+              >
+                <Pages />
+              </div>
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </>
     </DocumentTitle>
   );
 };

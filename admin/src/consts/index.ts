@@ -1,6 +1,6 @@
 import { IWalletsConf } from "../types";
 import { tronlinkMethods } from "../utils";
-import { initEmployee, initOrganization, initialTronlinkState } from "./tronlink";
+import { initEmployee, initEmployeeInTeam, initOrganization, initialTronlinkState } from "./tronlink";
 
 const isProduction =
   process.env.REACT_APP_NODE_ENV &&
@@ -27,6 +27,7 @@ export {
   isProduction,
   baseURL,
   initEmployee,
+  initEmployeeInTeam,
   initOrganization,
   walletsConf,
   currentWalletName,

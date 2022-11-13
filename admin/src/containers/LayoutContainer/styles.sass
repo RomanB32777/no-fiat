@@ -23,7 +23,7 @@
 
 @media (max-width: 992px)
     .sidebar-overlay
-        position: absolute
+        position: fixed
         height: 100%
         left: 0
         top: 0
@@ -32,6 +32,9 @@
         z-index: 99
         background: variables.$black-color
         opacity: .5
+
+        &.withBanner
+            top: 55px
 
     .site-layout
         margin-top: 68px
@@ -42,11 +45,17 @@
     .main-container
         margin-top: 32px
 
+        &.withBanner
+            margin-top: 87px
+
         &.noMarginTo
             margin-top: 0
 
     .layout-container
         background-size: 110px
+
+        &.withBanner
+            background-position: 100% 55px
 
     .logo-absolute
         margin: 24px

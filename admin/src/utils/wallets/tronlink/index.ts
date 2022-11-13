@@ -9,6 +9,7 @@ import {
 } from "./contractMethods";
 import {
   checkIsOwner,
+  checkIsTeamMember,
   checkIsTipReciever,
   getTronBalance,
 } from "./userMethods";
@@ -59,6 +60,9 @@ export const tronlinkMethods: IWalletMethods = {
   },
   checkIfTipReciever() {
     return checkIsTipReciever(this);
+  },
+  checkIsTeamMember(address) {
+    return checkIsTeamMember({ address, methods: this });
   },
 
   // organization

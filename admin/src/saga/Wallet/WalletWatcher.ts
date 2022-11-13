@@ -1,8 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { currentWalletConf } from "../../consts";
-import { getEmployee } from "../../store/types/Employee";
 import { setLoading } from "../../store/types/Loading";
+import { getEmployee } from "../../store/types/Employee";
 import { getOrganization } from "../../store/types/Organization";
+import { getEmployeeInTeam } from "../../store/types/TeamMember";
 import { login } from "../../store/types/User";
 import { GET_WALLET } from "../../store/types/Wallet";
 import { userRoles } from "../../types";
@@ -16,6 +17,10 @@ export const asyncGetWallet = async () => {
     else {
       const tipRecieverData = await currentWalletConf.checkIfTipReciever();
       if (tipRecieverData) return "employee";
+      else {
+        const teamUser = await currentWalletConf.checkIsTeamMember();
+        if (teamUser.isExist) return "member";
+      }
     }
   } else return null;
 };
@@ -24,13 +29,14 @@ function* WalletWorker(): any {
   console.log("WalletWorker");
   yield put(setLoading(true));
   const user: userRoles | null = yield call(asyncGetWallet);
+  console.log(user);
+
   if (user) {
-    yield put(login(user));
-    if (user === "employee") {
-      yield put(getEmployee());
-    } else {
-      yield put(getOrganization());
-    }
+    if (user !== "member") yield put(login(user));
+
+    if (user === "employee") yield put(getEmployee());
+    else if (user === "owner") yield put(getOrganization());
+    else if (user === "member") yield put(getEmployeeInTeam());
   }
   yield put(setLoading(false));
 }

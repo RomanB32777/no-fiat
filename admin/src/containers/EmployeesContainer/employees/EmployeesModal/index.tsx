@@ -53,7 +53,7 @@ const EmployeesModal = ({
             <div className="form-element">
               <UploadImage
                 label="Photo"
-                formats={["PNG", "JPG", "JPEG"]}
+                formats={["JPG"]}
                 filePreview={photoLink}
                 imgName={photoLink}
                 setFile={({ preview, file }) => {

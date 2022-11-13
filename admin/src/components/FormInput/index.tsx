@@ -23,6 +23,7 @@ interface IFormInput extends InputProps {
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
   afterEl?: React.ReactNode;
+  onClick?: () => void;
   onChange?: ChangeEventHandler<HTMLInputElement>; //(value: string) => void;
 }
 
@@ -38,7 +39,6 @@ const FormInput = ({
   maxLength,
   minNumber,
   maxNumber,
-  isTextarea,
   InputCol,
   labelCol,
   mobileInputCol,
@@ -46,6 +46,7 @@ const FormInput = ({
   addonBefore,
   addonAfter,
   afterEl,
+  onClick,
   onChange,
 }: IFormInput) => {
   const { isMobile } = useWindowDimensions();
@@ -65,6 +66,7 @@ const FormInput = ({
             className={clsx("formInput__input", {
               [modificator as string]: modificator,
             })}
+            onClick={onClick}
           >
             {addonBefore && (
               <div className="formInput__input_addonBefore">{addonBefore}</div>

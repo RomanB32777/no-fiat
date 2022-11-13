@@ -1,4 +1,4 @@
-type userRoles = "owner" | "employee";
+type userRoles = "owner" | "employee" | "member";
 
 interface IUser {
   isAuth: boolean;

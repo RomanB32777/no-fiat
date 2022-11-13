@@ -33,4 +33,22 @@ export const checkExistAddressInArr = (
       format: "fromHex",
     });
 
+export const checkExistAddressInOrg = ({
+  allTipReceivers,
+  teams,
+  checkAddress,
+}: {
+  allTipReceivers: string[];
+  teams: ITeam[];
+  checkAddress: string;
+}) =>
+  allTipReceivers.some((address) =>
+    checkExistAddressInArr(address, checkAddress)
+  ) ||
+  teams.some((t) =>
+    t.employeesInTeam.some((address) =>
+      checkExistAddressInArr(address, checkAddress)
+    )
+  );
+
 export type { cardObjType, callbackType, sendTeamData };

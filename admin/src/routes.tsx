@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Navigate, useRoutes, Outlet, RouteObject } from "react-router";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 
+import Loader from "./components/Loader";
 import MainPage from "./pages/MainPage";
 import SettingsPage from "./pages/SettingsPage";
 import EmployeesPage from "./pages/EmployeesPage";
@@ -9,7 +10,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import SendTipsPage from "./pages/SendTipsPage";
 import NoPage from "./pages/NoPage";
 import TipsPage from "./pages/TipsPage";
-import Loader from "./components/Loader";
+import WelcomePage from "./pages/WelcomePage";
 
 import { userRoles } from "./types";
 import { getWallet } from "./store/types/Wallet";
@@ -23,7 +24,7 @@ interface IRoute extends RouteObject {
   errorElement?: React.ReactNode | null;
   icon?: React.ReactNode;
   children?: IRoute[];
-  roleRequired?: string;
+  roleRequired?: userRoles[];
   protected?: boolean;
   menuOrder?: number;
   transparet?: boolean;
@@ -34,10 +35,11 @@ interface IRoute extends RouteObject {
 
 //protected Route state
 type ProtectedRouteType = {
-  roleRequired?: userRoles;
+  roleRequired?: userRoles[];
 };
 
 const ProtectedRoutes = (props: ProtectedRouteType) => {
+  const { roleRequired } = props;
   const dispatch = useAppDispatch();
   const { user, loading } = useAppSelector((state) => state);
 
@@ -45,15 +47,20 @@ const ProtectedRoutes = (props: ProtectedRouteType) => {
     !user.userRole && dispatch(getWallet());
   }, []);
 
-  if (!user.userRole && loading) return <Loader size="big" />;
+  if (!user.userRole && loading)
+    return (
+      <div className="app-loader">
+        <Loader size="big" />
+      </div>
+    );
 
   //if the role required is there or not
   if (props.roleRequired) {
     return user.userRole ? (
-      props.roleRequired === user.userRole ? (
+      roleRequired?.includes(user.userRole) ? (
         <Outlet />
       ) : (
-        <Navigate to="/" />
+        <Navigate to="/welcome" />
       )
     ) : (
       <Navigate to="/register" state={true} />
@@ -66,43 +73,45 @@ const ProtectedRoutes = (props: ProtectedRouteType) => {
 export const routers: IRoute[] = [
   {
     path: "/",
-    element: <ProtectedRoutes />,
+    element: <ProtectedRoutes roleRequired={["owner", "employee"]} />,
     protected: true,
     children: [
       {
         index: true,
         path: "/",
         element: <MainPage />,
-        name: "Dashboard",
+        roleRequired: ["owner", "employee"],
+        name: "Summary",
         menu: true,
         menuOrder: 1,
       },
       {
         path: "tips",
         element: <TipsPage />,
+        roleRequired: ["owner", "employee"],
         name: "Tips",
         menu: true,
         menuOrder: 2,
       },
       {
         path: "employees",
-        element: <ProtectedRoutes roleRequired="owner" />,
-        roleRequired: "owner",
+        element: <ProtectedRoutes roleRequired={["owner"]} />,
         protected: true,
         children: [
           {
             index: true,
             element: <EmployeesPage />,
+            roleRequired: ["owner"],
             name: "Employees",
             menu: true,
             menuOrder: 3,
           },
         ],
       },
-
       {
         path: "settings",
         element: <SettingsPage />,
+        roleRequired: ["owner", "employee"],
         name: "Settings",
         menu: true,
         menuOrder: 4,
@@ -110,9 +119,26 @@ export const routers: IRoute[] = [
     ],
   },
   {
+    path: "welcome",
+    element: <ProtectedRoutes roleRequired={["member"]} />,
+    protected: true,
+    children: [
+      {
+        index: true,
+        element: <WelcomePage />,
+        roleRequired: ["member"],
+        hiddenLayoutElements: true,
+        noPaddingMainConteiner: true,
+        showLogo: true,
+      },
+    ],
+  },
+  {
     path: "register",
-    hiddenLayoutElements: true,
     element: <RegistrationPage />,
+    hiddenLayoutElements: true,
+    noPaddingMainConteiner: true,
+    showLogo: true,
   },
   {
     path: "send-tips/:owner",

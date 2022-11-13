@@ -1,4 +1,10 @@
-import { IEmployee, IEmployeeBase, IOrganization, ITeam } from "./organization";
+import {
+  IEmployee,
+  IEmployeeBase,
+  IEmployeeInTeam,
+  IOrganization,
+  ITeam,
+} from "./organization";
 
 export interface IWalletInitData {
   userAddress: string | null;
@@ -70,6 +76,7 @@ export interface IWalletMethods {
   getWalletUserData: () => Promise<IWalletInitData>;
   checkIfOwner: () => Promise<boolean>;
   checkIfTipReciever: () => Promise<ITipRecieverObj | boolean>;
+  checkIsTeamMember: (address?: string) => Promise<IEmployeeInTeam>;
   getBalance: () => Promise<number>;
 
   // organization

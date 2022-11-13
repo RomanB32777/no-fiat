@@ -58,9 +58,9 @@ const MainContainer = () => {
       setLoadingDashboard(true);
       
       if (employee && user.userRole === "employee") {
-        const resPhoto = await getFromIpfs(employee.photoLink);
+        const resPhoto = getFromIpfs(employee.photoLink);
         if (resPhoto)
-          setEmployees([{ ...employee, photoLink: resPhoto as string }]);
+          setEmployees([{ ...employee, photoLink: resPhoto }]);
         else setEmployees([employee]);
 
       } else {
@@ -70,9 +70,9 @@ const MainContainer = () => {
           const employees: IEmployee[] = await Promise.all(
             allTipReceivers.map(async (address) => {
               const employee = await currentWalletConf.getEmployeeInfo(address);
-              const resPhoto = await getFromIpfs(employee.photoLink);
+              const resPhoto = getFromIpfs(employee.photoLink);
               if (resPhoto)
-                return { ...employee, photoLink: resPhoto as string };
+                return { ...employee, photoLink: resPhoto };
               return employee;
             })
           );

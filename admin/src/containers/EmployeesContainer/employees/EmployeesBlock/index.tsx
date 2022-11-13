@@ -20,7 +20,11 @@ import {
 import { getOrganization } from "../../../../store/types/Organization";
 import { IEmployeeBase } from "../../../../types";
 import { currentWalletConf } from "../../../../consts";
-import { cardObjType, checkExistAddressInArr } from "../../utils";
+import {
+  cardObjType,
+  checkExistAddressInArr,
+  checkExistAddressInOrg,
+} from "../../utils";
 
 const initEmployee: IEmployeeBase = {
   name: "",
@@ -58,13 +62,21 @@ const EmployeesBlock = () => {
           address
         );
 
-        await getFromIpfs(photoLink, (result) =>
-          setEmployeesForm({
-            name,
-            address,
-            photoLink: result,
-          })
-        );
+        const photoImage = getFromIpfs(photoLink);
+
+        setEmployeesForm({
+          name,
+          address,
+          photoLink: photoImage,
+        });
+
+        // await getFromIpfs(photoLink, (result) =>
+        // setEmployeesForm({
+        //   name,
+        //   address,
+        //   photoLink: result,
+        // })
+        // );
       }
     } catch (error) {
       console.log(error);
@@ -103,22 +115,23 @@ const EmployeesBlock = () => {
         return addInvalidAddress();
       }
 
-      const isExistEmployeeInOrg =
-        allTipReceivers.some((address) =>
-          checkExistAddressInArr(address, employeesForm.address)
-        ) ||
-        teams.some((t) =>
-          t.employeesInTeam.some((address) =>
-            checkExistAddressInArr(address, employeesForm.address)
-          )
-        );
-
-      if (!editedEmployee && isExistEmployeeInOrg) {
-        setLoadingEmployee(false);
-        return addErrorNotification({
-          title:
-            "Tip Receiver with this address has already been added to the organization",
+      if (!editedEmployee) {
+        const isExistEmployeeInOrg = checkExistAddressInOrg({
+          allTipReceivers,
+          teams,
+          checkAddress: employeesForm.address,
         });
+
+        const isExistEmployeeInTeamsContract =
+          await currentWalletConf.checkIsTeamMember(employeesForm.address);
+
+        if (isExistEmployeeInOrg || isExistEmployeeInTeamsContract.isExist) {
+          setLoadingEmployee(false);
+          return addErrorNotification({
+            title:
+              "Tip Receiver with this address has already been added to the organization",
+          });
+        }
       }
 
       if (field && field === "name") {

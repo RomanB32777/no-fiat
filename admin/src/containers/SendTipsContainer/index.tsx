@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Col, Row } from "antd";
+import clsx from "clsx";
 
 import FormInput from "../../components/FormInput";
 import SelectInput, { ISelectItem } from "../../components/SelectInput";
@@ -19,7 +20,6 @@ import {
 } from "../../utils";
 import { IEmployeeBase, ITipsObj } from "../../types";
 import "./styles.sass";
-import clsx from "clsx";
 
 const SelectDropdown = (menu: React.ReactElement) => {
   return <div className="select-dropdown">{menu}</div>;

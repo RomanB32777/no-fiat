@@ -15,10 +15,12 @@ import {
 import {
   IEmployeeBase,
   IEmployee,
+  IEmployeeInTeam,
   ITeam,
   teamFields,
   IOrganization,
   IEmployeeAction,
+  IEmployeeInTeamAction,
   IOrganizationAction,
   IForTipsOrganizationAction,
 } from "./organization";
@@ -79,10 +81,12 @@ export type {
   // organization
   IEmployeeBase,
   IEmployee,
+  IEmployeeInTeam,
   ITeam,
   teamFields,
   IOrganization,
   IEmployeeAction,
+  IEmployeeInTeamAction,
   IOrganizationAction,
   IForTipsOrganizationAction,
 };

@@ -8,7 +8,12 @@ import ModalComponent from "../../../../components/ModalComponent";
 import { currentWalletConf } from "../../../../consts";
 import { useAppSelector } from "../../../../store/hooks";
 import { ITeam, teamFields } from "../../../../types";
-import { addErrorNotification, addInvalidAddress, addNotValidForm, isValidateFilled } from "../../../../utils";
+import {
+  addErrorNotification,
+  addInvalidAddress,
+  addNotValidForm,
+  isValidateFilled,
+} from "../../../../utils";
 import { checkChangedEmployees, checkExistAddressInArr } from "../../utils";
 import "./styles.sass";
 
@@ -46,12 +51,14 @@ const TeamModal = ({
     const beforeEditTeam = organization.teams.find(
       (t) => t.name === editedTeam
     );
-    const isFilledForm = isValidateFilled(Object.values(team)) && isValidateFilled(team.employeesInTeam)
+    const isFilledForm =
+      isValidateFilled(Object.values(team)) &&
+      isValidateFilled(team.employeesInTeam);
     if (!isFilledForm) {
       addNotValidForm();
-      return false
+      return false;
     }
-    
+
     if (beforeEditTeam) {
       const addedEmployee = checkChangedEmployees(team, beforeEditTeam);
       if (addedEmployee) {
@@ -138,13 +145,13 @@ const TeamModal = ({
                     InputCol={24}
                     gutter={[0, 16]}
                     addonAfter={
-                      editedTeam ? (
+                      editedTeam && !disabledEdit ? (
                         <BaseButton
                           title="Change"
                           onClick={() => btnSubmit("name")} // sendData("name", editedTeam)
                           padding="16.5px 6px"
                           fontSize="20px"
-                          disabled={disabledEdit || loading}
+                          disabled={loading}
                         />
                       ) : null
                     }
@@ -203,7 +210,7 @@ const TeamModal = ({
                             teamForm.employeesInTeam.some(
                               (e) => e === employeesInTeamValues[index]
                             );
-                          const isVisibleDeleteBtn = editedTeam || index !== 0;
+                          const isVisibleActionBtn = editedTeam || index !== 0;
 
                           const isDeleting =
                             isExistEmployeeInTeam || !editedTeam;
@@ -235,7 +242,7 @@ const TeamModal = ({
                                   gutter={[0, 16]}
                                   disabled={Boolean(editedTeam) && isDeleting}
                                   addonAfter={
-                                    isVisibleDeleteBtn ? (
+                                    isVisibleActionBtn && !disabledEdit ? (
                                       <ConfirmPopup
                                         disabled={!isDeleting}
                                         confirm={deleteEmployee}
@@ -254,7 +261,7 @@ const TeamModal = ({
                                               : "16.5px 23px"
                                           }
                                           fontSize="20px"
-                                          disabled={disabledEdit || loading}
+                                          disabled={loading}
                                         />
                                       </ConfirmPopup>
                                     ) : null

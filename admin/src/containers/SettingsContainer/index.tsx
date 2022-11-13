@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Col, Row } from "antd";
 
+import Loader from "../../components/Loader";
 import FormInput from "../../components/FormInput";
 import QrBlock from "../../components/QrBlock";
 
@@ -8,7 +9,6 @@ import { useAppSelector } from "../../store/hooks";
 import { copyStr, shortStr } from "../../utils";
 import { baseURL, currentWalletConf } from "../../consts";
 import "./styles.sass";
-import Loader from "../../components/Loader";
 
 const SettingsContainer = () => {
   const { user, employee } = useAppSelector((state) => state);
@@ -73,23 +73,26 @@ const SettingsContainer = () => {
                 }
                 labelCol={24}
                 InputCol={12}
-                mobileInputCol={18}
                 gutter={[0, 16]}
-                afterEl={
-                  <>
-                    <Col md={11} xs={5}>
-                      <div className="form-element__action">
-                        <span
-                          onClick={() => {
-                            copyStr(userAddress);
-                          }}
-                        >
-                          Copy
-                        </span>
-                      </div>
-                    </Col>
-                  </>
-                }
+                onClick={() => {
+                  copyStr(userAddress);
+                }}
+                // mobileInputCol={18}
+                // afterEl={
+                //   <>
+                //     <Col md={11} xs={5}>
+                //       <div className="form-element__action">
+                //         <span
+                //           onClick={() => {
+                //             copyStr(userAddress);
+                //           }}
+                //         >
+                //           Copy
+                //         </span>
+                //       </div>
+                //     </Col>
+                //   </>
+                // }
               />
             </div>
           </Col>
@@ -102,21 +105,10 @@ const SettingsContainer = () => {
                   value={tipsLink}
                   labelCol={24}
                   InputCol={12}
-                  mobileInputCol={18}
                   gutter={[0, 16]}
-                  afterEl={
-                    <Col md={11} xs={5}>
-                      <div className="form-element__action">
-                        <span
-                          onClick={() => {
-                            copyStr(tipsLink);
-                          }}
-                        >
-                          Copy
-                        </span>
-                      </div>
-                    </Col>
-                  }
+                  onClick={() => {
+                    copyStr(tipsLink);
+                  }}
                 />
               </div>
             </Col>

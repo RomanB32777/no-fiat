@@ -11,13 +11,18 @@ import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getOrganization } from "../../../../store/types/Organization";
 import {
+  checkChangedEmployees,
+  checkExistAddressInOrg,
+  sendTeamData,
+} from "../../utils";
+import {
   addErrorNotification,
   addNotValidForm,
   isValidateFilled,
+  shortStr,
 } from "../../../../utils";
-import { currentWalletConf } from "../../../../consts";
 import { ITeam } from "../../../../types";
-import { checkChangedEmployees, sendTeamData } from "../../utils";
+import { currentWalletConf } from "../../../../consts";
 
 const initTeam: ITeam = {
   name: "",
@@ -85,6 +90,44 @@ const TeamsBlock = () => {
     }
   };
 
+  const checkExistAddresses = async (employeesInTeam: string[]) => {
+    const isExistAddressesInOrg = employeesInTeam.filter((address) =>
+      checkExistAddressInOrg({
+        allTipReceivers,
+        teams,
+        checkAddress: address,
+      })
+    );
+
+    const checkExistAddressesInTeamsContract = await Promise.all(
+      employeesInTeam.map(async (address) => {
+        const { isExist } = await currentWalletConf.checkIsTeamMember(address);
+        return { isExist, address };
+      })
+    );
+
+    const isExistAddressesInTeamsContract = checkExistAddressesInTeamsContract
+      .filter((e) => e.isExist)
+      .map((e) => e.address);
+
+    const existAddresses = [
+      ...isExistAddressesInOrg,
+      ...isExistAddressesInTeamsContract,
+    ];
+
+    if (existAddresses.length) {
+      setLoadingTeam(false);
+      addErrorNotification({
+        title: `Tip Receiver${
+          existAddresses.length > 1 ? "s" : ""
+        } with address ${existAddresses
+          .map((address) => shortStr(address, 12))
+          .join(", ")} has already been added to the organization`,
+      });
+      return true;
+    } else return false;
+  };
+
   const sendData = async ({ team, field }: sendTeamData) => {
     const isValidate = Object.values(team).every((val) =>
       Array.isArray(val) ? isValidateFilled(val) : Boolean(val)
@@ -95,21 +138,35 @@ const TeamsBlock = () => {
         (t) => t.name === team.name
       );
 
-      if (!editedTeam && isExistTeamInOrg) {
-        setLoadingTeam(false);
-        return addErrorNotification({
-          title: "A team with the same name already exists in the organization",
-        });
+      if (!editedTeam) {
+        if (isExistTeamInOrg) {
+          setLoadingTeam(false);
+          return addErrorNotification({
+            title:
+              "A team with the same name already exists in the organization",
+          });
+        }
+        const isExistAddresses = await checkExistAddresses(
+          team.employeesInTeam
+        );
+        if (isExistAddresses) return;
       }
 
       if (editedTeam) {
         let updatedTeamInfo;
         switch (field) {
           case "name":
-            updatedTeamInfo = await currentWalletConf.changeTeamName(
-              editedTeam,
-              team.name
-            );
+            const findSimilarTeam = teams.some((t) => t.name === team.name);
+            if (!findSimilarTeam) {
+              updatedTeamInfo = await currentWalletConf.changeTeamName(
+                editedTeam,
+                team.name
+              );
+            } else {
+              addErrorNotification({
+                title: "Team with such name has already been created",
+              });
+            }
             break;
 
           case "percentageToPay":
@@ -133,7 +190,12 @@ const TeamsBlock = () => {
             if (beforeEditTeam) {
               const addedEmployee = checkChangedEmployees(team, beforeEditTeam);
               if (addedEmployee) {
-                console.log(addedEmployee);
+                // console.log(addedEmployee);
+                const isExistAddresses = await checkExistAddresses([
+                  addedEmployee,
+                ]);
+                if (isExistAddresses) return;
+
                 updatedTeamInfo = await currentWalletConf.addEmployeeToTeam(
                   editedTeam,
                   addedEmployee
@@ -160,7 +222,7 @@ const TeamsBlock = () => {
         if (!findSimilarTeam) {
           const newTeam = await currentWalletConf.addTeamToOrg(team);
           if (newTeam) {
-            console.log(team, newTeam);
+            // console.log(team, newTeam);
             dispatch(getOrganization());
             closeModal();
           }

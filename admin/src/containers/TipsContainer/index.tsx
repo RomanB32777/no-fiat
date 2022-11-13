@@ -10,10 +10,12 @@ import { getEmployee } from "../../store/types/Employee";
 import { userRoles } from "../../types";
 import { currentBlockchainConf, currentWalletConf } from "../../consts";
 import "./styles.sass";
+import { addErrorNotification } from "../../utils";
 
 const tipsText: { [role in userRoles]: React.ReactNode } = {
   owner: "Pending balance to you and teams",
   employee: "Available balance to withdraw",
+  member: "",
 };
 
 const TipsContainer = () => {
@@ -22,16 +24,27 @@ const TipsContainer = () => {
   const { user, organization, employee } = useAppSelector((state) => state);
 
   const withdrawClick = async () => {
-    const withdrawInfo = isOwner
-      ? await currentWalletConf.withdrawTeams()
-      : await currentWalletConf.withdrawTipsByEmployee();
-    if (withdrawInfo) {
-      console.log(withdrawInfo);
-      isOwner ? dispatch(getOrganization()) : dispatch(getEmployee());
+    if (amountToWithdraw > 0) {
+      const withdrawInfo = isOwner
+        ? await currentWalletConf.withdrawTeams()
+        : await currentWalletConf.withdrawTipsByEmployee();
+      if (withdrawInfo) {
+        console.log(withdrawInfo);
+        isOwner ? dispatch(getOrganization()) : dispatch(getEmployee());
+      }
+    } else {
+      addErrorNotification({ title: "Balance to withdraw is zero" });
     }
   };
 
   const isOwner = useMemo(() => user.userRole === "owner", [user]);
+  const amountToWithdraw = useMemo(
+    () =>
+      isOwner
+        ? organization.teamsAmountToWithdraw
+        : employee.tipAmountToWithdraw,
+    [isOwner, organization, employee]
+  );
 
   return (
     <div className="tips-page">
@@ -46,11 +59,11 @@ const TipsContainer = () => {
               align={isMobile ? "top" : "middle"}
               style={{ width: "100%" }}
             >
-              <Col span={18} className="tips-text">{tipsText[user.userRole]}</Col>
+              <Col span={18} className="tips-text">
+                {tipsText[user.userRole]}
+              </Col>
               <Col span={4} className="tips-sum">
-                {isOwner
-                  ? organization.teamsAmountToWithdraw
-                  : employee.tipAmountToWithdraw}{" "}
+                {amountToWithdraw}{" "}
                 {currentBlockchainConf?.nativeCurrency.symbol}
               </Col>
             </Row>

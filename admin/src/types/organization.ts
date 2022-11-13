@@ -12,6 +12,14 @@ interface IEmployee extends IEmployeeBase {
   dates: number[];
 }
 
+interface IEmployeeInTeam {
+  isExist: boolean;
+  owner: string;
+  orgName: string;
+  teamName: string;
+  percentageToPay: number;
+}
+
 interface ITeam {
   name: string;
   employeesInTeam: string[];
@@ -35,6 +43,11 @@ interface IEmployeeAction {
   payload: IEmployee;
 }
 
+interface IEmployeeInTeamAction {
+  type: string;
+  payload: IEmployeeInTeam;
+}
+
 interface IOrganizationAction {
   type: string;
   payload: IOrganization;
@@ -48,10 +61,12 @@ interface IForTipsOrganizationAction {
 export type {
   IEmployeeBase,
   IEmployee,
+  IEmployeeInTeam,
   ITeam,
   teamFields,
   IOrganization,
   IEmployeeAction,
+  IEmployeeInTeamAction,
   IOrganizationAction,
   IForTipsOrganizationAction,
 };

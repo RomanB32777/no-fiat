@@ -1,0 +1,38 @@
+@use '../././../commonStyles/variables'
+
+.welcome-page
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin-top: 200px
+    width: 100%
+
+    text-align: center
+    font-family: variables.$gilroy-font
+    color: variables.$white-color
+    font-size: 25px
+    line-height: 30px
+    font-weight: 600
+
+    .title
+        margin-bottom: 70px
+
+    .member-content
+        max-width: 950px
+        p
+            width: 100%
+            margin: 0 0 50px
+
+            &:last-child
+                margin: 0
+
+    @media (max-width: 768px)
+        .title
+            margin-bottom: 30px
+
+        .member-content
+            font-size: 20px
+            line-height: 25px
+
+            p
+                margin: 0 0 30px

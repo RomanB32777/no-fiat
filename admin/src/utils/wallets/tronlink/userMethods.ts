@@ -1,3 +1,4 @@
+import { initEmployeeInTeam } from "../../../consts";
 import { IWalletMethods } from "../../../types";
 
 export const checkIsOwner = async (methods: IWalletMethods) => {
@@ -31,6 +32,36 @@ export const checkIsTipReciever = async (methods: IWalletMethods) => {
     //   title: (error as Error).message || "Processing error. Try again!",
     // });
     return false;
+  }
+};
+
+export const checkIsTeamMember = async ({
+  address,
+  methods,
+}: {
+  address?: string;
+  methods: IWalletMethods;
+}) => {
+  try {
+    const userWalletData =
+      address || (await methods.getWalletUserData()).userAddress;
+    const contractData = await methods.getBlockchainContractData();
+    const userData = await contractData.showIfTeamMember(userWalletData).call();
+    if (userData) {
+      const [isExist, owner, orgName, teamName, percentageToPay] = userData;
+
+      return {
+        isExist,
+        owner,
+        orgName,
+        teamName,
+        percentageToPay: methods.formatNumber(percentageToPay),
+      };
+    }
+    return initEmployeeInTeam;
+  } catch (error) {
+    console.log((error as Error).message || error);
+    return initEmployeeInTeam;
   }
 };
 

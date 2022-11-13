@@ -17,6 +17,7 @@ const initOwnerRegistrationData: ICreateOrganization = {
 const OwnerRegistrationBlock = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [loadingRegister, setLoadingRegister] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICreateOrganization>(
     initOwnerRegistrationData
   );
@@ -24,6 +25,7 @@ const OwnerRegistrationBlock = () => {
   const createOrganization = async () => {
     const isValidate = isValidateFilled(Object.values(formData));
     if (isValidate) {
+      setLoadingRegister(true);
       const organizationData = await currentWalletConf.addOrganization(
         formData
       );
@@ -33,8 +35,9 @@ const OwnerRegistrationBlock = () => {
         console.log("after");
         navigate("/employees", { replace: true });
       }
+      setLoadingRegister(false);
     } else {
-      addNotValidForm()
+      addNotValidForm();
     }
   };
 
@@ -72,6 +75,7 @@ const OwnerRegistrationBlock = () => {
         padding="10px 30px"
         fontSize="21px"
         modificator="btn owner_btn"
+        disabled={loadingRegister}
       />
     </div>
   );

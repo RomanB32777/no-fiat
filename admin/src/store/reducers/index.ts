@@ -1,18 +1,18 @@
 import { combineReducers } from "redux";
-import UserReducer from "./User/UserReducer";
 import LoadingReducer from "./Loading/LoadingReducer";
 import WalletReducer from "./Wallet/WalletReducer";
+import UserReducer from "./User/UserReducer";
 import OrganizationReducer from "./Organization/OrganizationReducer";
 import EmployeeReducer from "./Employee/EmployeeReducer";
+import TeamMemberReducer from "./TeamMember/TeamMemberReducer";
 
 const rootReducer = combineReducers({
-  user: UserReducer,
   loading: LoadingReducer,
+  wallet: WalletReducer,
+  user: UserReducer,
   organization: OrganizationReducer,
   employee: EmployeeReducer,
-
-  // old
-  wallet: WalletReducer,
+  employeeTeam: TeamMemberReducer,
 });
 
 export { rootReducer };
