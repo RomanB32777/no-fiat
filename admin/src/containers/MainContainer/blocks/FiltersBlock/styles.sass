@@ -54,3 +54,21 @@
             .ant-select-single.ant-select-open
                 .ant-select-selection-item
                     font-size: 16px
+
+.ant-select-dropdown.dates-select-list
+    background: none
+    box-shadow: none
+
+    .select-dropdown
+        background: variables.$grey-dark-color
+        padding: 10px 0
+        border-radius: 10px
+
+        .ant-select-item-option-active:not(.ant-select-item-option-disabled),
+        .ant-select-item-option-selected:not(.ant-select-item-option-disabled),
+        .ant-select-item .ant-select-item-option .ant-select-item-option-selected
+            background-color: transparent
+
+        .ant-select-item-option-content
+            font-family: variables.$gilroy-font
+            color: variables.$white-color

@@ -26,6 +26,9 @@ const SettingsContainer = () => {
       const ownerAddress =
         user.userRole === "owner" ? walletData.userAddress : employee.orgOwner;
 
+      console.log(ownerAddress);
+      
+
       walletData.userAddress &&
         setFormSettings({
           userAddress: walletData.userAddress,

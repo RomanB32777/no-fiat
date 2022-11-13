@@ -2,7 +2,6 @@ import { Col, Row, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import ConfirmPopup from "../../../../components/ConfirmPopup";
 import { PencilIcon, TrashBinIcon } from "../../../../icons/icons";
-import { useAppSelector } from "../../../../store/hooks";
 import { cardObjType } from "../../utils";
 import "./styles.sass";
 
@@ -49,36 +48,38 @@ const CardItem = <T extends cardObjType>({
       {cardLoading && !cardName ? (
         <Skeleton active paragraph={{ rows: 0 }} />
       ) : (
-        <Row justify="space-between" align="middle">
-          <Col>
-            <div className="title">{cardName}</div>
-          </Col>
-          <Col>
-            <div className="btns">
-              <div
-                className="item icon"
-                onClick={editItem}
-                style={{ marginRight: 10 }}
-              >
-                <PencilIcon />
-              </div>
-              {!disabledDelete && (
+        <div className="content">
+          <Row justify="space-between" align="middle">
+            <Col>
+              <div className="title">{cardName}</div>
+            </Col>
+            <Col>
+              <div className="btns">
                 <div
                   className="item icon"
-                  onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-                    e.stopPropagation()
-                  }
+                  onClick={editItem}
+                  style={{ marginRight: 10 }}
                 >
-                  <ConfirmPopup confirm={deleteCard}>
-                    <div className="icon">
-                      <TrashBinIcon />
-                    </div>
-                  </ConfirmPopup>
+                  <PencilIcon />
                 </div>
-              )}
-            </div>
-          </Col>
-        </Row>
+                {!disabledDelete && (
+                  <div
+                    className="item icon"
+                    onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                      e.stopPropagation()
+                    }
+                  >
+                    <ConfirmPopup confirm={deleteCard}>
+                      <div className="icon">
+                        <TrashBinIcon />
+                      </div>
+                    </ConfirmPopup>
+                  </div>
+                )}
+              </div>
+            </Col>
+          </Row>
+        </div>
       )}
     </div>
   );

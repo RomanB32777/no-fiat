@@ -7,6 +7,10 @@ import { filterPeriodItems } from "../../../../utils/dateMethods/consts";
 import { IFiltersForm } from "../../../../types";
 import "./styles.sass";
 
+const SelectDropdown = (menu: React.ReactElement) => {
+  return <div className="select-dropdown">{menu}</div>;
+};
+
 const FiltersBlock = ({
   filtersData,
   filtersHandler,
@@ -43,6 +47,8 @@ const FiltersBlock = ({
               value: filterPeriodItems[key as periodItemsTypes],
             }))}
             modificator="timePeriod-select"
+            dropdownClassName="dates-select-list"
+            dropdownRender={SelectDropdown}
             onChange={(selected) =>
               filtersHandler({
                 ...filtersData,

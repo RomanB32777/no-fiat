@@ -15,12 +15,12 @@ const WidgetItem = ({ itemData, usdtKoef }: IWidgetItem) => {
     <Col xs={24} sm={12} xl={8} key={address}>
       <div className="widget__item">
         <Row style={{ width: "100%" }} justify="space-between">
-          <Col span={8}>
+          <Col span={7}>
             <Avatar size={80} src={photoLink} />
           </Col>
-          <Col span={16} style={{ height: 80 }}>
+          <Col span={17} style={{ height: 80 }}>
             <Row justify="space-between" style={{ height: "100%" }}>
-              <Col span={12}>
+              <Col span={14}>
                 <div className="widget__item_row">
                   <div className="name">{name}</div>
                   <div className="review">
@@ -28,7 +28,7 @@ const WidgetItem = ({ itemData, usdtKoef }: IWidgetItem) => {
                   </div>
                 </div>
               </Col>
-              <Col span={12}>
+              <Col span={10}>
                 <div className="widget__item_row">
                   <div className="sum">{(sum * usdtKoef).toFixed(1)} USD</div>
                   <div className="tips">{amountTips} tips</div>

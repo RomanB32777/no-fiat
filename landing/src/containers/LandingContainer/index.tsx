@@ -1,8 +1,5 @@
-import { useMemo, useState } from "react";
 import { Col, Divider, Row } from "antd";
 import BaseButton from "../../components/BaseButton";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
-
 
 import bannerImg from "../../assets/banner_top.png";
 import cubeImg from "../../assets/cube.png";
@@ -15,9 +12,9 @@ import starsImg from "../../assets/stars.png";
 
 import "./styles.sass";
 
-const LandingContainer = () => {
-  const { isMobile } = useWindowDimensions();
+const link = "https://tron.no-fiat.xyz/";
 
+const LandingContainer = () => {
   return (
     <>
       <div className="landing-container">
@@ -34,11 +31,7 @@ const LandingContainer = () => {
             <div className="btn-wrapper">
               <BaseButton
                 title="Sign-up"
-                onClick={() => {}}
-                fontSize="50px"
-                padding="30px"
-                // padding={document.body.clientWidth > 640 ? "23px" : "17px"}
-                // fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
+                onClick={() => window.open(link, "_blank")}
                 modificator="landing-btn"
               />
             </div>
@@ -53,8 +46,9 @@ const LandingContainer = () => {
               justify="space-between"
               align="middle"
               style={{ width: "100%" }}
+              gutter={[0, 32]}
             >
-              <Col span={12}>
+              <Col xs={{ span: 24, order: 2 }} sm={{ span: 12, order: 1 }}>
                 <div className="description">
                   NoFiat - is service that allows start processing tips in{" "}
                   <span className="yellow">crypto</span>
@@ -62,7 +56,7 @@ const LandingContainer = () => {
                   other organizations that need it.
                 </div>
               </Col>
-              <Col span={10}>
+              <Col xs={{ span: 24, order: 1 }} sm={{ span: 10, order: 2 }}>
                 <div className="img-wrapper">
                   <img src={cubeImg} alt="cubeImg" />
                 </div>
@@ -75,12 +69,12 @@ const LandingContainer = () => {
           <Divider className="divider" />
           <div className="content">
             <Row justify="center" align="middle" style={{ width: "100%" }}>
-              <Col span={8}>
+              <Col xs={24} sm={8}>
                 <div className="img-wrapper">
                   <img src={coffeImg} alt="coffeImg" />
                 </div>
               </Col>
-              <Col span={12}>
+              <Col xs={24} sm={12}>
                 <div className="description">
                   <p>
                     Tom owns a caffe and has 3 employees: waiter Bob and two
@@ -108,15 +102,16 @@ const LandingContainer = () => {
                 justify="space-between"
                 align="middle"
                 style={{ width: "100%" }}
+                gutter={[0, 32]}
               >
-                <Col span={8}>
+                <Col xs={24} sm={8}>
                   <div className="img-wrapper">
                     <img src={cubesImg} alt="cubesImg" />
                   </div>
                 </Col>
-                <Col span={14}>
+                <Col xs={24} sm={14}>
                   <div className="description">
-                    <span className="yellow">Fully decentralized.</span> No
+                    <span className="yellow">Fully decentralized. </span>No
                     information is stored in databasa. There is no database.
                     Everything is processed on Blockchain.
                   </div>
@@ -128,15 +123,16 @@ const LandingContainer = () => {
                 justify="space-between"
                 align="middle"
                 style={{ width: "100%" }}
+                gutter={[0, 32]}
               >
-                <Col span={14}>
+                <Col xs={{ span: 24, order: 2 }} sm={{ span: 14, order: 1 }}>
                   <div className="description">
-                    <span className="yellow">Team creation.</span>
+                    <span className="yellow">Team creation. </span>
                     Create and manage teams Let your employees take a fair bite
                     from the pie.
                   </div>
                 </Col>
-                <Col span={8}>
+                <Col xs={{ span: 24, order: 1 }} sm={{ span: 8, order: 2 }}>
                   <div className="img-wrapper">
                     <img src={humansImg} alt="humansImg" />
                   </div>
@@ -148,15 +144,16 @@ const LandingContainer = () => {
                 justify="space-between"
                 align="middle"
                 style={{ width: "100%" }}
+                gutter={[0, 32]}
               >
-                <Col span={10}>
+                <Col xs={24} sm={10}>
                   <div className="img-wrapper">
                     <img src={graphImg} alt="graphImg" />
                   </div>
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <div className="description">
-                    <span className="yellow">Dashboard.</span>
+                    <span className="yellow">Dashboard. </span>
                     Select any time period and check the summary of tips
                     received with easy-to-use dashboard.
                   </div>
@@ -168,15 +165,16 @@ const LandingContainer = () => {
                 justify="space-between"
                 align="middle"
                 style={{ width: "100%" }}
+                gutter={[0, 32]}
               >
-                <Col span={12}>
+                <Col xs={{ span: 24, order: 2 }} sm={{ span: 12, order: 1 }}>
                   <div className="description">
-                    <span className="yellow">Reviews.</span>
+                    <span className="yellow">Reviews. </span>
                     Collect clients’ reviews and store them on blockchain. No
                     fake reviews.
                   </div>
                 </Col>
-                <Col span={10}>
+                <Col xs={{ span: 24, order: 1 }} sm={{ span: 10, order: 2 }}>
                   <div className="img-wrapper">
                     <img src={starsImg} alt="starsImg" />
                   </div>
@@ -191,12 +189,8 @@ const LandingContainer = () => {
           <div className="content">
             <BaseButton
               title="Sign-up"
-              onClick={() => {}}
-              fontSize="50px"
-              padding="30px"
+              onClick={() => window.open(link, "_blank")}
               modificator="landing-btn"
-              // padding={document.body.clientWidth > 640 ? "23px" : "17px"}
-              // fontSize={document.body.clientWidth > 640 ? "30px" : "24px"}
             />
           </div>
         </div>

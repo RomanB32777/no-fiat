@@ -1,6 +1,10 @@
 @use '../../../commonStyles/variables'
 
 .navbar-banner
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 2
     width: 100%
     background: variables.$yellow-color
     border-bottom: 1px solid variables.$black-color
@@ -15,9 +19,3 @@
 
     @media (max-width: 576px)
         font-size: 15px
-
-    @media (max-width: 992px)
-        position: fixed
-        top: 0
-        left: 0
-        z-index: 1
