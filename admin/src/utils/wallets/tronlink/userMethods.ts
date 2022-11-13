@@ -55,7 +55,7 @@ export const checkIsTeamMember = async ({
         owner,
         orgName,
         teamName,
-        percentageToPay: methods.formatNumber(percentageToPay),
+        percentageToPay: methods.formatBignumber(percentageToPay),
       };
     }
     return initEmployeeInTeam;

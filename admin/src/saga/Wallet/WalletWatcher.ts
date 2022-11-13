@@ -1,6 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { currentWalletConf } from "../../consts";
-import { setLoading } from "../../store/types/Loading";
 import { getEmployee } from "../../store/types/Employee";
 import { getOrganization } from "../../store/types/Organization";
 import { getEmployeeInTeam } from "../../store/types/TeamMember";
@@ -26,8 +25,6 @@ export const asyncGetWallet = async () => {
 };
 
 function* WalletWorker(): any {
-  console.log("WalletWorker");
-  yield put(setLoading(true));
   const user: userRoles | null = yield call(asyncGetWallet);
   console.log(user);
 
@@ -38,7 +35,6 @@ function* WalletWorker(): any {
     else if (user === "owner") yield put(getOrganization());
     else if (user === "member") yield put(getEmployeeInTeam());
   }
-  yield put(setLoading(false));
 }
 
 export function* WalletWatcher() {

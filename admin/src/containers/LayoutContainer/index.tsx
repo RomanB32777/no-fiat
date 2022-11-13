@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import clsx from "clsx";
-import { BackTop, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import DocumentTitle from "react-document-title";
 
 import Logo from "../../components/HeaderComponents/LogoComponent";
@@ -206,7 +206,6 @@ const LayoutApp = () => {
               />
             </div>
           </Sider>
-          <BackTop />
           <Layout
             className={clsx("site-layout", {
               noMarginTo: showOnlyLogo,

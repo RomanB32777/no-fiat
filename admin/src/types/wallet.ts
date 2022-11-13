@@ -67,7 +67,8 @@ export interface IWalletAction {
 
 export interface IWalletMethods {
   // contract
-  formatNumber: (from: any) => any; // number
+  formatNumber: (from: any) => number;
+  formatBignumber: (from: any) => number;
   formatAddressStr: (formatObj: IFormatAddressStr) => string;
   getBlockchainContractData: () => Promise<any>;
   isValidAddress: (address: string) => boolean;

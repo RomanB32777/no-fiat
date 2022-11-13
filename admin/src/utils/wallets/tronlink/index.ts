@@ -4,6 +4,7 @@ import {
   getTronContractData,
   getTronUserWallet,
   formatNumber,
+  formatBignumber,
   formatTronAddressStr,
   isValidTronAddress,
 } from "./contractMethods";
@@ -42,6 +43,7 @@ import {
 
 export const tronlinkMethods: IWalletMethods = {
   formatNumber,
+  formatBignumber,
   formatAddressStr: (formatObj) => formatTronAddressStr(formatObj),
   getWalletUserData() {
     return getTronUserWallet(this);

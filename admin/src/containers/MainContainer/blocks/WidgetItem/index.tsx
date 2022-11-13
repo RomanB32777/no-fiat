@@ -15,12 +15,12 @@ const WidgetItem = ({ itemData, usdtKoef }: IWidgetItem) => {
     <Col xs={24} sm={12} xl={8} key={address}>
       <div className="widget__item">
         <Row style={{ width: "100%" }} justify="space-between">
-          <Col span={7}>
+          <Col span={8}>
             <Avatar size={80} src={photoLink} />
           </Col>
-          <Col span={17} style={{ height: 80 }}>
+          <Col span={16} style={{ height: 80 }}>
             <Row justify="space-between" style={{ height: "100%" }}>
-              <Col span={14}>
+              <Col span={13}>
                 <div className="widget__item_row">
                   <div className="name">{name}</div>
                   <div className="review">

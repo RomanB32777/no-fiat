@@ -6,7 +6,7 @@ const Logo = ({
   navigateUrl,
   modificator,
 }: {
-  navigateUrl: string;
+  navigateUrl?: string;
   modificator?: string;
 }) => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Logo = ({
       className={clsx("main-logo", {
         [modificator as string]: modificator,
       })}
-      onClick={() => navigate(navigateUrl)}
+      onClick={() => navigateUrl && navigate(navigateUrl)}
     >
       <p>
         <span className="yellow">NO</span>FIAT

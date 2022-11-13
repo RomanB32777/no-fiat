@@ -32,9 +32,6 @@ const RegistrationContainer = () => {
           <div className="description">
             <p>You aren’t a part of any organization yet.</p>
             <p>
-              Ask the owner of your organization to add you as Tip Receiver.
-            </p>
-            <p>
               In case you want to add your own organization to NoFiat, please
               fill in registration fields below.
             </p>

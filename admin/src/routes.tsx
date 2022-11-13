@@ -60,7 +60,7 @@ const ProtectedRoutes = (props: ProtectedRouteType) => {
       roleRequired?.includes(user.userRole) ? (
         <Outlet />
       ) : (
-        <Navigate to="/welcome" />
+        <Navigate to={user.userRole === "member" ? "/welcome" : "/"} />
       )
     ) : (
       <Navigate to="/register" state={true} />

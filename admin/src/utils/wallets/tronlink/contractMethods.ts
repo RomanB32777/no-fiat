@@ -5,7 +5,6 @@ import {
 } from "../../../types";
 import {
   addAuthWalletNotification,
-  addErrorNotification,
   addInstallWalletNotification,
 } from "../../notifications";
 
@@ -67,6 +66,9 @@ export const isValidTronAddress = (address: string) =>
 
 export const formatNumber = (from: any) =>
   Number((window as any).tronWeb.fromSun(from));
+
+export const formatBignumber = (from: any) =>
+  Number((window as any).tronWeb.toBigNumber(from).toString(10));
 
 export const formatTronAddressStr = ({ address, format }: IFormatAddressStr) =>
   (window as any).tronWeb.address[format](address);

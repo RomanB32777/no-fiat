@@ -80,12 +80,18 @@ const SendTipsContainer = () => {
   };
 
   useEffect(() => {
-    if (owner) {
-      setTipsForm({ ...tipsForm, ownerAddress: owner });
-      setTimeout(() => {
-        dispatch(getOrganization(owner));
-      }, 500);
-    }
+    const getData = async () => {
+      const { userAddress } = await currentWalletConf.getWalletUserData();
+      if (userAddress && owner) {
+        setTipsForm({ ...tipsForm, ownerAddress: owner });
+        setTimeout(() => {
+          dispatch(getOrganization(owner));
+        }, 500);
+      }
+    };
+
+    getData();
+    // dispatch(getWallet());
   }, [owner]);
 
   useEffect(() => {
