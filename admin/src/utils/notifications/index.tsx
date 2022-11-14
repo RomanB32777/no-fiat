@@ -91,10 +91,6 @@ export const addInstallWalletNotification = (
         target="_blank"
         className="auth-modal__link"
         rel="noreferrer"
-        style={{
-          color: "#fff",
-          textDecoration: "underline",
-        }}
       >
         Install {walletName}
       </a>

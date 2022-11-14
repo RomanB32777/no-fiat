@@ -1,5 +1,5 @@
 import React from "react";
-import { BackTop, Layout } from "antd";
+import { Layout } from "antd";
 import LandingPage from "../../pages/LandingPage";
 
 import "./styles.sass";
@@ -15,7 +15,7 @@ const LayoutApp = () => {
         position: "relative",
       }}
     >
-      <BackTop />
+      {/* <BackTop /> */}
       <Layout className="site-layout">
         <Content className="layout-container">
           <HeaderComponent visibleLogo logoUrl="/" />

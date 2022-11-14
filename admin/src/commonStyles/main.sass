@@ -96,12 +96,22 @@ body
 .rnc__notification-content
   font-family: variables.$gilroy-font, sans-serif
 
-.rnc__notification-title
+.rnc__notification-title,
+.rnc__notification-message
   font-family: variables.$gilroy-font, sans-serif
   color: variables.$black-color
   text-align: center
   font-weight: 600
+
+.rnc__notification-title
   font-size: 25px
+
+.rnc__notification-message
+  font-size: 22px
+
+  .auth-modal__link
+    color: variables.$black-color
+    text-decoration: underline
 
 .rnc__notification-container--top-center
   top: 40vh !important
