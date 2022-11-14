@@ -1,10 +1,16 @@
 import { Col, Divider, Row } from "antd";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import BaseButton from "../../components/BaseButton";
 
-import bannerImg from "../../assets/banner_top.png";
+import bannerImg from "../../assets/chat.png";
 import cubeImg from "../../assets/cube.png";
 import coffeImg from "../../assets/coffe.png";
-import stepsImg from "../../assets/steps.png";
+
+import stepsImgPc from "../../assets/staps_contract_pc.png";
+import stepsImg from "../../assets/staps_contract.png";
+import shareImgPc from "../../assets/share_pc.png";
+import shareImg from "../../assets/share.png";
+
 import cubesImg from "../../assets/cubes.png";
 import humansImg from "../../assets/humans.png";
 import graphImg from "../../assets/graph.png";
@@ -15,6 +21,7 @@ import "./styles.sass";
 const link = "https://tron.no-fiat.xyz/";
 
 const LandingContainer = () => {
+  const { isMobile } = useWindowDimensions();
   return (
     <>
       <div className="landing-container">
@@ -89,7 +96,8 @@ const LandingContainer = () => {
             </Row>
             <Divider className="divider" />
             <div className="img-wrapper banner">
-              <img src={stepsImg} alt="stepsImg" />
+              <img src={isMobile ? stepsImg : stepsImgPc} alt="stepsImg" />
+              <img src={isMobile ? shareImg : shareImgPc} alt="shareImg" className="share-img" />
             </div>
           </div>
         </div>

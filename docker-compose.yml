@@ -14,11 +14,11 @@ services:
     ports:
       - "8092:80"
 
-  # landing:
-  #   build: 
-  #     context: ./landing
-  #     dockerfile: Dockerfile
-  #     args:
-  #       - NODE_ENV=production
-  #   ports:
-  #     - "8090:80"
+  landing:
+    build: 
+      context: ./landing
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    ports:
+      - "8090:80"
