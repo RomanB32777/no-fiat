@@ -26,7 +26,7 @@ const RegistrationContainer = () => {
   return (
     <div className="registration-block">
       {loading ? (
-        <Loader size="big" />
+        <Loader size="large" />
       ) : (
         <>
           <div className="description">

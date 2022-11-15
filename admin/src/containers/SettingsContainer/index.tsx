@@ -47,7 +47,7 @@ const SettingsContainer = () => {
     [formSettings]
   );
 
-  if (isLoading) return <Loader size="big" />;
+  if (isLoading) return <Loader size="large" />;
 
   return (
     <div className="settings-page">

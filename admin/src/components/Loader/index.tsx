@@ -1,15 +1,17 @@
+import { Spin } from "antd";
 import "./styles.sass";
 
-declare type typeSizeLoader = "big" | "middle" | "small";
+declare type typeSizeLoader = "large" | "default" | "small";
 
 const Loader = ({ size }: { size: typeSizeLoader }) => {
   return (
-    <div className={`loader loader-${size}`}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <Spin size={size} />
+    // <div className={`loader loader-${size}`}>
+    //   <div></div>
+    //   <div></div>
+    //   <div></div>
+    //   <div></div>
+    // </div>
   );
 };
 

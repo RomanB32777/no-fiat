@@ -218,7 +218,7 @@ const EmployeesBlock = () => {
       </div>
       <div className="list">
         {!organization.organizationName ? (
-          <Loader size="big" />
+          <Loader size="large" />
         ) : (
           <Row gutter={[16, 32]}>
             {Boolean(allTipReceivers.length) ? (

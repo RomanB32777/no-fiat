@@ -59,7 +59,7 @@ export const LoadingModalComponent = ({
   <ModalComponent open={open} closable={false} width={600}>
     <div className="donat-loading">
       <p className="donat-loading__message">{message}</p>
-      <Loader size="big" />
+      <Loader size="large" />
     </div>
   </ModalComponent>
 );

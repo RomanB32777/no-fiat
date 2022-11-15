@@ -86,7 +86,7 @@ const MainContainer = () => {
     getUsdKoef(process.env.REACT_APP_BLOCKCHAIN || "tron", setUsdtKoef);
   }, [organization]);
 
-  if (loadingDashboard) return <Loader size="big" />;
+  if (loadingDashboard) return <Loader size="large" />;
 
   return (
     <div className="dashboard-page">

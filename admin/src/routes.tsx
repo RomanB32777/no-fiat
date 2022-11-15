@@ -50,7 +50,7 @@ const ProtectedRoutes = (props: ProtectedRouteType) => {
   if (!user.userRole && loading)
     return (
       <div className="app-loader">
-        <Loader size="big" />
+        <Loader size="large" />
       </div>
     );
 

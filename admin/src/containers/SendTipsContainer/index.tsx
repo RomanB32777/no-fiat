@@ -123,7 +123,7 @@ const SendTipsContainer = () => {
   return (
     <div className="sentTips-page">
       {loading ? (
-        <Loader size="big" />
+        <Loader size="large" />
       ) : (
         <>
           <div className="title">
