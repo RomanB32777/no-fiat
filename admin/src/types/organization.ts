@@ -29,7 +29,7 @@ interface ITeam {
 type teamFields = keyof ITeam;
 
 interface IOrganization {
-  organizationAddress: string;
+  organizationAddress?: string;
   initialized: boolean;
   teamsPart: number;
   organizationName: string;

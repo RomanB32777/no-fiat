@@ -1,3 +1,4 @@
+import { contextValue } from "../../../contexts/Wallet";
 import {
   IWalletInitData,
   IWalletMethods,
@@ -7,14 +8,12 @@ import {
   addAuthWalletNotification,
   addInstallWalletNotification,
 } from "../../notifications";
-
-import { currentBlockchainConf, currentWalletConf } from "../../../consts";
+import { initialTronlinkState } from "../../../consts";
 
 export const getTronUserWallet = (methods: IWalletMethods) =>
   new Promise<IWalletInitData>((resolve) => {
     const tronWeb = (window as any).tronWeb;
 
-    // process.env.REACT_APP_BLOCKCHAIN - use later
     setTimeout(async () => {
       if (tronWeb) {
         if (tronWeb.defaultAddress.base58)
@@ -46,9 +45,10 @@ export const getTronUserWallet = (methods: IWalletMethods) =>
 
 export const getTronContractData = async () => {
   try {
+    const currentBlockchainConf = contextValue.currentWalletConf; // { address: "" }; // !!!!!!!!!
     if (currentBlockchainConf) {
       const contractData = await (window as any).tronWeb.contract(
-        currentWalletConf.abi,
+        initialTronlinkState.abi,
         currentBlockchainConf.address
       );
       return contractData;

@@ -1,16 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { Col, Row } from "antd";
 
 import BaseButton from "../../components/BaseButton";
+import { WalletContext } from "../../contexts/Wallet";
 
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getOrganization } from "../../store/types/Organization";
 import { getEmployee } from "../../store/types/Employee";
-import { userRoles } from "../../types";
-import { currentBlockchainConf, currentWalletConf } from "../../consts";
-import "./styles.sass";
 import { addErrorNotification } from "../../utils";
+import { userRoles } from "../../types";
+import "./styles.sass";
 
 const tipsText: { [role in userRoles]: React.ReactNode } = {
   owner: "Pending balance to you and teams",
@@ -19,6 +19,7 @@ const tipsText: { [role in userRoles]: React.ReactNode } = {
 };
 
 const TipsContainer = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const { isMobile } = useWindowDimensions();
   const dispatch = useAppDispatch();
   const { user, organization, employee } = useAppSelector((state) => state);
@@ -63,8 +64,7 @@ const TipsContainer = () => {
                 {tipsText[user.userRole]}
               </Col>
               <Col span={4} className="tips-sum">
-                {amountToWithdraw}{" "}
-                {currentBlockchainConf?.nativeCurrency.symbol}
+                {amountToWithdraw} {currentWalletConf?.nativeCurrency.symbol}
               </Col>
             </Row>
             <div className="btn">

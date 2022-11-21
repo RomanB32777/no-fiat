@@ -1,5 +1,5 @@
 import { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
-import { Col, Input, InputProps, Row } from "antd";
+import { Col, Input, InputNumber, InputProps, Row } from "antd";
 import clsx from "clsx";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import "./styles.sass";
@@ -71,6 +71,22 @@ const FormInput = ({
             {addonBefore && (
               <div className="formInput__input_addonBefore">{addonBefore}</div>
             )}
+            {/* {typeInput === "number" ? (
+              <InputNumber
+                // <string>
+                className={clsx({
+                  withAddonAfter: Boolean(addonAfter),
+                  withAddonBefore: Boolean(addonBefore),
+                })}
+                min={0}
+                max={100}
+                formatter={(value) => `${value}%`}
+                // parser={(value) => value!.replace("%", "")}
+                style={{ width: 200 }}
+                // stringMode
+                // onChange={(e) => onChange && onChange(e)}
+              />
+            ) : ( */}
             <Input
               className={clsx({
                 withAddonAfter: Boolean(addonAfter),
@@ -88,6 +104,7 @@ const FormInput = ({
               value={value}
               bordered={false}
             />
+            {/* )} */}
             {addonAfter && (
               <div className="formInput__input_addonAfter">{addonAfter}</div>
             )}

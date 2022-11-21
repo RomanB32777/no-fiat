@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Col, Row } from "antd";
 import clsx from "clsx";
@@ -7,10 +7,11 @@ import FormInput from "../../components/FormInput";
 import SelectInput, { ISelectItem } from "../../components/SelectInput";
 import BaseButton from "../../components/BaseButton";
 import Loader from "../../components/Loader";
+import { WalletContext } from "../../contexts/Wallet";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getOrganization } from "../../store/types/Organization";
-import { currentBlockchainConf, currentWalletConf } from "../../consts";
+// import { , currentWalletConf } from "../../consts";
 import {
   addErrorNotification,
   addNotValidForm,
@@ -49,6 +50,7 @@ const minReview = 1;
 const maxReview = 5;
 
 const SendTipsContainer = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const { owner } = useParams();
   const dispatch = useAppDispatch();
   const { organization, loading } = useAppSelector((state) => state);
@@ -190,7 +192,7 @@ const SendTipsContainer = () => {
                       }}
                       addonAfter={
                         <p className="currency">
-                          {currentBlockchainConf?.nativeCurrency.symbol}
+                          {currentWalletConf?.nativeCurrency.symbol}
                         </p>
                       }
                       typeInput="number"

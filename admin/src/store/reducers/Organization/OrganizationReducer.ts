@@ -1,18 +1,10 @@
-import { IOrganization, IOrganizationAction } from "../../../types";
+import { IOrganizationAction } from "../../../types";
 import { SET_ORGANIZATION } from "../../types/Organization";
+import { initOrganization } from "../../../consts";
 
-const initialState: IOrganization = {
-  organizationAddress: "",
-  initialized: false,
-  teamsPart: 0,
-  organizationName: "",
-  teamsAmountToWithdraw: 0,
-  teams: [],
-  allTipReceivers: [],
-};
 
 const OrganizationReducer = (
-  state = initialState,
+  state = initOrganization,
   action: IOrganizationAction
 ) => {
   switch (action.type) {

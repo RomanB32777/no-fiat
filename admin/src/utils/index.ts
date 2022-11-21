@@ -23,7 +23,7 @@ import {
   DateSorter,
 } from "./dateMethods";
 import { makeStorageClient, uploadToIpfs, getFromIpfs } from "./ipfs";
-import { tronlinkMethods, getUsdKoef } from "./wallets";
+import { tronlinkMethods, nearMethods, getUsdKoef } from "./wallets";
 
 const isValidateFilled = (valuesArray: any[]) =>
   valuesArray.every((val) => Boolean(val));
@@ -59,9 +59,10 @@ export {
   uploadToIpfs,
   getFromIpfs,
 
-  // wallets
-  tronlinkMethods,
-
   // data
   isValidateFilled,
+
+  // wallets
+  tronlinkMethods,
+  nearMethods,
 };
