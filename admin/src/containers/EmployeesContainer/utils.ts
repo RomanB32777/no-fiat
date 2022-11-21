@@ -1,4 +1,4 @@
-import { currentWalletConf } from "../../consts";
+// import { currentWalletConf } from "../../consts";
 import { ITeam, teamFields } from "../../types";
 
 type cardObjType = {
@@ -25,13 +25,13 @@ export const checkChangedEmployees = (
 export const checkExistAddressInArr = (
   arrAddress: string,
   checkAddress: string
-) =>
-  arrAddress === checkAddress ||
-  arrAddress ===
-    currentWalletConf.formatAddressStr({
-      address: checkAddress,
-      format: "fromHex",
-    });
+) => arrAddress === checkAddress;
+// ||
+// arrAddress ===
+//   currentWalletConf.formatAddressStr({
+//     address: checkAddress,
+//     format: "fromHex",
+//   });
 
 export const checkExistAddressInOrg = ({
   allTipReceivers,

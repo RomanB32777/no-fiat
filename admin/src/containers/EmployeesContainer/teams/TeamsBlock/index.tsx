@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Col, Row } from "antd";
 
 import BaseButton from "../../../../components/BaseButton";
@@ -6,6 +6,7 @@ import EmptyBlock from "../../../../components/EmptyBlock";
 import CardItem from "../../blocks/CardItem";
 import TeamModal from "../TeamModal";
 import Loader from "../../../../components/Loader";
+import { WalletContext } from "../../../../contexts/Wallet";
 
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -22,7 +23,7 @@ import {
   shortStr,
 } from "../../../../utils";
 import { ITeam } from "../../../../types";
-import { currentWalletConf } from "../../../../consts";
+// import { currentWalletConf } from "../../../../consts";
 
 const initTeam: ITeam = {
   name: "",
@@ -31,6 +32,7 @@ const initTeam: ITeam = {
 };
 
 const TeamsBlock = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const dispatch = useAppDispatch();
   const { isMobile } = useWindowDimensions();
   const { organization } = useAppSelector((state) => state);

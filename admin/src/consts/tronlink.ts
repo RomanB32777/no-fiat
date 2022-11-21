@@ -1,55 +1,15 @@
-import {
-  IEmployee,
-  IEmployeeInTeam,
-  IOrganization,
-  IWalletState,
-} from "../types";
+import { IWalletState } from "../types";
 import tronlinkIcon from "../assets/tronlinkIcon.png";
 
-export const initEmployee: IEmployee = {
-  name: "",
-  address: "",
-  photoLink: "",
-  orgOwner: "",
-  tipSum: [],
-  tipAmountToWithdraw: 0,
-  reviews: [],
-  dates: [],
-};
-
-export const initEmployeeInTeam: IEmployeeInTeam = {
-  isExist: false,
-  owner: "",
-  orgName: "",
-  teamName: "",
-  percentageToPay: 0,
-};
-
-export const initOrganization: IOrganization = {
-  organizationAddress: "",
-  initialized: false,
-  teamsPart: 0,
-  organizationName: "",
-  teamsAmountToWithdraw: 0,
-  teams: [],
-  allTipReceivers: [],
-};
-
 export const initialTronlinkState: IWalletState = {
-  blockchains: [
-    {
-      address: "TSaKqSLzeGCQmQ1RFFgnuc1AkFBm5shFgy",
-      name: "tron",
-      icon: tronlinkIcon,
-      chainName: "Tron Nile Testnet",
-      badgeName: "Tron",
-      nativeCurrency: {
-        name: "tron",
-        symbol: "TRX",
-      },
-    },
-  ],
+  address: "TSaKqSLzeGCQmQ1RFFgnuc1AkFBm5shFgy",
+  name: "tron",
+  chainName: "Tron Nile Testnet",
   icon: tronlinkIcon,
+  nativeCurrency: {
+    name: "tron",
+    symbol: "TRX",
+  },
   abi: JSON.parse(
     '[{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"address","name":"_employeeToAdd","type":"address"}],"name":"addEmployeeToTeam","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"percentages","type":"uint8"},{"internalType":"string","name":"_name","type":"string"}],"name":"addOrganization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"address[]","name":"employeesInTeam","type":"address[]"},{"internalType":"uint8","name":"_percentageToPay","type":"uint8"}],"name":"addTeamToOrg","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_tipReceiverAddress","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_photoLink","type":"string"}],"name":"addTipReceiverToOrg","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"allOwners","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_oldName","type":"string"},{"internalType":"string","name":"_newName","type":"string"}],"name":"changeTeamName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_teamName","type":"string"},{"internalType":"uint8","name":"_newPercentageToPay","type":"uint8"}],"name":"changeTeamPercentage","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"address","name":"_tipReceiver","type":"address"}],"name":"changeTipReceiverName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_photoLink","type":"string"},{"internalType":"address","name":"_tipReceiver","type":"address"}],"name":"changeTipReceiverPhoto","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_addressToCheck","type":"address"}],"name":"checkIfOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_addressToCheck","type":"address"}],"name":"checkIfTipReciever","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"}],"name":"deleteTeamFromOrg","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getTotalNumberOfOrganizations","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"address","name":"_employee","type":"address"}],"name":"removeEmployeeFromTeam","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_tipReceiver","type":"address"}],"name":"removeTipReceiverFromOrg","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"},{"internalType":"address","name":"_tipReceiver","type":"address"},{"internalType":"uint8","name":"_review","type":"uint8"}],"name":"sendTips","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_teamMember","type":"address"}],"name":"showIfTeamMember","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_orgOwner","type":"address"}],"name":"showOrganization","outputs":[{"components":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"bool","name":"initialized","type":"bool"},{"internalType":"uint8","name":"teamsPart","type":"uint8"},{"internalType":"string","name":"organizationName","type":"string"},{"internalType":"uint256","name":"teamsAmountToWithdraw","type":"uint256"},{"components":[{"internalType":"string","name":"name","type":"string"},{"internalType":"address[]","name":"employeesInTeam","type":"address[]"},{"internalType":"uint8","name":"percentageToPay","type":"uint8"}],"internalType":"struct NoFiat.Team[]","name":"teams","type":"tuple[]"},{"internalType":"address[]","name":"allTipReceivers","type":"address[]"}],"internalType":"struct NoFiat.Organization","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_orgOwner","type":"address"}],"name":"showReceiversInOrganization","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_tipRecieverAddress","type":"address"}],"name":"showRecieverName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_tipRecieverAddress","type":"address"}],"name":"showRecieverPhoto","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_index","type":"uint256"},{"internalType":"address","name":"_orgOwner","type":"address"}],"name":"showTeamInfo","outputs":[{"components":[{"internalType":"string","name":"name","type":"string"},{"internalType":"address[]","name":"employeesInTeam","type":"address[]"},{"internalType":"uint8","name":"percentageToPay","type":"uint8"}],"internalType":"struct NoFiat.Team","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_orgOwner","type":"address"}],"name":"showTeamsInfoForOrg","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"components":[{"internalType":"string","name":"name","type":"string"},{"internalType":"address[]","name":"employeesInTeam","type":"address[]"},{"internalType":"uint8","name":"percentageToPay","type":"uint8"}],"internalType":"struct NoFiat.Team[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_tipReceiver","type":"address"}],"name":"showTipReceiver","outputs":[{"components":[{"internalType":"address","name":"tipReceiver","type":"address"},{"internalType":"address","name":"orgOwner","type":"address"},{"internalType":"string","name":"tipReceiverName","type":"string"},{"internalType":"uint256[]","name":"tipSum","type":"uint256[]"},{"internalType":"uint256","name":"tipAmountToWithdraw","type":"uint256"},{"internalType":"uint8[]","name":"review","type":"uint8[]"},{"internalType":"uint32[]","name":"date","type":"uint32[]"},{"internalType":"string","name":"tipReceiverPhoto","type":"string"}],"internalType":"struct NoFiat.TipReceiver","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawTeams","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawTipsByEmployee","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
   ),

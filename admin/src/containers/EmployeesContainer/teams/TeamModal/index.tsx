@@ -1,11 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Col, Form, Row } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BaseButton from "../../../../components/BaseButton";
 import ConfirmPopup from "../../../../components/ConfirmPopup";
 import FormInput from "../../../../components/FormInput";
 import ModalComponent from "../../../../components/ModalComponent";
-import { currentWalletConf } from "../../../../consts";
+import { WalletContext } from "../../../../contexts/Wallet";
+// import { currentWalletConf } from "../../../../consts";
 import { useAppSelector } from "../../../../store/hooks";
 import { ITeam, teamFields } from "../../../../types";
 import {
@@ -41,6 +42,7 @@ const TeamModal = ({
   deleteEmployeeInTeam: (address: string) => Promise<any>;
   sendData: (data: { team: ITeam; field: teamFields | null }) => Promise<any>;
 }) => {
+  const { currentWalletConf } = useContext(WalletContext);
   const { organization } = useAppSelector((state) => state);
   const [form] = Form.useForm<ITeam>();
   const [editedField, setEditedField] = useState<teamFields | null>(null);

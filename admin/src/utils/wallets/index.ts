@@ -1,5 +1,6 @@
 import axios from "axios";
 import { tronlinkMethods } from "./tronlink";
+import { nearMethods } from "./near";
 
 const getUsdKoef = async (
   blockchain: string, // currencyTypes
@@ -14,4 +15,4 @@ const getUsdKoef = async (
   return 0;
 };
 
-export { tronlinkMethods, getUsdKoef };
+export { tronlinkMethods, nearMethods, getUsdKoef };

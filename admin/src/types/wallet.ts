@@ -41,23 +41,34 @@ export interface IBlockchain {
   address: string;
   name: string;
   icon: string;
-  chainId?: string;
   chainName: string;
-  badgeName: string;
   nativeCurrency: {
     symbol: string;
     name: string;
     decimals?: number;
   };
-  rpcUrls?: string[];
-  blockExplorerUrls?: string[];
 }
 
 export interface IWalletState {
-  blockchains: IBlockchain[];
+  address: string;
+  name: string;
+  chainName: string;
+  nativeCurrency: {
+    symbol: string;
+    name: string;
+    decimals?: number;
+  };
   icon: string;
   abi?: any[];
-  bytecode: string;
+  bytecode?: string;
+  connectionConfig?: {
+    networkId: string;
+    keyStore: any;
+    nodeUrl: string;
+    walletUrl: string;
+    helperUrl: string;
+    explorerUrl: string;
+  };
 }
 
 export interface IWalletAction {
@@ -68,13 +79,13 @@ export interface IWalletAction {
 export interface IWalletMethods {
   // contract
   formatNumber: (from: any) => number;
-  formatBignumber: (from: any) => number;
+  formatBignumber: (from: any) => any;
   formatAddressStr: (formatObj: IFormatAddressStr) => string;
-  getBlockchainContractData: () => Promise<any>;
+  getBlockchainContractData: () => Promise<any>; // !
   isValidAddress: (address: string) => boolean;
 
   // user
-  getWalletUserData: () => Promise<IWalletInitData>;
+  getWalletUserData: () => Promise<IWalletInitData>; // !
   checkIfOwner: () => Promise<boolean>;
   checkIfTipReciever: () => Promise<ITipRecieverObj | boolean>;
   checkIsTeamMember: (address?: string) => Promise<IEmployeeInTeam>;
@@ -120,6 +131,11 @@ export interface IWalletMethods {
 
 export interface IWalletConf extends IWalletState, IWalletMethods {}
 
+export type blockchainsType = "tronlink" | "near";
+
+export type currencyBlockchainsType = {
+  [key in blockchainsType]: string;
+};
 export interface IWalletsConf {
   [wallet: string]: IWalletConf;
 }

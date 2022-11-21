@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 import BaseButton from "../../../components/BaseButton";
 import FormInput from "../../../components/FormInput";
+import { WalletContext } from "../../../contexts/Wallet";
 import { useAppDispatch } from "../../../store/hooks";
 import { addNotValidForm, isValidateFilled } from "../../../utils";
 import { getWallet } from "../../../store/types/Wallet";
 import { ICreateOrganization } from "../../../types";
-import { currentWalletConf } from "../../../consts";
+// import { currentWalletConf } from "../../../consts";
+
+const maxPercentage = 100;
+const minPercentage = 0;
+const re = /^[0-9\b]+$/;
 
 const initOwnerRegistrationData: ICreateOrganization = {
   name: "",
@@ -15,6 +20,7 @@ const initOwnerRegistrationData: ICreateOrganization = {
 };
 
 const OwnerRegistrationBlock = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [loadingRegister, setLoadingRegister] = useState<boolean>(false);
@@ -30,9 +36,7 @@ const OwnerRegistrationBlock = () => {
         formData
       );
       if (organizationData) {
-        console.log("before");
         dispatch(getWallet());
-        console.log("after");
         navigate("/employees", { replace: true });
       }
       setLoadingRegister(false);
@@ -60,11 +64,19 @@ const OwnerRegistrationBlock = () => {
           maxNumber={100}
           placeholder="Percentage you take on every tip received"
           onChange={({ target }) =>
-            setFormData((prev) => ({
-              ...formData,
-              percentages:
-                +target.value > 100 ? prev.percentages : +target.value,
-            }))
+            setFormData((prev) => {
+              console.log(target.value, re.test(target.value));
+
+              return {
+                ...formData,
+                percentages:
+                  +target.value > maxPercentage || +target.value < minPercentage //||  (!re.test(target.value) && target.value !== "")
+                    ? // ||
+                      //
+                      prev.percentages
+                    : +target.value, //.replace(/^[0-9\b]+$/, ""),
+              };
+            })
           }
         />
       </div>
