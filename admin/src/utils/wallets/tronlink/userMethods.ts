@@ -18,12 +18,16 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
   }
 };
 
-export const checkIsTipReciever = async (methods: IWalletMethods) => {
+export const checkIsTipReciever = async (
+  methods: IWalletMethods,
+  address?: string
+) => {
   try {
-    const userWalletData = await methods.getWalletUserData();
+    const userAddress =
+      address || (await methods.getWalletUserData()).userAddress;
     const contractData = await methods.getBlockchainContractData();
     const tipRecieverData = await contractData
-      .checkIfTipReciever(userWalletData.userAddress)
+      .checkIfTipReciever(userAddress)
       .call();
     return tipRecieverData;
   } catch (error) {

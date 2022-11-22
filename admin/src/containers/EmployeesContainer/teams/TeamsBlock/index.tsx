@@ -23,7 +23,6 @@ import {
   shortStr,
 } from "../../../../utils";
 import { ITeam } from "../../../../types";
-// import { currentWalletConf } from "../../../../consts";
 
 const initTeam: ITeam = {
   name: "",

@@ -23,7 +23,22 @@ const LandingContainer = () => {
   const navigate = useNavigate();
   const { isMobile } = useWindowDimensions();
 
-  const signUp = () => navigate("/wallets");
+  const scrollToPosition = (top = 0) => {
+    try {
+      window.scroll({
+        top: top,
+        left: 0,
+        behavior: "smooth",
+      });
+    } catch (_) {
+      window.scrollTo(0, top);
+    }
+  };
+
+  const signUp = () => {
+    navigate("/wallets");
+    scrollToPosition();
+  };
 
   return (
     <>

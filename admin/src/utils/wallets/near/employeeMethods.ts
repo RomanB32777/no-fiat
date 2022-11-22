@@ -60,10 +60,10 @@ export const getNearEmployeeInfo = async (
         name: tip_receiver_name,
         photoLink: tip_receiver_photo,
         tipSum: tip_sum.map((sum: number) =>
-          methods.formatNumber(sum.toLocaleString())
+          methods.formatNumber(sum.toLocaleString('fullwide', {useGrouping:false}))
         ),
         tipAmountToWithdraw: methods.formatNumber(
-          tip_amount_to_withdraw.toLocaleString()
+          tip_amount_to_withdraw.toLocaleString('fullwide', {useGrouping:false})
         ),
         reviews: review,
         dates: date,

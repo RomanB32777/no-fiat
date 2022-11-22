@@ -87,7 +87,7 @@ export interface IWalletMethods {
   // user
   getWalletUserData: () => Promise<IWalletInitData>; // !
   checkIfOwner: () => Promise<boolean>;
-  checkIfTipReciever: () => Promise<ITipRecieverObj | boolean>;
+  checkIfTipReciever: (address?: string) => Promise<ITipRecieverObj | boolean>;
   checkIsTeamMember: (address?: string) => Promise<IEmployeeInTeam>;
   getBalance: () => Promise<number>;
 

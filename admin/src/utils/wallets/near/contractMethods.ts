@@ -12,17 +12,26 @@ window.Buffer = Buffer;
 
 const { connect, utils, WalletConnection, Contract } = nearAPI;
 
+const getLocalStorageKey = () => localStorage.getItem("null_wallet_auth_key");
+
+const getAppKeyPrefix = () =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(getLocalStorageKey()), 1000);
+  });
+
 export const getNearUserWallet = async (
   methods: IWalletMethods
 ): Promise<IWalletInitData> => {
   try {
     const walletConf = contextValue.currentWalletConf;
     if (walletConf.connectionConfig) {
+      const appKeyPrefix = getLocalStorageKey() || (await getAppKeyPrefix());
       const nearConnection = await connect(walletConf.connectionConfig);
       const walletConnection = new WalletConnection(nearConnection, null);
 
-      if (walletConnection.isSignedIn()) {
-        console.log("is signed");
+      // console.log(appKeyPrefix, walletConnection.isSignedIn());
+
+      if (appKeyPrefix || walletConnection.isSignedIn()) {
         const walletAccountId = walletConnection.getAccountId();
         return { userAddress: walletAccountId };
       } else {

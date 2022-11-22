@@ -22,12 +22,16 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
   }
 };
 
-export const checkIsTipReciever = async (methods: IWalletMethods) => {
+export const checkIsTipReciever = async (
+  methods: IWalletMethods,
+  address?: string
+) => {
   try {
-    const userWalletData = await methods.getWalletUserData();
+    const userAddress =
+      address || (await methods.getWalletUserData()).userAddress;
     const contractData = await methods.getBlockchainContractData();
     const tipRecieverData = await contractData.check_if_tip_receiver({
-      address_to_check: userWalletData.userAddress,
+      address_to_check: userAddress,
     });
     return tipRecieverData;
   } catch (error) {

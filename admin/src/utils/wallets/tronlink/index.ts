@@ -60,8 +60,8 @@ export const tronlinkMethods: IWalletMethods = {
   checkIfOwner() {
     return checkIsOwner(this);
   },
-  checkIfTipReciever() {
-    return checkIsTipReciever(this);
+  checkIfTipReciever(address) {
+    return checkIsTipReciever(this, address);
   },
   checkIsTeamMember(address) {
     return checkIsTeamMember({ address, methods: this });

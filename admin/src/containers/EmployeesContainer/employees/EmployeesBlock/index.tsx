@@ -21,7 +21,6 @@ import {
 import { getOrganization } from "../../../../store/types/Organization";
 import { cardObjType, checkExistAddressInOrg } from "../../utils";
 import { IEmployeeBase } from "../../../../types";
-// import { currentWalletConf } from "../../../../consts";
 
 const initEmployee: IEmployeeBase = {
   name: "",
@@ -115,17 +114,25 @@ const EmployeesBlock = () => {
 
       if (!editedEmployee) {
         console.log(allTipReceivers, teams, employeesForm.address);
-        
+
         const isExistEmployeeInOrg = checkExistAddressInOrg({
           allTipReceivers,
           teams,
           checkAddress: employeesForm.address,
         });
 
+        const isTipReceiverEmployee =
+          await currentWalletConf.checkIfTipReciever(employeesForm.address);
+        // check tip_receiver in other organization
+
         const isExistEmployeeInTeamsContract =
           await currentWalletConf.checkIsTeamMember(employeesForm.address);
 
-        if (isExistEmployeeInOrg || isExistEmployeeInTeamsContract.isExist) {
+        if (
+          isExistEmployeeInOrg ||
+          isTipReceiverEmployee ||
+          isExistEmployeeInTeamsContract.isExist
+        ) {
           setLoadingEmployee(false);
           return addErrorNotification({
             title:
