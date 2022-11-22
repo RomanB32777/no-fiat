@@ -2,8 +2,11 @@ import createSagaMiddleware from "redux-saga";
 import { configureStore } from "@reduxjs/toolkit";
 import { rootWatcher } from "../saga";
 import { rootReducer } from "./reducers";
+import { contextValue } from "../contexts/Wallet";
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware({
+  context: { contextValue },
+});
 
 const store = configureStore({
   reducer: rootReducer,
@@ -18,6 +21,3 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
-
-
-

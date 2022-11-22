@@ -1,6 +1,13 @@
-import { IWalletsConf } from "../types";
-import { tronlinkMethods } from "../utils";
-import { initEmployee, initEmployeeInTeam, initOrganization, initialTronlinkState } from "./tronlink";
+import {
+  currencyBlockchainsType,
+  IBlockchain,
+  IEmployee,
+  IEmployeeBase,
+  IEmployeeInTeam,
+  IOrganization,
+} from "../types";
+import { initialTronlinkState } from "./tronlink";
+import { initialNearState } from "./near";
 
 const isProduction =
   process.env.REACT_APP_NODE_ENV &&
@@ -10,28 +17,65 @@ const baseURL = `${isProduction ? "https" : "http"}://${
   window.location.hostname + (!isProduction ? ":3000" : "")
 }`;
 
-const walletsConf: IWalletsConf = {
-  tronlink: { ...initialTronlinkState, ...tronlinkMethods },
+const initEmployeeBase: IEmployeeBase = {
+  name: "",
+  address: "",
+  photoLink: "",
 };
 
-const currentWalletName = process.env.REACT_APP_WALLET || "tronlink";
-const currentBlockchainName = process.env.REACT_APP_BLOCKCHAIN || "tron";
+const initEmployee: IEmployee = {
+  name: "",
+  address: "",
+  photoLink: "",
+  orgOwner: "",
+  tipSum: [],
+  tipAmountToWithdraw: 0,
+  reviews: [],
+  dates: [],
+};
 
-const currentWalletConf = walletsConf[currentWalletName];
+const initEmployeeInTeam: IEmployeeInTeam = {
+  isExist: false,
+  owner: "",
+  orgName: "",
+  teamName: "",
+  percentageToPay: 0,
+};
 
-const currentBlockchainConf = walletsConf[currentWalletName].blockchains.find(
-  (b) => b.name === currentBlockchainName
-);
+const initOrganization: IOrganization = {
+  initialized: false,
+  teamsPart: 0,
+  organizationName: "",
+  teamsAmountToWithdraw: 0,
+  teams: [],
+  allTipReceivers: [],
+};
+
+const initBlockchain: IBlockchain = {
+  address: "",
+  name: "",
+  icon: "",
+  chainName: "",
+  nativeCurrency: {
+    symbol: "",
+    name: "",
+  },
+};
+
+const currencyBlockchains: currencyBlockchainsType = {
+  tronlink: "tron",
+  near: "near",
+};
 
 export {
   isProduction,
   baseURL,
+  initBlockchain,
+  initEmployeeBase,
   initEmployee,
   initEmployeeInTeam,
   initOrganization,
-  walletsConf,
-  currentWalletName,
-  currentBlockchainName,
-  currentWalletConf,
-  currentBlockchainConf,
+  initialTronlinkState,
+  initialNearState,
+  currencyBlockchains,
 };

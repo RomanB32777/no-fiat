@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Col, Row } from "antd";
 
 import BaseButton from "../../../../components/BaseButton";
@@ -6,6 +6,7 @@ import EmployeesModal from "../EmployeesModal";
 import CardItem from "../../blocks/CardItem";
 import Loader from "../../../../components/Loader";
 import EmptyBlock from "../../../../components/EmptyBlock";
+import { WalletContext } from "../../../../contexts/Wallet";
 
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -18,13 +19,9 @@ import {
   addInvalidAddress,
 } from "../../../../utils";
 import { getOrganization } from "../../../../store/types/Organization";
+import { cardObjType, checkExistAddressInOrg } from "../../utils";
 import { IEmployeeBase } from "../../../../types";
-import { currentWalletConf } from "../../../../consts";
-import {
-  cardObjType,
-  checkExistAddressInArr,
-  checkExistAddressInOrg,
-} from "../../utils";
+// import { currentWalletConf } from "../../../../consts";
 
 const initEmployee: IEmployeeBase = {
   name: "",
@@ -33,6 +30,7 @@ const initEmployee: IEmployeeBase = {
 };
 
 const EmployeesBlock = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const dispatch = useAppDispatch();
   const { isMobile } = useWindowDimensions();
   const { organization } = useAppSelector((state) => state);
@@ -116,6 +114,8 @@ const EmployeesBlock = () => {
       }
 
       if (!editedEmployee) {
+        console.log(allTipReceivers, teams, employeesForm.address);
+        
         const isExistEmployeeInOrg = checkExistAddressInOrg({
           allTipReceivers,
           teams,

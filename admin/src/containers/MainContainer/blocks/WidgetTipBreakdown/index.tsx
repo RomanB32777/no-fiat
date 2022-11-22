@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import TableComponent from "../../../../components/TableComponent";
-import { currentBlockchainConf } from "../../../../consts";
+import { WalletContext } from "../../../../contexts/Wallet";
+// import { currentBlockchainConf } from "../../../../consts";
 import { ITableData, tableColums } from "./tableData";
 import { IEmployee, IFiltersDates } from "../../../../types";
 import "./styles.sass";
@@ -15,6 +16,7 @@ const WidgetTipBreakdown = ({
   filteredDates: IFiltersDates;
   usdtKoef: number;
 }) => {
+  const { currentWalletConf } = useContext(WalletContext);
   const [tipsList, setTipsList] = useState<ITableData[]>([]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const WidgetTipBreakdown = ({
                 sum_usd: tip * usdtKoef,
                 date: moment.unix(dates[index]).valueOf(),
                 blockchain:
-                  currentBlockchainConf?.nativeCurrency.symbol || "TRX",
+                currentWalletConf?.nativeCurrency.symbol || "TRX",
               }))
               .filter((t) => t.date)
           )

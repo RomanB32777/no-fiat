@@ -1,4 +1,3 @@
-import { Navigate } from "react-router-dom";
 import Logo from "../../components/HeaderComponents/LogoComponent";
 import { useAppSelector } from "../../store/hooks";
 import "./styles.sass";
@@ -6,7 +5,7 @@ import "./styles.sass";
 const SendTipsContainer = () => {
   const { employeeTeam } = useAppSelector((state) => state);
 
-  const { isExist, orgName, teamName, percentageToPay } = employeeTeam;
+  const { orgName, teamName, percentageToPay } = employeeTeam;
 
   // if (!isExist) return <Navigate to="/no-page" />;
 

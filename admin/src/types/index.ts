@@ -11,6 +11,8 @@ import {
   IWalletAction,
   IWalletConf,
   IWalletsConf,
+  blockchainsType,
+  currencyBlockchainsType,
 } from "./wallet";
 import {
   IEmployeeBase,
@@ -77,6 +79,8 @@ export type {
   IWalletAction,
   IWalletConf,
   IWalletsConf,
+  blockchainsType,
+  currencyBlockchainsType,
 
   // organization
   IEmployeeBase,

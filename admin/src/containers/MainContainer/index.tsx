@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Col, Row } from "antd";
 import moment from "moment";
 
 import Loader from "../../components/Loader";
+import { contextValue, WalletContext } from "../../contexts/Wallet";
 import WidgetStat from "./blocks/WidgetStat";
 import WidgetRatingTips from "./blocks/RatingTips";
 import WidgetTipBreakdown from "./blocks/WidgetTipBreakdown";
@@ -12,8 +13,8 @@ import FiltersBlock from "./blocks/FiltersBlock";
 import { useAppSelector } from "../../store/hooks";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { IEmployee, IFiltersDates, IFiltersForm } from "../../types";
-import { currentWalletConf } from "../../consts";
 import { getFromIpfs, getUsdKoef } from "../../utils";
+import { currencyBlockchains } from "../../consts";
 import "./styles.sass";
 
 const initFiltersData: IFiltersForm = {
@@ -22,6 +23,7 @@ const initFiltersData: IFiltersForm = {
 };
 
 const MainContainer = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const { isTablet } = useWindowDimensions();
   const { user, organization, employee } = useAppSelector((state) => state);
   const [filtersData, setFiltersData] = useState<IFiltersForm>({
@@ -56,13 +58,11 @@ const MainContainer = () => {
   useEffect(() => {
     const getEmployees = async () => {
       setLoadingDashboard(true);
-      
+
       if (employee && user.userRole === "employee") {
         const resPhoto = getFromIpfs(employee.photoLink);
-        if (resPhoto)
-          setEmployees([{ ...employee, photoLink: resPhoto }]);
+        if (resPhoto) setEmployees([{ ...employee, photoLink: resPhoto }]);
         else setEmployees([employee]);
-
       } else {
         const { allTipReceivers } = organization;
 
@@ -71,8 +71,7 @@ const MainContainer = () => {
             allTipReceivers.map(async (address) => {
               const employee = await currentWalletConf.getEmployeeInfo(address);
               const resPhoto = getFromIpfs(employee.photoLink);
-              if (resPhoto)
-                return { ...employee, photoLink: resPhoto };
+              if (resPhoto) return { ...employee, photoLink: resPhoto };
               return employee;
             })
           );
@@ -83,7 +82,10 @@ const MainContainer = () => {
     };
 
     organization.organizationName && getEmployees();
-    getUsdKoef(process.env.REACT_APP_BLOCKCHAIN || "tron", setUsdtKoef);
+    getUsdKoef(
+      currencyBlockchains[contextValue.currentWalletName],
+      setUsdtKoef
+    );
   }, [organization]);
 
   if (loadingDashboard) return <Loader size="large" />;

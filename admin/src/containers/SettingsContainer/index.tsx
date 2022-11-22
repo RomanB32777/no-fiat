@@ -1,16 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Col, Row } from "antd";
 
 import Loader from "../../components/Loader";
 import FormInput from "../../components/FormInput";
 import QrBlock from "../../components/QrBlock";
+import { WalletContext } from "../../contexts/Wallet";
 
 import { useAppSelector } from "../../store/hooks";
 import { copyStr, shortStr } from "../../utils";
-import { baseURL, currentWalletConf } from "../../consts";
+import { baseURL } from "../../consts";
 import "./styles.sass";
 
 const SettingsContainer = () => {
+  const { currentWalletConf } = useContext(WalletContext);
   const { user, employee } = useAppSelector((state) => state);
   const [formSettings, setFormSettings] = useState<{
     userAddress: string;
