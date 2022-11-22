@@ -21,7 +21,6 @@ const initValue: IWalletContext = {
   walletsConf: {},
   currentWalletConf: {
     address: "",
-    name: "",
     chainName: "",
     nativeCurrency: {
       name: "",

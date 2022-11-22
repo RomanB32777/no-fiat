@@ -22,6 +22,7 @@ export const getNearUserWallet = async (
       const walletConnection = new WalletConnection(nearConnection, null);
 
       if (walletConnection.isSignedIn()) {
+        console.log("is signed");
         const walletAccountId = walletConnection.getAccountId();
         return { userAddress: walletAccountId };
       } else {
@@ -48,7 +49,7 @@ export const getNearContractData = async (methods: IWalletMethods) => {
       const walletConnection = new WalletConnection(nearConnection, null);
       const contract = new Contract(
         walletConnection.account(), // the account object that is connecting
-        walletConf.name, // contextValue.currentWalletConf.address,
+        walletConf.address, // contextValue.currentWalletConf.address,
         {
           // name of contract you're connecting to
           viewMethods: [

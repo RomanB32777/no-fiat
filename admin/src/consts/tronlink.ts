@@ -3,7 +3,7 @@ import tronlinkIcon from "../assets/tronlinkIcon.png";
 
 export const initialTronlinkState: IWalletState = {
   address: "TSaKqSLzeGCQmQ1RFFgnuc1AkFBm5shFgy",
-  name: "tron",
+  // name: "tron",
   chainName: "Tron Nile Testnet",
   icon: tronlinkIcon,
   nativeCurrency: {

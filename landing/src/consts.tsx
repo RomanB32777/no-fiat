@@ -1,4 +1,4 @@
-import TronlinkBig from "./assets/tronlink_big.png";
+import TronlinkBig from "./assets/trx_big.png";
 import NearBig from "./assets/near_big.png";
 import { isInstallTronWallet } from "./utils";
 
@@ -13,7 +13,7 @@ export interface IWallet {
 }
 
 export const wallets: IWallet = {
-  tronlink: {
+  tron: {
     img: TronlinkBig,
     isInstallMethod: () => isInstallTronWallet(),
     installLink:

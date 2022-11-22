@@ -51,7 +51,7 @@ export interface IBlockchain {
 
 export interface IWalletState {
   address: string;
-  name: string;
+  // name: string;
   chainName: string;
   nativeCurrency: {
     symbol: string;

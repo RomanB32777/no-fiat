@@ -9,7 +9,7 @@ const CONTRACT_NAME = process.env.REACT_APP_NEAR_CONTRACT_NAME || "";
 
 export const initialNearState: IWalletState = {
   address: CONTRACT_NAME,
-  name: "nearnofiat.testnet",
+  // name: "nearnofiat.testnet",
   icon: nearIcon,
   chainName: "Near Testnet",
   nativeCurrency: {
