@@ -1,3 +1,4 @@
+import moment from "moment";
 import { initEmployee } from "../../../consts";
 import { IEmployeeBase, IWalletMethods, IChangePhotoObj } from "../../../types";
 import {
@@ -67,7 +68,7 @@ export const getTronEmployeeInfo = async (
         tipSum: tipSum.map((tip: any) => methods.formatNumber(tip)),
         tipAmountToWithdraw: methods.formatNumber(tipAmountToWithdraw),
         reviews: review,
-        dates: date,
+        dates: date.map((d: any) => moment.unix(d).valueOf()),
       };
     }
     return initEmployee;

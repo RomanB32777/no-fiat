@@ -16,7 +16,7 @@ export const filterTips = ({
   dates: number[];
   filteredDates: IFiltersDates;
 }) =>
-  arr.filter((t, i) => {
-    const date = moment.unix(dates[i]).valueOf();
-    return date > filteredDates.start && date < filteredDates.end;
-  });
+  arr.filter(
+    (t, i) => dates[i] > filteredDates.start && dates[i] < filteredDates.end
+    // const date = dates[i]; //moment.unix(dates[i]).valueOf();
+  );

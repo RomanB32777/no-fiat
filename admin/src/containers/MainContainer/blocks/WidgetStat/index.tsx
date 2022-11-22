@@ -43,7 +43,7 @@ const WidgetStat = ({
             tipSum
               .map((tip, index) => ({
                 sum_usd: tip,
-                date: moment.unix(dates[index]).valueOf(),
+                date: dates[index], // moment.unix(dates[index]).valueOf(),
               }))
               .filter((t) => t.date)
           )

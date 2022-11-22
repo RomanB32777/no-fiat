@@ -14,6 +14,18 @@ services:
     ports:
       - "8092:80"
 
+  near:
+    build: 
+      context: ./admin
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - WALLET=near
+        - STORAGE_TOKEN=token
+        - NEAR_CONTRACT_NAME=name
+    ports:
+      - "8094:80"
+
   landing:
     build: 
       context: ./landing
