@@ -5,6 +5,7 @@
   "scripts": {
     "admin": "npm start --prefix admin",
     "admin:tron": "REACT_APP_WALLET=tronlink REACT_APP_BLOCKCHAIN=tron npm start --prefix admin",
+    "admin:near": "REACT_APP_WALLET=near REACT_APP_BLOCKCHAIN=near npm start --prefix admin",
     "landing": "npm start --prefix landing",
     "admin:install": "npm install --prefix admin",
     "admin:build": "npm  run build --prefix admin",

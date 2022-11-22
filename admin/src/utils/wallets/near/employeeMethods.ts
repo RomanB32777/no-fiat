@@ -54,8 +54,6 @@ export const getNearEmployeeInfo = async (
         date,
       } = employeeInfo;
 
-      typeof tip_amount_to_withdraw === "number" && console.log();
-
       return {
         address: tip_receiver,
         orgOwner: org_owner,

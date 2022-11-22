@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import moment from "moment";
 import TableComponent from "../../../../components/TableComponent";
 import { WalletContext } from "../../../../contexts/Wallet";
-// import { currentBlockchainConf } from "../../../../consts";
 import { ITableData, tableColums } from "./tableData";
 import { IEmployee, IFiltersDates } from "../../../../types";
 import "./styles.sass";
