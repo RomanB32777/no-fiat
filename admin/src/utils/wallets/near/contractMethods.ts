@@ -16,7 +16,7 @@ const getLocalStorageKey = () => localStorage.getItem("null_wallet_auth_key");
 
 const getAppKeyPrefix = () =>
   new Promise((resolve) => {
-    setTimeout(() => resolve(getLocalStorageKey()), 1000);
+    setTimeout(() => resolve(getLocalStorageKey()), 500);
   });
 
 export const getNearUserWallet = async (
@@ -25,13 +25,16 @@ export const getNearUserWallet = async (
   try {
     const walletConf = contextValue.currentWalletConf;
     if (walletConf.connectionConfig) {
-      const appKeyPrefix = getLocalStorageKey() || (await getAppKeyPrefix());
       const nearConnection = await connect(walletConf.connectionConfig);
-      const walletConnection = new WalletConnection(nearConnection, null);
+      const walletConnection = new WalletConnection(
+        nearConnection,
+        null //walletConf.address
+      );
+      const isSignedIn = await walletConnection.isSignedInAsync();
+      // const appKeyPrefix = getLocalStorageKey() || (await getAppKeyPrefix());
 
-      // console.log(appKeyPrefix, walletConnection.isSignedIn());
-
-      if (appKeyPrefix || walletConnection.isSignedIn()) {
+      if (isSignedIn) {
+        // appKeyPrefix ||
         const walletAccountId = walletConnection.getAccountId();
         return { userAddress: walletAccountId };
       } else {
