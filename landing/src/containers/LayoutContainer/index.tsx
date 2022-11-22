@@ -1,9 +1,9 @@
 import React from "react";
 import { Layout } from "antd";
-import LandingPage from "../../pages/LandingPage";
+import { Pages } from "../../routes";
+import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 
 import "./styles.sass";
-import { HeaderComponent } from "../../components/HeaderComponents/HeaderComponent";
 
 const { Content } = Layout;
 
@@ -20,7 +20,7 @@ const LayoutApp = () => {
         <Content className="layout-container">
           <HeaderComponent visibleLogo logoUrl="/" />
           <div className="main-container">
-            <LandingPage />
+            <Pages />
           </div>
         </Content>
       </Layout>

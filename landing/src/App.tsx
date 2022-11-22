@@ -1,3 +1,4 @@
+import { BrowserRouter } from "react-router-dom";
 import { ReactNotifications } from "react-notifications-component";
 
 import LayoutApp from "./containers/LayoutContainer";
@@ -8,10 +9,10 @@ import "./commonStyles/main.sass";
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <ReactNotifications />
       <LayoutApp />
-    </div>
+    </BrowserRouter>
   );
 }
 

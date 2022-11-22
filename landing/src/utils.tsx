@@ -9,10 +9,15 @@ interface INotification {
   type: NOTIFICATION_TYPE;
   title: string;
   message?: NotificationTitleMessage;
-  duration?: number
+  duration?: number;
 }
 
-export const addNotification = ({ type, title, message, duration }: INotification) => {
+export const addNotification = ({
+  type,
+  title,
+  message,
+  duration,
+}: INotification) => {
   Store.addNotification({
     title,
     message: message || "",
@@ -40,7 +45,7 @@ export const addSuccessNotification = (message: string) =>
     title: "Success",
     message,
     type: "success",
-    duration: 3000
+    duration: 3000,
   });
 
 export const addInstallWalletNotification = (
@@ -98,3 +103,6 @@ export const copyStr = (str: string) => {
     });
   }
 };
+
+export const isInstallTronWallet = () =>
+  (window as any).hasOwnProperty("tronWeb");

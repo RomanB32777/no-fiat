@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { Col, Divider, Row } from "antd";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import BaseButton from "../../components/BaseButton";
@@ -18,10 +19,12 @@ import starsImg from "../../assets/stars.png";
 
 import "./styles.sass";
 
-const link = "https://tron.no-fiat.xyz/";
-
 const LandingContainer = () => {
+  const navigate = useNavigate();
   const { isMobile } = useWindowDimensions();
+
+  const signUp = () => navigate("/wallets");
+
   return (
     <>
       <div className="landing-container">
@@ -38,7 +41,7 @@ const LandingContainer = () => {
             <div className="btn-wrapper">
               <BaseButton
                 title="Sign-up"
-                onClick={() => window.open(link, "_blank")}
+                onClick={signUp}
                 modificator="landing-btn"
               />
             </div>
@@ -97,7 +100,11 @@ const LandingContainer = () => {
             <Divider className="divider" />
             <div className="img-wrapper banner">
               <img src={isMobile ? stepsImg : stepsImgPc} alt="stepsImg" />
-              <img src={isMobile ? shareImg : shareImgPc} alt="shareImg" className="share-img" />
+              <img
+                src={isMobile ? shareImg : shareImgPc}
+                alt="shareImg"
+                className="share-img"
+              />
             </div>
           </div>
         </div>
@@ -197,7 +204,7 @@ const LandingContainer = () => {
           <div className="content">
             <BaseButton
               title="Sign-up"
-              onClick={() => window.open(link, "_blank")}
+              onClick={signUp}
               modificator="landing-btn"
             />
           </div>

@@ -1,37 +1,32 @@
-// import {
-//   isInstallMetamaskWallet,
-//   isInstallTronWallet,
-// } from "./functions/getWalletData";
-
 import TronlinkBig from "./assets/tronlink_big.png";
-import TrxBig from "./assets/trx_big.png";
+import NearBig from "./assets/near_big.png";
+import { isInstallTronWallet } from "./utils";
 
-interface IWallet {
+export interface IWallet {
   [walletName: string]: {
     img: string;
     isInstallMethod: () => boolean;
     installLink: string;
-    blockchains: {
-      name: string;
-      appLink: string;
-      img: string;
-    }[];
+    name: string;
+    appLink: string;
   };
 }
 
 export const wallets: IWallet = {
   tronlink: {
     img: TronlinkBig,
-    isInstallMethod: () => true,
+    isInstallMethod: () => isInstallTronWallet(),
     installLink:
       "https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec",
-    blockchains: [
-      {
-        name: "Tron Nile Testnet",
-        appLink: "https://tron.cryptodonutz.xyz/",
-        img: TrxBig,
-      },
-    ],
+    name: "Tron Shasta Testnet",
+    appLink: "https://tron.nofiat.app/register",
+  },
+  near: {
+    img: NearBig,
+    isInstallMethod: () => true,
+    installLink: "https://wallet.testnet.near.org/",
+    name: "Near Testnet",
+    appLink: "https://near.nofiat.app/",
   },
 };
 
