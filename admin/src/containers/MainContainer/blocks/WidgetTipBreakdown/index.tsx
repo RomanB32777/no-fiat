@@ -31,9 +31,8 @@ const WidgetTipBreakdown = ({
                 employee: name,
                 sum_token: tip,
                 sum_usd: tip * usdtKoef,
-                date: moment.unix(dates[index]).valueOf(),
-                blockchain:
-                currentWalletConf?.nativeCurrency.symbol || "TRX",
+                date: dates[index], // moment.unix(dates[index]).valueOf(),
+                blockchain: currentWalletConf?.nativeCurrency.symbol || "TRX",
               }))
               .filter((t) => t.date)
           )

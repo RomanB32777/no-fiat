@@ -3,7 +3,7 @@ import { Col, Row } from "antd";
 import moment from "moment";
 
 import Loader from "../../components/Loader";
-import { contextValue, WalletContext } from "../../contexts/Wallet";
+import { WalletContext } from "../../contexts/Wallet";
 import WidgetStat from "./blocks/WidgetStat";
 import WidgetRatingTips from "./blocks/RatingTips";
 import WidgetTipBreakdown from "./blocks/WidgetTipBreakdown";
@@ -23,7 +23,7 @@ const initFiltersData: IFiltersForm = {
 };
 
 const MainContainer = () => {
-  const { currentWalletConf } = useContext(WalletContext);
+  const { currentWalletConf, currentWalletName } = useContext(WalletContext);
   const { isTablet } = useWindowDimensions();
   const { user, organization, employee } = useAppSelector((state) => state);
   const [filtersData, setFiltersData] = useState<IFiltersForm>({
@@ -82,10 +82,7 @@ const MainContainer = () => {
     };
 
     organization.organizationName && getEmployees();
-    getUsdKoef(
-      currencyBlockchains[contextValue.currentWalletName],
-      setUsdtKoef
-    );
+    getUsdKoef(currencyBlockchains[currentWalletName], setUsdtKoef);
   }, [organization]);
 
   if (loadingDashboard) return <Loader size="large" />;

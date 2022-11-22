@@ -61,7 +61,9 @@ export const showNearOrganization = async (
         initialized,
         teamsPart: teams_part,
         organizationName: organization_name,
-        teamsAmountToWithdraw: teams_amount_to_withdraw,
+        teamsAmountToWithdraw: methods.formatNumber(
+          teams_amount_to_withdraw.toLocaleString()
+        ),
         teams: teams.map((t: any) => ({
           ...t,
           employeesInTeam: t.employees_in_team,

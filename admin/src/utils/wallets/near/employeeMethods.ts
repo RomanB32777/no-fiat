@@ -54,13 +54,19 @@ export const getNearEmployeeInfo = async (
         date,
       } = employeeInfo;
 
+      typeof tip_amount_to_withdraw === "number" && console.log();
+
       return {
         address: tip_receiver,
         orgOwner: org_owner,
         name: tip_receiver_name,
         photoLink: tip_receiver_photo,
-        tipSum: tip_sum,
-        tipAmountToWithdraw: tip_amount_to_withdraw,
+        tipSum: tip_sum.map((sum: number) =>
+          methods.formatNumber(sum.toLocaleString())
+        ),
+        tipAmountToWithdraw: methods.formatNumber(
+          tip_amount_to_withdraw.toLocaleString()
+        ),
         reviews: review,
         dates: date,
       };
