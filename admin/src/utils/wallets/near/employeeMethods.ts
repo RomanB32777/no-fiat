@@ -1,18 +1,18 @@
 import { initEmployee } from "../../../consts";
-import { IEmployeeBase, IWalletMethods, IChangePhotoObj } from "../../../types";
+import { IEmployeeBase, IWalletConf, IChangePhotoObj } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 // employee
-export const addNearEmployeeToOrg = async (
-  employee: IEmployeeBase,
-  methods: IWalletMethods
-) => {
+export async function addEmployeeToOrg(
+  this: IWalletConf,
+  employee: IEmployeeBase
+) {
   try {
     const { address, name, photoLink } = employee;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData.add_tip_receiver_to_org({
       tip_receiver_address: address,
       name,
@@ -31,14 +31,14 @@ export const addNearEmployeeToOrg = async (
     });
     return false;
   }
-};
+}
 
-export const getNearEmployeeInfo = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function getEmployeeInfo(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData.show_tip_receiver({
       tip_receiver: employeeAddress,
     });
@@ -60,10 +60,14 @@ export const getNearEmployeeInfo = async (
         name: tip_receiver_name,
         photoLink: tip_receiver_photo,
         tipSum: tip_sum.map((sum: number) =>
-          methods.formatNumber(sum.toLocaleString('fullwide', {useGrouping:false}))
+          this.formatNumber(
+            sum.toLocaleString("fullwide", { useGrouping: false })
+          )
         ),
-        tipAmountToWithdraw: methods.formatNumber(
-          tip_amount_to_withdraw.toLocaleString('fullwide', {useGrouping:false})
+        tipAmountToWithdraw: this.formatNumber(
+          tip_amount_to_withdraw.toLocaleString("fullwide", {
+            useGrouping: false,
+          })
         ),
         reviews: review,
         dates: date,
@@ -74,26 +78,23 @@ export const getNearEmployeeInfo = async (
     console.log((error as Error).message || error);
     return initEmployee;
   }
-};
+}
 
-export const getNearEmployeeBase = async (
-  address: string,
-  methods: IWalletMethods
-) => {
-  const itemInfo = await methods.getEmployeeInfo(address);
+export async function getEmployeeBase(this: IWalletConf, address: string) {
+  const itemInfo = await this.getEmployeeInfo(address);
   if (itemInfo && itemInfo.name) {
     const { name, photoLink } = itemInfo;
     return { address, name, photoLink };
   }
   return { address, name: "", photoLink: "" };
-};
+}
 
-export const getNearEmployeePhoto = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function getEmployeePhoto(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeePhoto = await contractData.show_receiver_photo({
       tip_receiver: employeeAddress,
     });
@@ -102,15 +103,15 @@ export const getNearEmployeePhoto = async (
     console.log((error as Error).message);
     return false;
   }
-};
+}
 
-export const changeNearEmployeePhoto = async (
-  changePhotoObj: IChangePhotoObj,
-  methods: IWalletMethods
-) => {
+export async function changeEmployeePhoto(
+  this: IWalletConf,
+  changePhotoObj: IChangePhotoObj
+) {
   try {
     const { address, newPhoto } = changePhotoObj;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData.change_tip_receiver_photo({
       photo_link: newPhoto,
       tip_receiver: address,
@@ -127,15 +128,15 @@ export const changeNearEmployeePhoto = async (
     });
     return false;
   }
-};
+}
 
-export const editNearEmployeeName = async (
-  employee: IEmployeeBase,
-  methods: IWalletMethods
-) => {
+export async function editEmployeeInOrg(
+  this: IWalletConf,
+  employee: IEmployeeBase
+) {
   try {
     const { address, name } = employee;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData.change_tip_receiver_name({
       name,
       tip_receiver: address,
@@ -152,14 +153,14 @@ export const editNearEmployeeName = async (
     });
     return false;
   }
-};
+}
 
-export const removeNearEmployeeFromOrg = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function removeEmployeeFromOrg(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const removedEmployee = await contractData.remove_tip_receiver_from_org({
       tip_receiver: employeeAddress,
     });
@@ -176,4 +177,4 @@ export const removeNearEmployeeFromOrg = async (
     });
     return false;
   }
-};
+}

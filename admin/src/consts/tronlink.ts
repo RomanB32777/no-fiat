@@ -2,9 +2,8 @@ import { IWalletState } from "../types";
 import tronlinkIcon from "../assets/tronlinkIcon.png";
 
 export const initialTronlinkState: IWalletState = {
-  address: "TSaKqSLzeGCQmQ1RFFgnuc1AkFBm5shFgy",
-  // name: "tron",
-  chainName: "Tron Nile Testnet",
+  address: process.env.REACT_APP_TRON_CONTRACT_ADDRESS || "",
+  chainName: process.env.REACT_APP_TRON_CHAIN_NAME || "",
   icon: tronlinkIcon,
   nativeCurrency: {
     name: "tron",

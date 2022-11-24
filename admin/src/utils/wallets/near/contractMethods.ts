@@ -1,16 +1,12 @@
 import { Buffer } from "buffer";
-import * as nearAPI from "near-api-js";
-import { contextValue } from "../../../contexts/Wallet";
+import { connect, utils, WalletConnection, Contract } from "near-api-js";
 import {
-  IWalletInitData,
-  IWalletMethods,
   IFormatAddressStr,
+  IWalletConf,
 } from "../../../types";
 
 // @ts-ignore
 window.Buffer = Buffer;
-
-const { connect, utils, WalletConnection, Contract } = nearAPI;
 
 const getLocalStorageKey = () => localStorage.getItem("null_wallet_auth_key");
 
@@ -19,13 +15,10 @@ const getAppKeyPrefix = () =>
     setTimeout(() => resolve(getLocalStorageKey()), 500);
   });
 
-export const getNearUserWallet = async (
-  methods: IWalletMethods
-): Promise<IWalletInitData> => {
+export async function getWalletUserData(this: IWalletConf) {
   try {
-    const walletConf = contextValue.currentWalletConf;
-    if (walletConf.connectionConfig) {
-      const nearConnection = await connect(walletConf.connectionConfig);
+    if (this.connectionConfig) {
+      const nearConnection = await connect(this.connectionConfig);
       const walletConnection = new WalletConnection(
         nearConnection,
         null //walletConf.address
@@ -40,7 +33,7 @@ export const getNearUserWallet = async (
       } else {
         console.log("not signed");
         await walletConnection.requestSignIn({
-          contractId: walletConf.address,
+          contractId: this.address,
           // successUrl: "",
           // failureUrl: "",
         });
@@ -51,17 +44,16 @@ export const getNearUserWallet = async (
     console.log(error);
     return { userAddress: "" };
   }
-};
+}
 
-export const getNearContractData = async (methods: IWalletMethods) => {
+export async function getBlockchainContractData(this: IWalletConf) {
   try {
-    const walletConf = contextValue.currentWalletConf;
-    if (walletConf.connectionConfig) {
-      const nearConnection = await connect(walletConf.connectionConfig);
+    if (this.connectionConfig) {
+      const nearConnection = await connect(this.connectionConfig);
       const walletConnection = new WalletConnection(nearConnection, null);
       const contract = new Contract(
         walletConnection.account(), // the account object that is connecting
-        walletConf.address, // contextValue.currentWalletConf.address,
+        this.address,
         {
           // name of contract you're connecting to
           viewMethods: [
@@ -101,9 +93,9 @@ export const getNearContractData = async (methods: IWalletMethods) => {
     // });
     return null;
   }
-};
+}
 
-export const isValidNearAddress = (address: string) => true;
+export const isValidAddress = (address: string) => true;
 
 export const formatNumber = (from: string) =>
   +utils.format.formatNearAmount(from);
@@ -114,5 +106,5 @@ export const formatBignumber = (from: string) => {
   return "";
 };
 
-export const formatNearAddressStr = ({ address, format }: IFormatAddressStr) =>
+export const formatAddressStr = ({ address, format }: IFormatAddressStr) =>
   address;

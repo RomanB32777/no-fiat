@@ -136,6 +136,13 @@ export type blockchainsType = "tronlink" | "near";
 export type currencyBlockchainsType = {
   [key in blockchainsType]: string;
 };
+
 export interface IWalletsConf {
   [wallet: string]: IWalletConf;
+}
+
+export interface IWalletContext {
+  walletsConf: IWalletsConf;
+  currentWalletConf: IWalletConf;
+  currentWalletName: blockchainsType;
 }

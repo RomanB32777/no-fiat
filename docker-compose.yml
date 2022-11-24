@@ -10,7 +10,8 @@ services:
         - WALLET=tronlink
         - BLOCKCHAIN=tron
         - STORAGE_TOKEN=token
-
+        - TRON_CONTRACT_ADDRESS=address
+        - TRON_CHAIN_NAME=name
     ports:
       - "8092:80"
 
@@ -23,6 +24,7 @@ services:
         - WALLET=near
         - STORAGE_TOKEN=token
         - NEAR_CONTRACT_NAME=name
+        - NEAR_CHAIN_NAME=name
     ports:
       - "8094:80"
 

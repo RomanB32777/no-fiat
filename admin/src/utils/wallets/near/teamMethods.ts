@@ -1,18 +1,15 @@
-import { ITeam, IWalletMethods } from "../../../types";
+import { ITeam, IWalletConf } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 //teams
-export const addNearTeamToOrg = async (
-  team: ITeam,
-  methods: IWalletMethods
-) => {
+export async function addTeamToOrg(this: IWalletConf, team: ITeam) {
   try {
     const { name, employeesInTeam, percentageToPay } = team;
 
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const organizationInfo = await contractData.add_team_to_org({
       name,
       employees_in_team: employeesInTeam,
@@ -30,14 +27,14 @@ export const addNearTeamToOrg = async (
     });
     return false;
   }
-};
+}
 
-export const deleteNearTeamFromOrg = async (
-  organizationName: string,
-  methods: IWalletMethods
-) => {
+export async function deleteTeamFromOrg(
+  this: IWalletConf,
+  organizationName: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const removedOrganization = await contractData.delete_team_from_org({
       name: organizationName,
     });
@@ -53,15 +50,15 @@ export const deleteNearTeamFromOrg = async (
     });
     return false;
   }
-};
+}
 
-export const changeNearTeamName = async (
+export async function changeTeamName(
+  this: IWalletConf,
   oldName: string,
-  newName: string,
-  methods: IWalletMethods
-) => {
+  newName: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData.change_team_name({
       old_name: oldName,
       new_name: newName,
@@ -78,15 +75,15 @@ export const changeNearTeamName = async (
     });
     return false;
   }
-};
+}
 
-export const changeNearTeamPercentage = async (
+export async function changeTeamPercentage(
+  this: IWalletConf,
   teamName: string,
-  newPercentageToPay: number,
-  methods: IWalletMethods
-) => {
+  newPercentageToPay: number
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData.change_team_percentage({
       name: teamName,
       new_percetage_to_pay: newPercentageToPay,
@@ -103,15 +100,15 @@ export const changeNearTeamPercentage = async (
     });
     return false;
   }
-};
+}
 
-export const addNearEmployeeToTeam = async (
+export async function addEmployeeToTeam(
+  this: IWalletConf,
   teamName: string,
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData.add_employee_to_team({
       name: teamName,
       employee_to_add: employeeAddress,
@@ -129,15 +126,15 @@ export const addNearEmployeeToTeam = async (
     });
     return false;
   }
-};
+}
 
-export const removeNearEmpoloyeeFromTeam = async (
+export async function removeEmpoloyeeFromTeam(
+  this: IWalletConf,
   teamName: string,
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData.remove_empoloyee_from_team({
       name: teamName,
       employee_to_delete: employeeAddress,
@@ -155,4 +152,4 @@ export const removeNearEmpoloyeeFromTeam = async (
     });
     return false;
   }
-};
+}

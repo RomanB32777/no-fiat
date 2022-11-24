@@ -1,20 +1,17 @@
-import { ITeam, IWalletMethods } from "../../../types";
+import { ITeam, IWalletConf } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 //teams
-export const addTronTeamToOrg = async (
-  team: ITeam,
-  methods: IWalletMethods
-) => {
+export async function addTeamToOrg(this: IWalletConf, team: ITeam) {
   try {
     const { name, employeesInTeam, percentageToPay } = team;
     const formatEmpoyees = employeesInTeam.map((e) =>
-      methods.formatAddressStr({ address: e, format: "toHex" })
+      this.formatAddressStr({ address: e, format: "toHex" })
     );
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const organizationInfo = await contractData
       .addTeamToOrg(name, formatEmpoyees, percentageToPay)
       .send();
@@ -28,14 +25,14 @@ export const addTronTeamToOrg = async (
     });
     return false;
   }
-};
+}
 
-export const deleteTronTeamFromOrg = async (
-  organizationName: string,
-  methods: IWalletMethods
-) => {
+export async function deleteTeamFromOrg(
+  this: IWalletConf,
+  organizationName: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const removedOrganization = await contractData
       .deleteTeamFromOrg(organizationName)
       .send();
@@ -49,15 +46,15 @@ export const deleteTronTeamFromOrg = async (
     });
     return false;
   }
-};
+}
 
-export const changeTronTeamName = async (
+export async function changeTeamName(
+  this: IWalletConf,
   oldName: string,
-  newName: string,
-  methods: IWalletMethods
-) => {
+  newName: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData.changeTeamName(oldName, newName).send();
     addSuccessNotification({
       title: "Processed successfully!",
@@ -69,15 +66,15 @@ export const changeTronTeamName = async (
     });
     return false;
   }
-};
+}
 
-export const changeTronTeamPercentage = async (
+export async function changeTeamPercentage(
+  this: IWalletConf,
   teamName: string,
-  newPercentageToPay: number,
-  methods: IWalletMethods
-) => {
+  newPercentageToPay: number
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData
       .changeTeamPercentage(teamName, newPercentageToPay)
       .send();
@@ -91,15 +88,15 @@ export const changeTronTeamPercentage = async (
     });
     return false;
   }
-};
+}
 
-export const addTronEmployeeToTeam = async (
+export async function addEmployeeToTeam(
+  this: IWalletConf,
   teamName: string,
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData
       .addEmployeeToTeam(teamName, employeeAddress)
       .send();
@@ -114,15 +111,15 @@ export const addTronEmployeeToTeam = async (
     });
     return false;
   }
-};
+}
 
-export const removeTronEmpoloyeeFromTeam = async (
+export async function removeEmpoloyeeFromTeam(
+  this: IWalletConf,
   teamName: string,
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const teamInfo = await contractData
       .removeEmployeeFromTeam(teamName, employeeAddress)
       .send();
@@ -137,4 +134,4 @@ export const removeTronEmpoloyeeFromTeam = async (
     });
     return false;
   }
-};
+}

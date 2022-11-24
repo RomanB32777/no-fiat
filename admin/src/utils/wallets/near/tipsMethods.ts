@@ -1,16 +1,16 @@
-import { ITipsObj, IWalletMethods } from "../../../types";
+import { ITipsObj, IWalletConf } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 // tips
-export const sendNearTips = async (
-  { ownerAddress, employeeAddress, review, amount }: ITipsObj,
-  methods: IWalletMethods
-) => {
+export async function sendTips(
+  this: IWalletConf,
+  { ownerAddress, employeeAddress, review, amount }: ITipsObj
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
 
     const tipsInfo = await contractData.send_tips(
       {
@@ -19,7 +19,7 @@ export const sendNearTips = async (
         review: +review,
       },
       "300000000000000",
-      methods.formatBignumber(amount)
+      this.formatBignumber(amount)
     );
     console.log(tipsInfo);
 
@@ -30,11 +30,11 @@ export const sendNearTips = async (
     });
     return false;
   }
-};
+}
 
-export const withdrawNearTeams = async (methods: IWalletMethods) => {
+export async function withdrawTeams(this: IWalletConf) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const withdrawInfo = await contractData.withdraw_teams();
     addSuccessNotification({
       title: "Processed successfully!",
@@ -48,11 +48,11 @@ export const withdrawNearTeams = async (methods: IWalletMethods) => {
     });
     return false;
   }
-};
+}
 
-export const withdrawNearTipsByEmployee = async (methods: IWalletMethods) => {
+export async function withdrawTipsByEmployee(this: IWalletConf) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const withdrawInfo = await contractData.withdraw_tips_by_tip_receiver();
     addSuccessNotification({
       title: "Processed successfully!",
@@ -66,4 +66,4 @@ export const withdrawNearTipsByEmployee = async (methods: IWalletMethods) => {
     });
     return false;
   }
-};
+}

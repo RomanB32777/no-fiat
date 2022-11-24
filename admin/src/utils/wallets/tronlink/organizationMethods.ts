@@ -3,7 +3,7 @@ import {
   ICreateOrganization,
   IOrganization,
   ITeam,
-  IWalletMethods,
+  IWalletConf,
 } from "../../../types";
 import {
   addErrorNotification,
@@ -11,13 +11,13 @@ import {
 } from "../../notifications";
 
 // organization
-export const addTronOrganization = async (
-  objForCreateOrganization: ICreateOrganization,
-  methods: IWalletMethods
-) => {
+export async function addOrganization(
+  this: IWalletConf,
+  objForCreateOrganization: ICreateOrganization
+) {
   try {
     const { percentages, name } = objForCreateOrganization;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const organization = await contractData
       .addOrganization(percentages, name)
       .send();
@@ -31,16 +31,16 @@ export const addTronOrganization = async (
     });
     return null;
   }
-};
+}
 
-export const showTronOrganization = async (
-  methods: IWalletMethods,
+export async function showOrganization(
+  this: IWalletConf,
   ownerAddress?: string
-): Promise<IOrganization> => {
+): Promise<IOrganization> {
   try {
     const userAddress =
-      ownerAddress || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+      ownerAddress || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const organizationInfo = await contractData
       .showOrganization(userAddress)
       .call();
@@ -59,7 +59,7 @@ export const showTronOrganization = async (
         ({ name, employeesInTeam, percentageToPay }: ITeam) => ({
           name,
           employeesInTeam: employeesInTeam.map((address) =>
-            methods.formatAddressStr({
+            this.formatAddressStr({
               address,
               format: "fromHex",
             })
@@ -69,17 +69,17 @@ export const showTronOrganization = async (
       );
 
       return {
-        organizationAddress: methods.formatAddressStr({
+        organizationAddress: this.formatAddressStr({
           address: organizationAddress,
           format: "fromHex",
         }),
         initialized,
         teamsPart,
         organizationName,
-        teamsAmountToWithdraw: methods.formatNumber(teamsAmountToWithdraw),
+        teamsAmountToWithdraw: this.formatNumber(teamsAmountToWithdraw),
         teams: formatTeams,
         allTipReceivers: allTipReceivers.map((e: string) =>
-          methods.formatAddressStr({ address: e, format: "fromHex" })
+          this.formatAddressStr({ address: e, format: "fromHex" })
         ),
       };
     }
@@ -91,4 +91,4 @@ export const showTronOrganization = async (
     // });
     return initOrganization;
   }
-};
+}

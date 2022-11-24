@@ -1,14 +1,11 @@
-import * as nearAPI from "near-api-js";
+import { connect } from "near-api-js";
 import { initEmployeeInTeam } from "../../../consts";
-import { contextValue } from "../../../contexts/Wallet";
-import { IWalletMethods } from "../../../types";
+import { IWalletConf } from "../../../types";
 
-const { connect } = nearAPI;
-
-export const checkIsOwner = async (methods: IWalletMethods) => {
+export async function checkIfOwner(this: IWalletConf) {
   try {
-    const userWalletData = await methods.getWalletUserData();
-    const contractData = await methods.getBlockchainContractData();
+    const userWalletData = await this.getWalletUserData();
+    const contractData = await this.getBlockchainContractData();
     const isOwner = await contractData.check_if_owner({
       address_to_check: userWalletData.userAddress,
     });
@@ -20,16 +17,12 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
     // });
     return false;
   }
-};
+}
 
-export const checkIsTipReciever = async (
-  methods: IWalletMethods,
-  address?: string
-) => {
+export async function checkIfTipReciever(this: IWalletConf, address?: string) {
   try {
-    const userAddress =
-      address || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+    const userAddress = address || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const tipRecieverData = await contractData.check_if_tip_receiver({
       address_to_check: userAddress,
     });
@@ -41,19 +34,13 @@ export const checkIsTipReciever = async (
     // });
     return false;
   }
-};
+}
 
-export const checkIsTeamMember = async ({
-  address,
-  methods,
-}: {
-  address?: string;
-  methods: IWalletMethods;
-}) => {
+export async function checkIsTeamMember(this: IWalletConf, address?: string) {
   try {
     const userWalletData =
-      address || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+      address || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const userData = await contractData.check_and_show_if_team_member({
       address_to_check: userWalletData,
     });
@@ -73,20 +60,19 @@ export const checkIsTeamMember = async ({
     console.log((error as Error).message || error);
     return initEmployeeInTeam;
   }
-};
+}
 
-export const getNearBalance = async (methods: IWalletMethods) => {
+export async function getBalance(this: IWalletConf) {
   try {
-    const walletConf = contextValue.currentWalletConf;
-    if (walletConf.connectionConfig) {
-      const userWalletData = await methods.getWalletUserData();
-      const nearConnection = await connect(walletConf.connectionConfig);
+    if (this.connectionConfig) {
+      const userWalletData = await this.getWalletUserData();
+      const nearConnection = await connect(this.connectionConfig);
       if (userWalletData.userAddress) {
         const account = await nearConnection.account(
           userWalletData.userAddress
         );
         const balance = await account.getAccountBalance();
-        return methods.formatNumber(balance.available);
+        return this.formatNumber(balance.available);
       }
     }
     return 0;
@@ -97,4 +83,4 @@ export const getNearBalance = async (methods: IWalletMethods) => {
     // });
     return 0;
   }
-};
+}

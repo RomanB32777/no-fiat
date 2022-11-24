@@ -1,16 +1,16 @@
-import { ITipsObj, IWalletMethods } from "../../../types";
+import { ITipsObj, IWalletConf } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 // tips
-export const sendTronTips = async (
-  { ownerAddress, employeeAddress, review, amount }: ITipsObj,
-  methods: IWalletMethods
-) => {
+export async function sendTips(
+  this: IWalletConf,
+  { ownerAddress, employeeAddress, review, amount }: ITipsObj
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const tipsInfo = await contractData
       .sendTips(ownerAddress, employeeAddress, +review)
       .send({
@@ -25,11 +25,11 @@ export const sendTronTips = async (
     });
     return false;
   }
-};
+}
 
-export const withdrawTronTeams = async (methods: IWalletMethods) => {
+export async function withdrawTeams(this: IWalletConf) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const withdrawInfo = await contractData.withdrawTeams().send();
     addSuccessNotification({
       title: "Processed successfully!",
@@ -41,11 +41,11 @@ export const withdrawTronTeams = async (methods: IWalletMethods) => {
     });
     return false;
   }
-};
+}
 
-export const withdrawTronTipsByEmployee = async (methods: IWalletMethods) => {
+export async function withdrawTipsByEmployee(this: IWalletConf) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const withdrawInfo = await contractData.withdrawTipsByEmployee().send();
     addSuccessNotification({
       title: "Processed successfully!",
@@ -57,4 +57,4 @@ export const withdrawTronTipsByEmployee = async (methods: IWalletMethods) => {
     });
     return false;
   }
-};
+}

@@ -1,131 +1,170 @@
-import { IWalletMethods } from "../../../types";
-
 import {
-  getTronContractData,
-  getTronUserWallet,
+  getBlockchainContractData,
+  getWalletUserData,
   formatNumber,
   formatBignumber,
-  formatTronAddressStr,
-  isValidTronAddress,
+  formatAddressStr,
+  isValidAddress,
 } from "./contractMethods";
 import {
-  checkIsOwner,
+  checkIfOwner,
   checkIsTeamMember,
-  checkIsTipReciever,
-  getTronBalance,
+  checkIfTipReciever,
+  getBalance,
 } from "./userMethods";
 import {
-  addTronOrganization,
-  showTronOrganization,
+  addOrganization,
+  showOrganization,
 } from "./organizationMethods";
 import {
-  addTronEmployeeToOrg,
-  editTronEmployeeName,
-  getTronEmployeeInfo,
-  getTronEmployeeBase,
-  removeTronEmployeeFromOrg,
-  changeTronEmployeePhoto,
-  getTronEmployeePhoto,
+  addEmployeeToOrg,
+  editEmployeeInOrg,
+  getEmployeeInfo,
+  getEmployeeBase,
+  removeEmployeeFromOrg,
+  changeEmployeePhoto,
+  getEmployeePhoto,
 } from "./employeeMethods";
 import {
-  addTronEmployeeToTeam,
-  addTronTeamToOrg,
-  changeTronTeamName,
-  changeTronTeamPercentage,
-  deleteTronTeamFromOrg,
-  removeTronEmpoloyeeFromTeam,
+  addEmployeeToTeam,
+  addTeamToOrg,
+  changeTeamName,
+  changeTeamPercentage,
+  deleteTeamFromOrg,
+  removeEmpoloyeeFromTeam,
 } from "./teamMethods";
 import {
-  sendTronTips,
-  withdrawTronTeams,
-  withdrawTronTipsByEmployee,
+  sendTips,
+  withdrawTeams,
+  withdrawTipsByEmployee,
 } from "./tipsMethods";
 
-export const tronlinkMethods: IWalletMethods = {
+export const tronlinkMethods = {
+  getBlockchainContractData,
+  getWalletUserData,
   formatNumber,
   formatBignumber,
-  formatAddressStr: (formatObj) => formatTronAddressStr(formatObj),
-  getWalletUserData() {
-    return getTronUserWallet(this);
-  },
-  getBlockchainContractData() {
-    return getTronContractData();
-  },
-  getBalance() {
-    return getTronBalance(this);
-  },
-  isValidAddress: (address) => isValidTronAddress(address),
+  formatAddressStr,
+  isValidAddress,
 
   // user
-  checkIfOwner() {
-    return checkIsOwner(this);
-  },
-  checkIfTipReciever(address) {
-    return checkIsTipReciever(this, address);
-  },
-  checkIsTeamMember(address) {
-    return checkIsTeamMember({ address, methods: this });
-  },
+  checkIfOwner,
+  checkIsTeamMember,
+  checkIfTipReciever,
+  getBalance,
 
   // organization
-  addOrganization(objForCreateOrganization) {
-    return addTronOrganization(objForCreateOrganization, this);
-  },
-  showOrganization(ownerAddress) {
-    return showTronOrganization(this, ownerAddress);
-  },
+  addOrganization,
+  showOrganization,
 
   // team
-  addTeamToOrg(team) {
-    return addTronTeamToOrg(team, this);
-  },
-  deleteTeamFromOrg(organizationName) {
-    return deleteTronTeamFromOrg(organizationName, this);
-  },
-  changeTeamName(oldName, newName) {
-    return changeTronTeamName(oldName, newName, this);
-  },
-  changeTeamPercentage(teamName, newPercentageToPay) {
-    return changeTronTeamPercentage(teamName, newPercentageToPay, this);
-  },
-  addEmployeeToTeam(teamName, employeeAddress) {
-    return addTronEmployeeToTeam(teamName, employeeAddress, this);
-  },
-  removeEmpoloyeeFromTeam(teamName, employeeAddress) {
-    return removeTronEmpoloyeeFromTeam(teamName, employeeAddress, this);
-  },
+  addEmployeeToOrg,
+  editEmployeeInOrg,
+  getEmployeeInfo,
+  getEmployeeBase,
+  removeEmployeeFromOrg,
+  changeEmployeePhoto,
+  getEmployeePhoto,
 
   //employee
-  addEmployeeToOrg(employee) {
-    return addTronEmployeeToOrg(employee, this);
-  },
-  getEmployeeInfo(employeeAddress) {
-    return getTronEmployeeInfo(employeeAddress, this);
-  },
-  getEmployeeBase(employeeAddress) {
-    return getTronEmployeeBase(employeeAddress, this);
-  },
-  getEmployeePhoto(employeeAddress) {
-    return getTronEmployeePhoto(employeeAddress, this);
-  },
-  changeEmployeePhoto(changePhotoObj) {
-    return changeTronEmployeePhoto(changePhotoObj, this);
-  },
-  editEmployeeInOrg(employee) {
-    return editTronEmployeeName(employee, this);
-  },
-  removeEmployeeFromOrg(employeeAddress) {
-    return removeTronEmployeeFromOrg(employeeAddress, this);
-  },
+  addEmployeeToTeam,
+  addTeamToOrg,
+  changeTeamName,
+  changeTeamPercentage,
+  deleteTeamFromOrg,
+  removeEmpoloyeeFromTeam,
 
   // tips
-  sendTips(forSendTipsObj) {
-    return sendTronTips(forSendTipsObj, this);
-  },
-  withdrawTeams() {
-    return withdrawTronTeams(this);
-  },
-  withdrawTipsByEmployee() {
-    return withdrawTronTipsByEmployee(this);
-  },
+  sendTips,
+  withdrawTeams,
+  withdrawTipsByEmployee,
 };
+
+// export const tronlinkMethods: IWalletMethods = {
+//   formatNumber,
+//   formatBignumber,
+//   formatAddressStr: (formatObj) => formatAddressStr(formatObj),
+//   getWalletUserData() {
+//     return getUserWallet(this);
+//   },
+//   getBlockchainContractData() {
+//     return getContractData();
+//   },
+//   getBalance() {
+//     return getBalance(this);
+//   },
+//   isValidAddress: (address) => isValidAddress(address),
+
+//   // user
+//   checkIfOwner() {
+//     return checkIsOwner(this);
+//   },
+//   checkIfTipReciever(address) {
+//     return checkIsTipReciever(this, address);
+//   },
+//   checkIsTeamMember(address) {
+//     return checkIsTeamMember({ address, methods: this });
+//   },
+
+//   // organization
+//   addOrganization(objForCreateOrganization) {
+//     return addOrganization(objForCreateOrganization, this);
+//   },
+//   showOrganization(ownerAddress) {
+//     return showOrganization(this, ownerAddress);
+//   },
+
+//   // team
+//   addTeamToOrg(team) {
+//     return addTeamToOrg(team, this);
+//   },
+//   deleteTeamFromOrg(organizationName) {
+//     return deleteTeamFromOrg(organizationName, this);
+//   },
+//   changeTeamName(oldName, newName) {
+//     return changeTeamName(oldName, newName, this);
+//   },
+//   changeTeamPercentage(teamName, newPercentageToPay) {
+//     return changeTeamPercentage(teamName, newPercentageToPay, this);
+//   },
+//   addEmployeeToTeam(teamName, employeeAddress) {
+//     return addEmployeeToTeam(teamName, employeeAddress, this);
+//   },
+//   removeEmpoloyeeFromTeam(teamName, employeeAddress) {
+//     return removeEmpoloyeeFromTeam(teamName, employeeAddress, this);
+//   },
+
+//   //employee
+//   addEmployeeToOrg(employee) {
+//     return addEmployeeToOrg(employee, this);
+//   },
+//   getEmployeeInfo(employeeAddress) {
+//     return getEmployeeInfo(employeeAddress, this);
+//   },
+//   getEmployeeBase(employeeAddress) {
+//     return getEmployeeBase(employeeAddress, this);
+//   },
+//   getEmployeePhoto(employeeAddress) {
+//     return getEmployeePhoto(employeeAddress, this);
+//   },
+//   changeEmployeePhoto(changePhotoObj) {
+//     return changeEmployeePhoto(changePhotoObj, this);
+//   },
+//   editEmployeeInOrg(employee) {
+//     return editEmployeeName(employee, this);
+//   },
+//   removeEmployeeFromOrg(employeeAddress) {
+//     return removeEmployeeFromOrg(employeeAddress, this);
+//   },
+
+//   // tips
+//   sendTips(forSendTipsObj) {
+//     return sendTips(forSendTipsObj, this);
+//   },
+//   withdrawTeams() {
+//     return withdrawTeams(this);
+//   },
+//   withdrawTipsByEmployee() {
+//     return withdrawTipsByEmployee(this);
+//   },
+// };

@@ -1,131 +1,82 @@
-import { IWalletMethods } from "../../../types";
-
 import {
-  getNearContractData,
-  getNearUserWallet,
+  getBlockchainContractData,
+  getWalletUserData,
   formatNumber,
   formatBignumber,
-  formatNearAddressStr,
-  isValidNearAddress,
+  formatAddressStr,
+  isValidAddress,
 } from "./contractMethods";
 import {
-  checkIsOwner,
+  checkIfOwner,
   checkIsTeamMember,
-  checkIsTipReciever,
-  getNearBalance,
+  checkIfTipReciever,
+  getBalance,
 } from "./userMethods";
 import {
-  addNearOrganization,
-  showNearOrganization,
+  addOrganization,
+  showOrganization,
 } from "./organizationMethods";
 import {
-  addNearEmployeeToOrg,
-  editNearEmployeeName,
-  getNearEmployeeInfo,
-  getNearEmployeeBase,
-  removeNearEmployeeFromOrg,
-  changeNearEmployeePhoto,
-  getNearEmployeePhoto,
+  addEmployeeToOrg,
+  editEmployeeInOrg,
+  getEmployeeInfo,
+  getEmployeeBase,
+  removeEmployeeFromOrg,
+  changeEmployeePhoto,
+  getEmployeePhoto,
 } from "./employeeMethods";
 import {
-  addNearEmployeeToTeam,
-  addNearTeamToOrg,
-  changeNearTeamName,
-  changeNearTeamPercentage,
-  deleteNearTeamFromOrg,
-  removeNearEmpoloyeeFromTeam,
+  addEmployeeToTeam,
+  addTeamToOrg,
+  changeTeamName,
+  changeTeamPercentage,
+  deleteTeamFromOrg,
+  removeEmpoloyeeFromTeam,
 } from "./teamMethods";
 import {
-  sendNearTips,
-  withdrawNearTeams,
-  withdrawNearTipsByEmployee,
+  sendTips,
+  withdrawTeams,
+  withdrawTipsByEmployee,
 } from "./tipsMethods";
 
-export const nearMethods: IWalletMethods = {
+export const nearMethods = {
+  getBlockchainContractData,
+  getWalletUserData,
   formatNumber,
   formatBignumber,
-  formatAddressStr: (formatObj) => formatNearAddressStr(formatObj),
-  getWalletUserData() {
-    return getNearUserWallet(this);
-  },
-  getBlockchainContractData() {
-    return getNearContractData(this);
-  },
-  getBalance() {
-    return getNearBalance(this);
-  },
-  isValidAddress: (address) => isValidNearAddress(address),
+  formatAddressStr,
+  isValidAddress,
 
   // user
-  checkIfOwner() {
-    return checkIsOwner(this);
-  },
-  checkIfTipReciever(address) {
-    return checkIsTipReciever(this, address);
-  },
-  checkIsTeamMember(address) {
-    return checkIsTeamMember({ address, methods: this });
-  },
+  checkIfOwner,
+  checkIsTeamMember,
+  checkIfTipReciever,
+  getBalance,
 
   // organization
-  addOrganization(objForCreateOrganization) {
-    return addNearOrganization(objForCreateOrganization, this);
-  },
-  showOrganization(ownerAddress) {
-    return showNearOrganization(this, ownerAddress);
-  },
+  addOrganization,
+  showOrganization,
 
   // team
-  addTeamToOrg(team) {
-    return addNearTeamToOrg(team, this);
-  },
-  deleteTeamFromOrg(organizationName) {
-    return deleteNearTeamFromOrg(organizationName, this);
-  },
-  changeTeamName(oldName, newName) {
-    return changeNearTeamName(oldName, newName, this);
-  },
-  changeTeamPercentage(teamName, newPercentageToPay) {
-    return changeNearTeamPercentage(teamName, newPercentageToPay, this);
-  },
-  addEmployeeToTeam(teamName, employeeAddress) {
-    return addNearEmployeeToTeam(teamName, employeeAddress, this);
-  },
-  removeEmpoloyeeFromTeam(teamName, employeeAddress) {
-    return removeNearEmpoloyeeFromTeam(teamName, employeeAddress, this);
-  },
+  addEmployeeToOrg,
+  editEmployeeInOrg,
+  getEmployeeInfo,
+  getEmployeeBase,
+  removeEmployeeFromOrg,
+  changeEmployeePhoto,
+  getEmployeePhoto,
 
   //employee
-  addEmployeeToOrg(employee) {
-    return addNearEmployeeToOrg(employee, this);
-  },
-  getEmployeeInfo(employeeAddress) {
-    return getNearEmployeeInfo(employeeAddress, this);
-  },
-  getEmployeeBase(employeeAddress) {
-    return getNearEmployeeBase(employeeAddress, this);
-  },
-  getEmployeePhoto(employeeAddress) {
-    return getNearEmployeePhoto(employeeAddress, this);
-  },
-  changeEmployeePhoto(changePhotoObj) {
-    return changeNearEmployeePhoto(changePhotoObj, this);
-  },
-  editEmployeeInOrg(employee) {
-    return editNearEmployeeName(employee, this);
-  },
-  removeEmployeeFromOrg(employeeAddress) {
-    return removeNearEmployeeFromOrg(employeeAddress, this);
-  },
+  addEmployeeToTeam,
+  addTeamToOrg,
+  changeTeamName,
+  changeTeamPercentage,
+  deleteTeamFromOrg,
+  removeEmpoloyeeFromTeam,
 
   // tips
-  sendTips(forSendTipsObj) {
-    return sendNearTips(forSendTipsObj, this);
-  },
-  withdrawTeams() {
-    return withdrawNearTeams(this);
-  },
-  withdrawTipsByEmployee() {
-    return withdrawNearTipsByEmployee(this);
-  },
+  sendTips,
+  withdrawTeams,
+  withdrawTipsByEmployee,
 };
+

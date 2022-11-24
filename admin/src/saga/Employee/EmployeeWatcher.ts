@@ -1,10 +1,9 @@
 import { call, put, takeEvery, getContext } from "redux-saga/effects";
 import { GET_EMPLOYEE, setEmployee } from "../../store/types/Employee";
 import { setLoading } from "../../store/types/Loading";
-import { IEmployee } from "../../types";
+import { IEmployee, IWalletContext } from "../../types";
 import { initEmployee } from "../../consts";
 import { getOrganization } from "../../store/types/Organization";
-import { IWalletContext } from "../../contexts/Wallet";
 
 const asyncGetEmployee = async (walletContext: IWalletContext) => {
   const { userAddress } =

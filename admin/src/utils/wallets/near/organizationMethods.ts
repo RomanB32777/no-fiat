@@ -2,7 +2,7 @@ import { initOrganization } from "../../../consts";
 import {
   ICreateOrganization,
   IOrganization,
-  IWalletMethods,
+  IWalletConf,
 } from "../../../types";
 import {
   addErrorNotification,
@@ -10,13 +10,13 @@ import {
 } from "../../notifications";
 
 // organization
-export const addNearOrganization = async (
-  objForCreateOrganization: ICreateOrganization,
-  methods: IWalletMethods
-) => {
+export async function addOrganization(
+  this: IWalletConf,
+  objForCreateOrganization: ICreateOrganization
+) {
   try {
     const { percentages, name } = objForCreateOrganization;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const organization = await contractData.add_organization({
       percentages,
       name,
@@ -33,16 +33,16 @@ export const addNearOrganization = async (
     });
     return null;
   }
-};
+}
 
-export const showNearOrganization = async (
-  methods: IWalletMethods,
+export async function showOrganization(
+  this: IWalletConf,
   ownerAddress?: string
-): Promise<IOrganization> => {
+): Promise<IOrganization> {
   try {
     const userAddress =
-      ownerAddress || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+      ownerAddress || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const organizationInfo = await contractData.show_organization({
       org_owner: userAddress,
     });
@@ -61,8 +61,10 @@ export const showNearOrganization = async (
         initialized,
         teamsPart: teams_part,
         organizationName: organization_name,
-        teamsAmountToWithdraw: methods.formatNumber(
-          teams_amount_to_withdraw.toLocaleString('fullwide', {useGrouping:false})
+        teamsAmountToWithdraw: this.formatNumber(
+          teams_amount_to_withdraw.toLocaleString("fullwide", {
+            useGrouping: false,
+          })
         ),
         teams: teams.map((t: any) => ({
           ...t,
@@ -80,4 +82,4 @@ export const showNearOrganization = async (
     // });
     return initOrganization;
   }
-};
+}

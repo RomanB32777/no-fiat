@@ -1,10 +1,10 @@
 import { initEmployeeInTeam } from "../../../consts";
-import { IWalletMethods } from "../../../types";
+import { IWalletConf } from "../../../types";
 
-export const checkIsOwner = async (methods: IWalletMethods) => {
+export async function checkIfOwner(this: IWalletConf) {
   try {
-    const userWalletData = await methods.getWalletUserData();
-    const contractData = await methods.getBlockchainContractData();
+    const userWalletData = await this.getWalletUserData();
+    const contractData = await this.getBlockchainContractData();
     const isOwner = await contractData
       .checkIfOwner(userWalletData.userAddress)
       .call();
@@ -16,16 +16,12 @@ export const checkIsOwner = async (methods: IWalletMethods) => {
     // });
     return false;
   }
-};
+}
 
-export const checkIsTipReciever = async (
-  methods: IWalletMethods,
-  address?: string
-) => {
+export async function checkIfTipReciever(this: IWalletConf, address?: string) {
   try {
-    const userAddress =
-      address || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+    const userAddress = address || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const tipRecieverData = await contractData
       .checkIfTipReciever(userAddress)
       .call();
@@ -37,19 +33,13 @@ export const checkIsTipReciever = async (
     // });
     return false;
   }
-};
+}
 
-export const checkIsTeamMember = async ({
-  address,
-  methods,
-}: {
-  address?: string;
-  methods: IWalletMethods;
-}) => {
+export async function checkIsTeamMember(this: IWalletConf, address?: string) {
   try {
     const userWalletData =
-      address || (await methods.getWalletUserData()).userAddress;
-    const contractData = await methods.getBlockchainContractData();
+      address || (await this.getWalletUserData()).userAddress;
+    const contractData = await this.getBlockchainContractData();
     const userData = await contractData.showIfTeamMember(userWalletData).call();
     if (userData) {
       const [isExist, owner, orgName, teamName, percentageToPay] = userData;
@@ -59,7 +49,7 @@ export const checkIsTeamMember = async ({
         owner,
         orgName,
         teamName,
-        percentageToPay: methods.formatBignumber(percentageToPay),
+        percentageToPay: this.formatBignumber(percentageToPay),
       };
     }
     return initEmployeeInTeam;
@@ -67,18 +57,18 @@ export const checkIsTeamMember = async ({
     console.log((error as Error).message || error);
     return initEmployeeInTeam;
   }
-};
+}
 
-export const getTronBalance = async (methods: IWalletMethods) => {
+export async function getBalance(this: IWalletConf) {
   try {
     const tronWeb = (window as any).tronWeb;
-    const userWalletData = await methods.getWalletUserData();
+    const userWalletData = await this.getWalletUserData();
     const tronBalance = await tronWeb.trx.getBalance(
       userWalletData.userAddress
     );
     if (tronBalance) {
-      const formatTronBalance = tronWeb.fromSun(tronBalance);
-      return parseFloat(formatTronBalance);
+      const formatBalance = tronWeb.fromSun(tronBalance);
+      return parseFloat(formatBalance);
     }
     return 0;
   } catch (error) {
@@ -88,4 +78,4 @@ export const getTronBalance = async (methods: IWalletMethods) => {
     // });
     return 0;
   }
-};
+}

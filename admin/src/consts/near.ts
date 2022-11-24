@@ -1,17 +1,14 @@
-import * as nearAPI from "near-api-js";
+import { keyStores } from "near-api-js";
 import { IWalletState } from "../types";
 import nearIcon from "../assets/nearIcon.png";
-
-const { keyStores } = nearAPI;
 
 const myKeyStore = new keyStores.BrowserLocalStorageKeyStore();
 const CONTRACT_NAME = process.env.REACT_APP_NEAR_CONTRACT_NAME || "";
 
 export const initialNearState: IWalletState = {
   address: CONTRACT_NAME,
-  // name: "nearnofiat.testnet",
+  chainName: process.env.REACT_APP_NEAR_CHAIN_NAME || "",
   icon: nearIcon,
-  chainName: "Near Testnet",
   nativeCurrency: {
     name: "near",
     symbol: "NEAR",

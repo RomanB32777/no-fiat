@@ -1,19 +1,19 @@
 import moment from "moment";
 import { initEmployee } from "../../../consts";
-import { IEmployeeBase, IWalletMethods, IChangePhotoObj } from "../../../types";
+import { IEmployeeBase, IWalletConf, IChangePhotoObj } from "../../../types";
 import {
   addErrorNotification,
   addSuccessNotification,
 } from "../../notifications";
 
 // employee
-export const addTronEmployeeToOrg = async (
-  employee: IEmployeeBase,
-  methods: IWalletMethods
-) => {
+export async function addEmployeeToOrg(
+  this: IWalletConf,
+  employee: IEmployeeBase
+) {
   try {
     const { address, name, photoLink } = employee;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData
       .addTipReceiverToOrg(address, name, photoLink)
       .send();
@@ -30,14 +30,14 @@ export const addTronEmployeeToOrg = async (
     });
     return false;
   }
-};
+}
 
-export const getTronEmployeeInfo = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function getEmployeeInfo(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData
       .showTipReceiver(employeeAddress)
       .call();
@@ -52,21 +52,21 @@ export const getTronEmployeeInfo = async (
         date,
       ] = employeeInfo;
 
-      const photoLink = await methods.getEmployeePhoto(employeeAddress);
+      const photoLink = await this.getEmployeePhoto(employeeAddress);
 
       return {
-        address: methods.formatAddressStr({
+        address: this.formatAddressStr({
           address: tipReceiver,
           format: "fromHex",
         }),
-        orgOwner: methods.formatAddressStr({
+        orgOwner: this.formatAddressStr({
           address: orgOwner,
           format: "fromHex",
         }),
         name: tipReceiverName,
         photoLink,
-        tipSum: tipSum.map((tip: any) => methods.formatNumber(tip)),
-        tipAmountToWithdraw: methods.formatNumber(tipAmountToWithdraw),
+        tipSum: tipSum.map((tip: any) => this.formatNumber(tip)),
+        tipAmountToWithdraw: this.formatNumber(tipAmountToWithdraw),
         reviews: review,
         dates: date.map((d: any) => moment.unix(d).valueOf()),
       };
@@ -76,26 +76,23 @@ export const getTronEmployeeInfo = async (
     console.log((error as Error).message || error);
     return initEmployee;
   }
-};
+}
 
-export const getTronEmployeeBase = async (
-  address: string,
-  methods: IWalletMethods
-) => {
-  const itemInfo = await methods.getEmployeeInfo(address);
+export async function getEmployeeBase(this: IWalletConf, address: string) {
+  const itemInfo = await this.getEmployeeInfo(address);
   if (itemInfo && itemInfo.name) {
     const { name, photoLink } = itemInfo;
     return { address, name, photoLink };
   }
   return { address, name: "", photoLink: "" };
-};
+}
 
-export const getTronEmployeePhoto = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function getEmployeePhoto(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeePhoto = await contractData
       .showRecieverPhoto(employeeAddress)
       .call();
@@ -104,15 +101,15 @@ export const getTronEmployeePhoto = async (
     console.log((error as Error).message);
     return false;
   }
-};
+}
 
-export const changeTronEmployeePhoto = async (
-  changePhotoObj: IChangePhotoObj,
-  methods: IWalletMethods
-) => {
+export async function changeEmployeePhoto(
+  this: IWalletConf,
+  changePhotoObj: IChangePhotoObj
+) {
   try {
     const { address, newPhoto } = changePhotoObj;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData
       .changeTipReceiverPhoto(newPhoto, address)
       .send();
@@ -126,15 +123,15 @@ export const changeTronEmployeePhoto = async (
     });
     return false;
   }
-};
+}
 
-export const editTronEmployeeName = async (
-  employee: IEmployeeBase,
-  methods: IWalletMethods
-) => {
+export async function editEmployeeInOrg(
+  this: IWalletConf,
+  employee: IEmployeeBase
+) {
   try {
     const { address, name } = employee;
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const employeeInfo = await contractData
       .changeTipReceiverName(name, address)
       .send();
@@ -148,14 +145,14 @@ export const editTronEmployeeName = async (
     });
     return false;
   }
-};
+}
 
-export const removeTronEmployeeFromOrg = async (
-  employeeAddress: string,
-  methods: IWalletMethods
-) => {
+export async function removeEmployeeFromOrg(
+  this: IWalletConf,
+  employeeAddress: string
+) {
   try {
-    const contractData = await methods.getBlockchainContractData();
+    const contractData = await this.getBlockchainContractData();
     const removedEmployee = await contractData
       .removeTipReceiverFromOrg(employeeAddress)
       .send();
@@ -170,4 +167,4 @@ export const removeTronEmployeeFromOrg = async (
     });
     return false;
   }
-};
+}

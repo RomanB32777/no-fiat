@@ -1,11 +1,14 @@
 import { call, getContext, put, takeEvery } from "redux-saga/effects";
-import { IWalletContext } from "../../contexts/Wallet";
 import { setLoading } from "../../store/types/Loading";
 import {
   GET_ORGANIZATION,
   setOrganization,
 } from "../../store/types/Organization";
-import { IForTipsOrganizationAction, IOrganization } from "../../types";
+import {
+  IForTipsOrganizationAction,
+  IOrganization,
+  IWalletContext,
+} from "../../types";
 
 export const asyncGetOrganization = async (
   walletContext: IWalletContext,

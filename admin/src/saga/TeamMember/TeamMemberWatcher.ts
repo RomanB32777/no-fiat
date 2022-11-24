@@ -1,12 +1,11 @@
 import { call, getContext, put, takeEvery } from "redux-saga/effects";
 import { setLoading } from "../../store/types/Loading";
-import { IEmployeeInTeam } from "../../types";
+import { IEmployeeInTeam, IWalletContext } from "../../types";
 import { login } from "../../store/types/User";
 import {
   GET_EMPLOYEE_IN_TEAM,
   setEmployeeInTeam,
 } from "../../store/types/TeamMember";
-import { IWalletContext } from "../../contexts/Wallet";
 import { initEmployeeInTeam } from "../../consts";
 
 const asyncGetTeamMember = async (walletContext: IWalletContext) => {
