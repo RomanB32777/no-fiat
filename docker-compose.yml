@@ -8,7 +8,6 @@ services:
       args:
         - NODE_ENV=production
         - WALLET=tronlink
-        - BLOCKCHAIN=tron
         - STORAGE_TOKEN=token
         - TRON_CONTRACT_ADDRESS=address
         - TRON_CHAIN_NAME=name

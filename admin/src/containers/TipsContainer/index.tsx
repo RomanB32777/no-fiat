@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Col, Row } from "antd";
 
 import BaseButton from "../../components/BaseButton";
@@ -23,8 +23,10 @@ const TipsContainer = () => {
   const { isMobile } = useWindowDimensions();
   const dispatch = useAppDispatch();
   const { user, organization, employee } = useAppSelector((state) => state);
+  const [loading, setLoading] = useState(false);
 
   const withdrawClick = async () => {
+    setLoading(true);
     if (amountToWithdraw > 0) {
       const withdrawInfo = isOwner
         ? await currentWalletConf.withdrawTeams()
@@ -36,6 +38,7 @@ const TipsContainer = () => {
     } else {
       addErrorNotification({ title: "Balance to withdraw is zero" });
     }
+    setLoading(false);
   };
 
   const isOwner = useMemo(() => user.userRole === "owner", [user]);
@@ -73,6 +76,7 @@ const TipsContainer = () => {
                 onClick={withdrawClick}
                 padding="5px 20px "
                 fontSize={isMobile ? "17px" : "25px"}
+                disabled={loading}
               />
             </div>
           </>
