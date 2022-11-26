@@ -57,6 +57,7 @@ export const initValue: IWalletContext = {
     changeEmployeePhoto: async () => {},
     editEmployeeInOrg: async () => {},
     removeEmployeeFromOrg: async () => {},
+    checkIsExistEmployee: async () => false,
 
     // tips
     sendTips: async () => {},

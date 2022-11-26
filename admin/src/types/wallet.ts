@@ -122,6 +122,7 @@ export interface IWalletMethods {
   changeEmployeePhoto: (changePhotoObj: IChangePhotoObj) => Promise<any>;
   editEmployeeInOrg: (employee: IEmployeeBase) => Promise<any>;
   removeEmployeeFromOrg: (employeeAddress: string) => Promise<any>;
+  checkIsExistEmployee: (employeeAddress: string) => Promise<ITipRecieverObj | boolean>;
 
   // tips
   sendTips: (forSendTipsObj: ITipsObj) => Promise<any>;

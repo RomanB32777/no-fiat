@@ -178,3 +178,11 @@ export async function removeEmployeeFromOrg(
     return false;
   }
 }
+
+export async function checkIsExistEmployee(
+  this: IWalletConf,
+  employeeAddress: string
+) {
+  const isExist = await this.checkIfTipReciever(employeeAddress);
+  return isExist;
+}

@@ -122,7 +122,7 @@ const EmployeesBlock = () => {
         });
 
         const isTipReceiverEmployee =
-          await currentWalletConf.checkIfTipReciever(employeesForm.address);
+          await currentWalletConf.checkIsExistEmployee(employeesForm.address);
         // check tip_receiver in other organization
 
         const isExistEmployeeInTeamsContract =

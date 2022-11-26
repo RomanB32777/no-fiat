@@ -168,3 +168,11 @@ export async function removeEmployeeFromOrg(
     return false;
   }
 }
+
+export async function checkIsExistEmployee(
+  this: IWalletConf,
+  employeeAddress: string
+) {
+  const employeeInfo = await this.getEmployeeInfo(employeeAddress);
+  return Boolean(employeeInfo.orgOwner);
+}

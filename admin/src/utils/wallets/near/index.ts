@@ -24,6 +24,7 @@ import {
   removeEmployeeFromOrg,
   changeEmployeePhoto,
   getEmployeePhoto,
+  checkIsExistEmployee,
 } from "./employeeMethods";
 import {
   addEmployeeToTeam,
@@ -73,6 +74,7 @@ export const nearMethods = {
   changeTeamPercentage,
   deleteTeamFromOrg,
   removeEmpoloyeeFromTeam,
+  checkIsExistEmployee,
 
   // tips
   sendTips,
