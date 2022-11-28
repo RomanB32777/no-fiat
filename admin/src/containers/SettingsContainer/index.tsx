@@ -4,14 +4,19 @@ import { Col, Row } from "antd";
 import Loader from "../../components/Loader";
 import FormInput from "../../components/FormInput";
 import QrBlock from "../../components/QrBlock";
+import BaseButton from "../../components/BaseButton";
 import { WalletContext } from "../../contexts/Wallet";
 
-import { useAppSelector } from "../../store/hooks";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { logout } from "../../store/types/User";
 import { copyStr, shortStr } from "../../utils";
 import { baseURL } from "../../consts";
 import "./styles.sass";
 
 const SettingsContainer = () => {
+  const dispatch = useAppDispatch();
+  const { isMobile } = useWindowDimensions();
   const { currentWalletConf } = useContext(WalletContext);
   const { user, employee } = useAppSelector((state) => state);
   const [formSettings, setFormSettings] = useState<{
@@ -21,6 +26,13 @@ const SettingsContainer = () => {
     userAddress: "",
     tipsLink: "",
   });
+
+  const logoutBtn = () => {
+    if (currentWalletConf.logout) {
+      currentWalletConf.logout();
+      dispatch(logout());
+    }
+  };
 
   useEffect(() => {
     const getUserData = async () => {
@@ -98,34 +110,44 @@ const SettingsContainer = () => {
               />
             </div>
           </Col>
-          <>
+          <Col xl={16} xs={24}>
+            <div className="form-element">
+              <FormInput
+                label="Tips link:"
+                name="tipsLink"
+                value={tipsLink}
+                labelCol={24}
+                InputCol={12}
+                gutter={[0, 16]}
+                onClick={() => {
+                  copyStr(tipsLink);
+                }}
+              />
+            </div>
+          </Col>
+          <Col xl={16} xs={24}>
+            <div className="form-element">
+              <QrBlock
+                label="QR code:"
+                value={tipsLink}
+                labelCol={24}
+                InputCol={6}
+                gutter={[0, 16]}
+              />
+            </div>
+          </Col>
+          {Boolean(currentWalletConf.logout) && (
             <Col xl={16} xs={24}>
               <div className="form-element">
-                <FormInput
-                  label="Tips link:"
-                  name="tipsLink"
-                  value={tipsLink}
-                  labelCol={24}
-                  InputCol={12}
-                  gutter={[0, 16]}
-                  onClick={() => {
-                    copyStr(tipsLink);
-                  }}
+                <BaseButton
+                  title="Logout"
+                  onClick={logoutBtn}
+                  fontSize={isMobile ? "20px" : "25px"}
+                  padding={`10px ${isMobile ? 20 : 30}px`}
                 />
               </div>
             </Col>
-            <Col xl={16} xs={24}>
-              <div className="form-element">
-                <QrBlock
-                  label="QR code:"
-                  value={tipsLink}
-                  labelCol={24}
-                  InputCol={6}
-                  gutter={[0, 16]}
-                />
-              </div>
-            </Col>
-          </>
+          )}
         </Row>
       </div>
     </div>

@@ -1,19 +1,9 @@
 import { Buffer } from "buffer";
 import { connect, utils, WalletConnection, Contract } from "near-api-js";
-import {
-  IFormatAddressStr,
-  IWalletConf,
-} from "../../../types";
+import { IFormatAddressStr, IWalletConf } from "../../../types";
 
 // @ts-ignore
 window.Buffer = Buffer;
-
-const getLocalStorageKey = () => localStorage.getItem("null_wallet_auth_key");
-
-const getAppKeyPrefix = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve(getLocalStorageKey()), 500);
-  });
 
 export async function getWalletUserData(this: IWalletConf) {
   try {
@@ -21,13 +11,11 @@ export async function getWalletUserData(this: IWalletConf) {
       const nearConnection = await connect(this.connectionConfig);
       const walletConnection = new WalletConnection(
         nearConnection,
-        null //walletConf.address
+        null // key in local_storage (null_wallet_auth_key)
       );
       const isSignedIn = await walletConnection.isSignedInAsync();
-      // const appKeyPrefix = getLocalStorageKey() || (await getAppKeyPrefix());
 
       if (isSignedIn) {
-        // appKeyPrefix ||
         const walletAccountId = walletConnection.getAccountId();
         return { userAddress: walletAccountId };
       } else {

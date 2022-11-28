@@ -12,10 +12,7 @@ import {
   checkIfTipReciever,
   getBalance,
 } from "./userMethods";
-import {
-  addOrganization,
-  showOrganization,
-} from "./organizationMethods";
+import { addOrganization, showOrganization } from "./organizationMethods";
 import {
   addEmployeeToOrg,
   editEmployeeInOrg,
@@ -34,11 +31,9 @@ import {
   deleteTeamFromOrg,
   removeEmpoloyeeFromTeam,
 } from "./teamMethods";
-import {
-  sendTips,
-  withdrawTeams,
-  withdrawTipsByEmployee,
-} from "./tipsMethods";
+import { sendTips, withdrawTeams, withdrawTipsByEmployee } from "./tipsMethods";
+
+const logout = () => localStorage.removeItem("null_wallet_auth_key");
 
 export const nearMethods = {
   getBlockchainContractData,
@@ -80,5 +75,7 @@ export const nearMethods = {
   sendTips,
   withdrawTeams,
   withdrawTipsByEmployee,
-};
 
+  // app
+  logout,
+};

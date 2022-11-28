@@ -128,6 +128,9 @@ export interface IWalletMethods {
   sendTips: (forSendTipsObj: ITipsObj) => Promise<any>;
   withdrawTeams: () => Promise<any>;
   withdrawTipsByEmployee: () => Promise<any>;
+
+  // app
+  logout?: () => void
 }
 
 export interface IWalletConf extends IWalletState, IWalletMethods {}
